@@ -17,7 +17,11 @@ AWeaponGun::AWeaponGun()
 	Skeletal = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("SkeletalMesh"));
 	Skeletal->SetupAttachment(Root);
 
+	static ConstructorHelpers::FObjectFinder<USkeletalMesh> Gun(TEXT("/Script/Engine.SkeletalMesh'/Game/Shooting/BluePrint/Mesh/Weapon/Gun/Rifle.Rifle'"));
 
+	if (Gun.Succeeded()) {
+		Skeletal->SetSkeletalMesh(Gun.Object);
+	}
 
 }
 

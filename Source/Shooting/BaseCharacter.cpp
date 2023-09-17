@@ -77,6 +77,9 @@ void ABaseCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 	PlayerInputComponent->BindAxis(TEXT("MoveLeftRight"), this, &ABaseCharacter::MoveLeftRight);
 	PlayerInputComponent->BindAxis(TEXT("LookUpDown"), this, &ABaseCharacter::LookUpDown);
 	PlayerInputComponent->BindAxis(TEXT("LookLeftRight"), this, &ABaseCharacter::LookLeftRight);
+
+	PlayerInputComponent->BindAction(TEXT("Sprint"), EInputEvent::IE_Pressed, this, &ABaseCharacter::SprintStart);
+	PlayerInputComponent->BindAction(TEXT("Sprint"), EInputEvent::IE_Released, this, &ABaseCharacter::SprintEnd);
 }
 
 void ABaseCharacter::PostInitializeComponents()

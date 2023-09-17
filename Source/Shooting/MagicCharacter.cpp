@@ -164,9 +164,6 @@ void AMagicCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComp
 	PlayerInputComponent->BindAction(TEXT("Q_Skill"), EInputEvent::IE_Pressed, this, &AMagicCharacter::Attack_Skill_Q);
 	PlayerInputComponent->BindAction(TEXT("R_Skill"), EInputEvent::IE_Pressed, this, &AMagicCharacter::Attack_Skill_R);
 
-	PlayerInputComponent->BindAction(TEXT("Sprint"), EInputEvent::IE_Pressed, this, &AMagicCharacter::SprintStart);
-	PlayerInputComponent->BindAction(TEXT("Sprint"), EInputEvent::IE_Released, this, &AMagicCharacter::SprintEnd);
-
 	PlayerInputComponent->BindAction(TEXT("ForwardRoll"), EInputEvent::IE_Pressed, this, &AMagicCharacter::Dodge);
 
 	PlayerInputComponent->BindAction(TEXT("CharacterChangeKatana"), EInputEvent::IE_Released, this, &AMagicCharacter::CharacterChangeKatana);
