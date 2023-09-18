@@ -36,8 +36,11 @@ void AGunCharacter::BeginPlay()
 	GetMesh()->HideBoneByName(TEXT("weapon_r"), EPhysBodyOp::PBO_None);
 	if (IsValid(SpawnWeapon)) {
 		SpawnWeapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, TEXT("hand_r_WeaponSocket"));
+		SpawnWeapon->SetActorRelativeLocation(FVector(-1.156438f, -9.918899f, -1.919678f));
 		SpawnWeapon->SetOwner(this);
 	}
+
+	
 }
 
 void AGunCharacter::PostInitializeComponents()
