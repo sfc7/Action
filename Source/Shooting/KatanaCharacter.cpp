@@ -326,6 +326,7 @@ void AKatanaCharacter::AttackBasicSound2Play()
 	if (IsValid(AttackBasicSound2)) {
 		UGameplayStatics::PlaySoundAtLocation(this, AttackBasicSound2, GetActorLocation());
 	}
+
 }
 
 void AKatanaCharacter::AttackBasicSound3Play()

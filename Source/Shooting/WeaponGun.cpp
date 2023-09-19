@@ -27,6 +27,8 @@ AWeaponGun::AWeaponGun()
 	if (Flash.Succeeded()) {
 		FlashEffect = Flash.Object;
 	}
+
+	Range = 3000.0f;
 }
 
 // Called when the game starts or when spawned
@@ -40,7 +42,8 @@ void AWeaponGun::BeginPlay()
 void AWeaponGun::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
+	
+	
 }
 
 void AWeaponGun::Shoot()
@@ -52,17 +55,32 @@ void AWeaponGun::Shoot()
 	if (IsValid(Shooter)) {
 		auto ShooterController = Shooter->GetController();
 		if (IsValid(ShooterController)) {
+
 			FVector ControllerLocation = GetActorLocation();
 			FRotator ControllerRotation = GetActorRotation();
 			ShooterController->GetPlayerViewPoint(OUT ControllerLocation, OUT ControllerRotation);
 
-			DrawDebugCamera(GetWorld(), ControllerLocation, ControllerRotation, 90, 2, FColor::Red, true);
+			FVector End = ControllerLocation + ControllerRotation.Vector() * Range;
+			
+			bool bHit;
+			FHitResult HitResult;
+			bHit = GetWorld()->LineTraceSingleByChannel(
+				OUT HitResult,
+				ControllerLocation,
+				End,
+				ECollisionChannel::ECC_GameTraceChannel10
+			);
+
+			DrawDebugLine(GetWorld(), ControllerLocation, End, FColor::Red, true, 2.0f);
+			if (bHit) {
+				UE_LOG(LogTemp, Log, TEXT("%s"), *HitResult.GetActor()->GetName());
+				DrawDebugPoint(GetWorld(), HitResult.Location, 20, FColor::Red, true);
+				
+			}
+
+
 		}
 	}
-
-	
-
-
 }
 
 

@@ -227,7 +227,7 @@ void ABaseCharacter::CharacterChangeMagic()
 		GetController()->Possess(magiccharacter);
 	}
 	
-
+	
 	Destroy();
 }
 

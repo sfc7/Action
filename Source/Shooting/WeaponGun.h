@@ -31,6 +31,7 @@ private:
 		class UParticleSystem* FlashEffect;
 public:
 
+	float Range;
 	void Shoot();
 
 };
