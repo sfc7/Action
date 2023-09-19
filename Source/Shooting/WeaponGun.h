@@ -27,5 +27,10 @@ private:
 		USceneComponent* Root;
 	UPROPERTY(VisibleAnywhere)
 		USkeletalMeshComponent* Skeletal;
+	UPROPERTY(EditAnywhere)
+		class UParticleSystem* FlashEffect;
+public:
+
+	void Shoot();
 
 };

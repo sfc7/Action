@@ -3,8 +3,9 @@
 
 #include "WeaponGun.h"
 #include "Components/SkeletalMeshComponent.h"
-
-
+#include "Kismet/GamePlayStatics.h"
+#include "Particles/ParticleSystem.h"
+#include "DrawDebugHelpers.h"
 // Sets default values
 AWeaponGun::AWeaponGun()
 {
@@ -18,11 +19,14 @@ AWeaponGun::AWeaponGun()
 	Skeletal->SetupAttachment(Root);
 
 	static ConstructorHelpers::FObjectFinder<USkeletalMesh> Gun(TEXT("/Script/Engine.SkeletalMesh'/Game/Shooting/BluePrint/Mesh/Weapon/Gun/Rifle.Rifle'"));
-
 	if (Gun.Succeeded()) {
 		Skeletal->SetSkeletalMesh(Gun.Object);
 	}
 
+	static ConstructorHelpers::FObjectFinder<UParticleSystem> Flash(TEXT("/Script/Engine.ParticleSystem'/Game/Shooting/BluePrint/Effect/Gun/ParticleSystems/Muzzle/P_Wraith_Primary_MuzzleFlash.P_Wraith_Primary_MuzzleFlash'"));
+	if (Flash.Succeeded()) {
+		FlashEffect = Flash.Object;
+	}
 }
 
 // Called when the game starts or when spawned
@@ -38,4 +42,27 @@ void AWeaponGun::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 
 }
+
+void AWeaponGun::Shoot()
+{
+	UGameplayStatics::SpawnEmitterAttached(FlashEffect, Skeletal, TEXT("MuzzleFlashSocket"));
+
+
+	APawn* Shooter = Cast<APawn>(GetOwner());
+	if (IsValid(Shooter)) {
+		auto ShooterController = Shooter->GetController();
+		if (IsValid(ShooterController)) {
+			FVector ControllerLocation = GetActorLocation();
+			FRotator ControllerRotation = GetActorRotation();
+			ShooterController->GetPlayerViewPoint(OUT ControllerLocation, OUT ControllerRotation);
+
+			DrawDebugCamera(GetWorld(), ControllerLocation, ControllerRotation, 90, 2, FColor::Red, true);
+		}
+	}
+
+	
+
+
+}
+
 

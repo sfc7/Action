@@ -6,6 +6,7 @@
 #include "BaseCharacter.h"
 #include "GunCharacter.generated.h"
 
+class AWeaponGun;
 /**
  * 
  */
@@ -16,6 +17,8 @@ class SHOOTING_API AGunCharacter : public ABaseCharacter
 protected:
 	UPROPERTY(VisibleAnywhere)
 		class UCharacterAnimInstance* AnimInstance;
+	UPROPERTY()
+		AWeaponGun* WeaponGun;
 public:
 	AGunCharacter();
 protected:
@@ -25,4 +28,5 @@ public:
 	virtual void Tick(float DeltaTime) override;
 	virtual void SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) override;
 	
+	void Attack();
 };
