@@ -23,11 +23,15 @@ AWeaponGun::AWeaponGun()
 		Skeletal->SetSkeletalMesh(Gun.Object);
 	}
 
-	static ConstructorHelpers::FObjectFinder<UParticleSystem> Flash(TEXT("/Script/Engine.ParticleSystem'/Game/Shooting/BluePrint/Effect/Gun/ParticleSystems/Muzzle/P_Wraith_Primary_MuzzleFlash.P_Wraith_Primary_MuzzleFlash'"));
+	static ConstructorHelpers::FObjectFinder<UParticleSystem> Flash(TEXT("/Script/Engine.ParticleSystem'/Game/Shooting/BluePrint/Effect/P_Wraith_Primary_MuzzleFlash.P_Wraith_Primary_MuzzleFlash'"));
 	if (Flash.Succeeded()) {
 		FlashEffect = Flash.Object;
 	}
 
+	static ConstructorHelpers::FObjectFinder<UParticleSystem> Impact(TEXT("/Script/Engine.ParticleSystem'/Game/Shooting/BluePrint/Effect/P_AssaultRifle_IH.P_AssaultRifle_IH'"));
+	if (Impact.Succeeded()) {
+		ImpactEffect = Impact.Object;
+	}
 	Range = 3000.0f;
 }
 
@@ -73,9 +77,11 @@ void AWeaponGun::Shoot()
 
 			DrawDebugLine(GetWorld(), ControllerLocation, End, FColor::Red, true, 2.0f);
 			if (bHit) {
-				UE_LOG(LogTemp, Log, TEXT("%s"), *HitResult.GetActor()->GetName());
-				DrawDebugPoint(GetWorld(), HitResult.Location, 20, FColor::Red, true);
-				
+				FVector Dir = -ControllerRotation.Vector();
+				UGameplayStatics::SpawnEmitterAtLocation(GetWorld(),ImpactEffect, HitResult.Location, Dir.Rotation());
+
+				UE_LOG(LogTemp, Log, TEXT("Dir : %s"), *Dir.ToString());
+				UE_LOG(LogTemp, Log, TEXT("Rot : %s"), *ControllerRotation.ToString());
 			}
 
 

@@ -29,6 +29,8 @@ private:
 		USkeletalMeshComponent* Skeletal;
 	UPROPERTY(EditAnywhere)
 		class UParticleSystem* FlashEffect;
+	UPROPERTY(EditAnywhere)
+		class UParticleSystem* ImpactEffect;
 public:
 
 	float Range;
