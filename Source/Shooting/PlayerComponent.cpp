@@ -80,6 +80,7 @@ void UPlayerComponent::SetHp(int32 _Hp)
 	if (Hp <= 0) {
 		Hp = 0;
 		OnDeath.Broadcast();
+		GameInstance->ResetGameState();
 	}
 
 	OnHpChanged.Broadcast();

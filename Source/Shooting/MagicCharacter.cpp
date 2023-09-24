@@ -12,6 +12,7 @@
 #include "Kismet/GamePlayStatics.h"
 #include "CharacterUIWidget.h"
 #include "PlayerComponent.h"
+#include "ShootingGameMode.h"
 #include "MagicBall.h"
 #include "MagicMeteor.h"
 #include "MagicStorm.h"
@@ -173,6 +174,7 @@ void AMagicCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComp
 
 void AMagicCharacter::Attack()
 {
+
 	if (ShouldAttack)
 	{
 		if (attacking && FMath::IsWithinInclusive<int>(CurrentCombo, 1, MaxCombo) && CanNextCombo)
@@ -322,14 +324,16 @@ void AMagicCharacter::Attack_Q()
 
 float AMagicCharacter::TakeDamage(float Damage, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
 {
+	float returnDamage = Super::TakeDamage(Damage, DamageEvent, EventInstigator, DamageCauser);
+
 	if (PlayerComponent->GetHp() > 0) {
-		PlayerComponent->OnDamaged(Damage);
-		if (IsValid(AnimInstance) && PlayerComponent->GetHp() - (int32)Damage > 0) {
+		PlayerComponent->OnDamaged(returnDamage);
+		if (IsValid(AnimInstance) && PlayerComponent->GetHp() - (int32)returnDamage > 0) {
 			HitSoundPlay();
 			AnimInstance->PlayHitReactMontage();
 		}
 	}
-	return Damage;
+	return returnDamage;
 }
 
 void AMagicCharacter::Dodge()
@@ -342,6 +346,7 @@ void AMagicCharacter::Dodge()
 
 void AMagicCharacter::Death()
 {
+	ToggleAllAct();	
 	DeathSoundPlay();
 	CUI->RemoveFromParent();
 
@@ -359,12 +364,16 @@ void AMagicCharacter::Death()
 		AnimInstance->PlayDeathMontage();
 	}
 
-
 	FTimerHandle waitHandle;
 	GetWorld()->GetTimerManager().SetTimer(waitHandle, FTimerDelegate::CreateLambda([&]()
 		{
 			Destroy();
 		}), 5.0f, false);
+
+	AShootingGameMode* gameMode = GetWorld()->GetAuthGameMode<AShootingGameMode>();
+	if (gameMode != nullptr) {
+		gameMode->GameOver(this);
+	}
 }
 
 void AMagicCharacter::AttackBasicSound2Play()

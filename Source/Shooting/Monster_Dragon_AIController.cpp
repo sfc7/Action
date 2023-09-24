@@ -5,9 +5,6 @@
 #include "BehaviorTree/BehaviorTree.h"
 #include "BehaviorTree/BlackboardData.h"
 #include "BehaviorTree/BlackboardComponent.h"
-#include "Perception/AIPerceptionComponent.h"
-#include "Perception/AISenseConfig_Sight.h"
-#include "Perception/AIPerceptionStimuliSourceComponent.h"
 #include "BaseCharacter.h"
 
 AMonster_Dragon_AIController::AMonster_Dragon_AIController()
@@ -24,8 +21,15 @@ AMonster_Dragon_AIController::AMonster_Dragon_AIController()
 		BlackboardData = Board.Object;
 	}
 
-	GetPerceptionComponent()->OnTargetPerceptionUpdated.AddDynamic(this, &AMonster_Dragon_AIController::HandleSightSense);
+
 }
+
+void AMonster_Dragon_AIController::BeginPlay()
+{
+	Super::BeginPlay();
+
+}
+
 
 void AMonster_Dragon_AIController::OnPossess(APawn* InPawn)
 {
@@ -42,24 +46,4 @@ void AMonster_Dragon_AIController::OnPossess(APawn* InPawn)
 void AMonster_Dragon_AIController::OnUnPossess()
 {
 	Super::OnUnPossess();
-}
-
-void AMonster_Dragon_AIController::HandleSightSense(AActor* actor, FAIStimulus const Stimulus)
-{
-	if (Stimulus.Type == UAISense::GetSenseID(UAISense_Sight::StaticClass())) {
-		if (auto const player = Cast<ABaseCharacter>(actor)) {
-			if (Stimulus.WasSuccessfullySensed()) {
-				Blackboard->SetValueAsObject(AMonster_Dragon_AIController::TargetActorKey, player);
-			}
-			else {
-				Blackboard->SetValueAsVector(AMonster_Dragon_AIController::LastKnownLocationKey, Stimulus.StimulusLocation);
-			}
-		}
-		else {
-			return;
-		}
-	}
-	else {
-		return;
-	}
 }

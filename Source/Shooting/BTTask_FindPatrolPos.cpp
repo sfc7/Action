@@ -1,11 +1,3 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
-
-#include "BTTask_FindPatrolPos.h"
-
-
-// Fill out your copyright notice in the Description page of Project Settings.
-
 
 #include "BTTask_FindPatrolPos.h"
 #include "MonsterAIController.h"
@@ -19,7 +11,7 @@ UBTTask_FindPatrolPos::UBTTask_FindPatrolPos()
 
 EBTNodeResult::Type UBTTask_FindPatrolPos::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
 {
-	EBTNodeResult::Type Result = Super::ExecuteTask(OwnerComp, NodeMemory);
+	Super::ExecuteTask(OwnerComp, NodeMemory);
 
 	auto ControllingPawn = OwnerComp.GetAIOwner()->GetPawn();
 
@@ -41,6 +33,8 @@ EBTNodeResult::Type UBTTask_FindPatrolPos::ExecuteTask(UBehaviorTreeComponent& O
 		OwnerComp.GetBlackboardComponent()->SetValueAsVector(AMonsterAIController::TargetPosKey, NextPatrol.Location);
 		return EBTNodeResult::Succeeded;
 	}
+
+
 
 	return EBTNodeResult::Failed;
 

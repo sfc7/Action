@@ -13,6 +13,8 @@ class AShootingGameMode : public AGameModeBase
 
 public:
 	AShootingGameMode();
+public:
+	void GameOver(APawn* Pawn);
 };
 
 

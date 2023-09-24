@@ -121,13 +121,6 @@ void ABaseCharacter::LookLeftRight(float value)
 	AddControllerYawInput(value);
 }
 
-
-
-float ABaseCharacter::TakeDamage(float Damage, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
-{
-	return 0.0f;
-}
-
 void ABaseCharacter::ToggleDuringAttack(bool enable)
 {
 	if (enable) {
@@ -178,6 +171,16 @@ void ABaseCharacter::ToggleDuringDodge(bool enable)
 		ShouldDodge = false;
 		IsDamaging = true;
 	}
+}
+
+void ABaseCharacter::ToggleAllAct()
+{
+	ShouldMove = false;
+	ShouldAttack = false;
+	ShouldJump = false;
+	ShouldDodge = false;
+	Should_Q_Skill = false;
+	Should_R_Skill = false;
 }
 
 void ABaseCharacter::AttackStartComboState()

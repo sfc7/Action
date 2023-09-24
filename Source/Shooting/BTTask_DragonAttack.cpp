@@ -15,6 +15,8 @@ UBTTask_DragonAttack::UBTTask_DragonAttack()
 
 EBTNodeResult::Type UBTTask_DragonAttack::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
 {
+	Super::ExecuteTask(OwnerComp, NodeMemory);
+
 	UBlackboardComponent* BlackboardComp = OwnerComp.GetBlackboardComponent();
 
 	float CurrentTime = UGameplayStatics::GetRealTimeSeconds(OwnerComp.GetWorld());
@@ -35,7 +37,8 @@ EBTNodeResult::Type UBTTask_DragonAttack::ExecuteTask(UBehaviorTreeComponent& Ow
 
 		if (!(ControllingOwner->IsAttacking)) {
 			ControllingOwner->Attack(Target);
-		}
+				
+		}	
 
 		BlackboardComp->SetValueAsFloat("LastServiceExecutionTime", CurrentTime);
 	}

@@ -41,7 +41,7 @@ public:
 	virtual void AttackStartComboState() override;
 	virtual void AttackEndComboState() override;
 
-	float TakeDamage(float Damage, struct FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
+	virtual float TakeDamage(float Damage, struct FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
 
 	void Dodge();
 	virtual void Death() override;

@@ -15,10 +15,7 @@ UMyGameInstance::UMyGameInstance()
 		MonsterDataTable = DTMonsterData.Object;
 	}
 
-	KatanaMaxHp = GetCharacterData()->KatanaMaxHp;
-	KatanaHp = KatanaMaxHp;
-	MagicMaxHp = GetCharacterData()->MagicMaxHp;
-	MagicHp = MagicMaxHp;
+	ResetGameState();
 }
 
 void UMyGameInstance::Init()
@@ -38,6 +35,15 @@ FMonsterData* UMyGameInstance::GetMonsterData()
 	FName RowName = FName(TEXT("Basic"));
 
 	return MonsterDataTable->FindRow<FMonsterData>(RowName, TEXT(""));
+}
+
+void UMyGameInstance::ResetGameState()
+{
+	KatanaMaxHp = GetCharacterData()->KatanaMaxHp;
+	KatanaHp = KatanaMaxHp;
+	MagicMaxHp = GetCharacterData()->MagicMaxHp;
+	MagicHp = MagicMaxHp;
+	MonsterDeathCount = 0;
 }
 
 void UMyGameInstance::KatanaSetHp(int32 _Hp)

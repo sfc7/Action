@@ -15,9 +15,10 @@ class SHOOTING_API AMonster_Dragon_AIController : public AMonsterAIController
 	GENERATED_BODY()
 public:
 	AMonster_Dragon_AIController();
+protected:
+	virtual void BeginPlay() override;
 public:
 	virtual void OnPossess(APawn* InPawn) override;
 	virtual void OnUnPossess() override;
-	UFUNCTION()
-		void HandleSightSense(AActor* actor, FAIStimulus const Stimulus);
+
 };

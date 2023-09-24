@@ -5,9 +5,6 @@
 #include "BehaviorTree/BehaviorTree.h"
 #include "BehaviorTree/BlackboardData.h"
 #include "BehaviorTree/BlackboardComponent.h"
-#include "Perception/AIPerceptionComponent.h"
-#include "Perception/AISenseConfig_Sight.h"
-#include "Perception/AIPerceptionStimuliSourceComponent.h"
 #include "BaseCharacter.h"
 
 const FName AMonster_Skeleton_AIController::ForwardLocationKey(TEXT("ForwardLocation"));
@@ -27,7 +24,6 @@ AMonster_Skeleton_AIController::AMonster_Skeleton_AIController()
 		BlackboardData = Board.Object;
 	}
 
-	GetPerceptionComponent()->OnTargetPerceptionUpdated.AddDynamic(this, &AMonster_Skeleton_AIController::HandleSightSense);
 }
 
 void AMonster_Skeleton_AIController::OnPossess(APawn* InPawn)
@@ -50,26 +46,9 @@ void AMonster_Skeleton_AIController::OnUnPossess()
 	Super::OnUnPossess();
 }
 
-void AMonster_Skeleton_AIController::HandleSightSense(AActor* actor, FAIStimulus const Stimulus)
+void AMonster_Skeleton_AIController::BeginPlay()
 {
-				
-	if (Stimulus.Type == UAISense::GetSenseID(UAISense_Sight::StaticClass())) {
-		if (auto const player = Cast<ABaseCharacter>(actor)) {
+	Super::BeginPlay();
 
-			if (Stimulus.WasSuccessfullySensed()) {
-				Blackboard->SetValueAsObject(AMonster_Skeleton_AIController::TargetActorKey, player);
-
-			}
-			else {
-				Blackboard->SetValueAsVector(AMonster_Skeleton_AIController::LastKnownLocationKey, Stimulus.StimulusLocation);
-			}
-		}
-		else {
-			return;
-		}
-	}
-	else {
-		return;
-	}
 
 }

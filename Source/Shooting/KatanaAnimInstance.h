@@ -14,5 +14,4 @@ class SHOOTING_API UKatanaAnimInstance : public UCharacterAnimInstance
 {
 	GENERATED_BODY()
 
-
 };

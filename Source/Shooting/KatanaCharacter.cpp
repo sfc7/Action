@@ -7,6 +7,7 @@
 #include "Particles/ParticleSystem.h"
 #include "Kismet/GamePlayStatics.h"
 #include "CharacterUIWidget.h"
+#include "ShootingGameMode.h"
 #include "PlayerComponent.h"
 
 AKatanaCharacter::AKatanaCharacter()
@@ -103,6 +104,7 @@ void AKatanaCharacter::BeginPlay()
 			SpawnWeapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetIncludingScale, socket);
 		}
 	}
+
 
 	if (CUI)
 	{
@@ -240,7 +242,6 @@ void AKatanaCharacter::Attack_Basic(float damage)
 
 	FVector Forward = Center + GetActorForwardVector() * AttackRange;
 	FCollisionQueryParams Params(NAME_None ,false, this);
-
 	TArray<FHitResult> HitResults;
 
 	bool Result = GetWorld()->SweepMultiByChannel(
@@ -277,14 +278,16 @@ void AKatanaCharacter::Attack_Basic(float damage)
 
 float AKatanaCharacter::TakeDamage(float Damage, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
 {
+	float returnDamage = Super::TakeDamage(Damage, DamageEvent, EventInstigator, DamageCauser);
+
 	if (PlayerComponent->GetHp() > 0) {
-		PlayerComponent->OnDamaged(Damage);
-		if (IsValid(AnimInstance) && PlayerComponent->GetHp() - (int32)Damage > 0) {
+		PlayerComponent->OnDamaged(returnDamage);
+		if (IsValid(AnimInstance) && PlayerComponent->GetHp() - (int32)returnDamage > 0) {
 			HitSoundPlay();
 			AnimInstance->PlayHitReactMontage();
 		}
 	}
-	return Damage;
+	return  returnDamage;
 }
 
 void AKatanaCharacter::Dodge()
@@ -297,6 +300,7 @@ void AKatanaCharacter::Dodge()
 
 void AKatanaCharacter::Death()
 {
+	ToggleAllAct();
 	DeathSoundPlay();
 	CUI->RemoveFromParent();
 
@@ -319,6 +323,11 @@ void AKatanaCharacter::Death()
 		{
 			Destroy();
 		}), 5.0f, false);
+
+	AShootingGameMode* gameMode = GetWorld()->GetAuthGameMode<AShootingGameMode>();
+	if (gameMode != nullptr) {
+		gameMode->GameOver(this);
+	}
 }
 
 void AKatanaCharacter::AttackBasicSound2Play()

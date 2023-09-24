@@ -62,14 +62,16 @@ void ABaseMonster::PostInitializeComponents()
 
 float ABaseMonster::TakeDamage(float Damage, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
 {
+	float returnDamage = Super::TakeDamage(Damage, DamageEvent, EventInstigator, DamageCauser);
+
 	if (MonsterComponent->GetHp() > 0) {
-		MonsterComponent->OnDamaged(Damage);
-		if (IsValid(AnimInstance) && MonsterComponent->GetHp() - (int32)Damage > 0) {
+		MonsterComponent->OnDamaged(returnDamage);
+		if (IsValid(AnimInstance) && MonsterComponent->GetHp() - (int32)returnDamage > 0) {
 			HitSoundPlay();
 			AnimInstance->PlayHitReactMontage();
 		}
 	}
-	return Damage;
+	return returnDamage;
 }
 
 void ABaseMonster::ToggleDuringAttack(bool enable)

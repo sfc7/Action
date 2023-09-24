@@ -61,3 +61,12 @@ void AGunCharacter::Attack()
 		WeaponGun->Shoot();
 	}
 }
+
+float AGunCharacter::TakeDamage(float Damage, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
+{
+	float returnDamage = Super::TakeDamage(Damage, DamageEvent, EventInstigator, DamageCauser);
+
+	
+
+	return returnDamage;
+}

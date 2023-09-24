@@ -14,7 +14,8 @@ UBTTask_SkeletonAttack::UBTTask_SkeletonAttack()
 
 EBTNodeResult::Type UBTTask_SkeletonAttack::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
 {
-	
+	Super::ExecuteTask(OwnerComp, NodeMemory);
+
 	auto ControllingOwner = Cast<AMonsterSkeleton>(OwnerComp.GetAIOwner()->GetPawn());
 	if (nullptr == ControllingOwner) {
 		return EBTNodeResult::Failed;
@@ -26,6 +27,7 @@ EBTNodeResult::Type UBTTask_SkeletonAttack::ExecuteTask(UBehaviorTreeComponent& 
 
 	if (!(ControllingOwner->IsDamaging) && !(ControllingOwner->IsAttacking)) {
 		ControllingOwner->Attack(Target);
+		return EBTNodeResult::Succeeded;
 	}
 
 

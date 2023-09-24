@@ -57,7 +57,7 @@ void AMonsterSkeleton::PostInitializeComponents()
 	if (IsValid(AnimInstance)) {
 		AnimInstance->OnHit.AddUObject(this, &AMonsterSkeleton::ToggleDuringHit);
 		AnimInstance->DuringAttack.AddUObject(this, &AMonsterSkeleton::ToggleDuringAttack);
-		AnimInstance->AttackBasic.AddUObject(this, &AMonsterSkeleton::Attack_Basic, 10.0f);
+		AnimInstance->AttackBasic.AddUObject(this, &AMonsterSkeleton::Attack_Basic, 50.0f);
 	}
 }
 

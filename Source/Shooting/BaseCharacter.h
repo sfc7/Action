@@ -85,11 +85,11 @@ public:
 	float MoveDistance = 500.0f;
 
 public:
-	virtual float TakeDamage(float Damage, struct FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
 
 	void ToggleDuringAttack(bool enable);
 	void ToggleDuringHit(bool enable);
 	void ToggleDuringDodge(bool enable);
+	void ToggleAllAct();
 
 	virtual void AttackStartComboState();
 	virtual void AttackEndComboState();

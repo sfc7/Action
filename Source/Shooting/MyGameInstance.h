@@ -48,32 +48,36 @@ class SHOOTING_API UMyGameInstance : public UGameInstance
 public:
 	class UDataTable* CharacterDataTable;
 	class UDataTable* MonsterDataTable;
+
+	FOnEvent1_DeathCount OnEvent1_DeathCount;
+	FOnEvent2_DeathCount OnEvent2_DeathCount;
 protected:
 		int32 KatanaMaxHp;
 		int32 KatanaHp;
 		int32 MagicMaxHp;
 		int32 MagicHp;
+
+		int32 MonsterDeathCount;
 public:
 	UMyGameInstance();
-
-	FOnEvent1_DeathCount OnEvent1_DeathCount;
-	FOnEvent2_DeathCount OnEvent2_DeathCount;
 public:
 	virtual void Init() override;
 public:
-	FCharacterData* GetCharacterData();
-	FMonsterData* GetMonsterData();
-public:
+	void SetMonsterDeathCount();
+	void ResetGameState();
 	void KatanaSetHp(int32 _Hp);
 	void MagicSetHp(int32 _Hp);
+
+	FCharacterData* GetCharacterData();
+	FMonsterData* GetMonsterData();
 	int32 KatanaGetHp() { return KatanaHp; }
 	int32 MagicGetHp() { return MagicHp; }
 	int32 KatanaGetMaxHp() { return KatanaMaxHp; }
 	int32 MagicGetMaxHp() { return MagicMaxHp; }
 
 
-	void SetMonsterDeathCount();
-	int32 MonsterDeathCount = 0;
+
+
 
 	
 };

@@ -12,10 +12,10 @@ UBTTask_ForwardFlag::UBTTask_ForwardFlag()
 
 EBTNodeResult::Type UBTTask_ForwardFlag::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
 {
-    EBTNodeResult::Type Result = Super::ExecuteTask(OwnerComp, NodeMemory);
+    Super::ExecuteTask(OwnerComp, NodeMemory);
 
     OwnerComp.GetBlackboardComponent()->SetValueAsBool(AMonster_Skeleton_AIController::ForwardFlagKey, true);
 
 
-    return EBTNodeResult::Type();
+    return EBTNodeResult::Succeeded;
 }

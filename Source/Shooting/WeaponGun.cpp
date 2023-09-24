@@ -6,7 +6,8 @@
 #include "Kismet/GamePlayStatics.h"
 #include "Particles/ParticleSystem.h"
 #include "DrawDebugHelpers.h"
-// Sets default values
+#include "Engine/DamageEvents.h"
+
 AWeaponGun::AWeaponGun()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
@@ -60,28 +61,34 @@ void AWeaponGun::Shoot()
 		auto ShooterController = Shooter->GetController();
 		if (IsValid(ShooterController)) {
 
-			FVector ControllerLocation = GetActorLocation();
-			FRotator ControllerRotation = GetActorRotation();
+			FVector ControllerLocation;
+			FRotator ControllerRotation;
 			ShooterController->GetPlayerViewPoint(OUT ControllerLocation, OUT ControllerRotation);
 
 			FVector End = ControllerLocation + ControllerRotation.Vector() * Range;
 			
 			bool bHit;
 			FHitResult HitResult;
+			FCollisionQueryParams Params(NAME_None, false, this);
+
 			bHit = GetWorld()->LineTraceSingleByChannel(
 				OUT HitResult,
 				ControllerLocation,
 				End,
-				ECollisionChannel::ECC_GameTraceChannel10
+				ECollisionChannel::ECC_GameTraceChannel10,
+				Params
 			);
 
 			DrawDebugLine(GetWorld(), ControllerLocation, End, FColor::Red, true, 2.0f);
 			if (bHit) {
 				FVector Dir = -ControllerRotation.Vector();
 				UGameplayStatics::SpawnEmitterAtLocation(GetWorld(),ImpactEffect, HitResult.Location, Dir.Rotation());
-
-				UE_LOG(LogTemp, Log, TEXT("Dir : %s"), *Dir.ToString());
-				UE_LOG(LogTemp, Log, TEXT("Rot : %s"), *ControllerRotation.ToString());
+				
+				if (HitResult.GetActor() != nullptr) {
+					float Damage = 5.0f;
+					FPointDamageEvent DamageEvent(Damage, HitResult, Dir, nullptr);
+					HitResult.GetActor()->TakeDamage(Damage, DamageEvent, ShooterController, this);
+				}
 			}
 
 

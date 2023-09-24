@@ -18,9 +18,10 @@ public:
 public:
 	virtual void OnPossess(APawn* InPawn) override;
 	virtual void OnUnPossess() override;
+
+protected:
+	virtual void BeginPlay() override;
 public:
 	static const FName ForwardLocationKey;
 	static const FName ForwardFlagKey;
-	UFUNCTION()
-		void HandleSightSense(AActor* actor, FAIStimulus const Stimulus);
 };

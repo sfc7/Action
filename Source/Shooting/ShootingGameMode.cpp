@@ -2,6 +2,8 @@
 
 #include "ShootingGameMode.h"
 #include "KatanaCharacter.h"
+#include "BasePlayerController.h"
+#include "Kismet/GameplayStatics.h"
 
 AShootingGameMode::AShootingGameMode()
 {
@@ -12,20 +14,18 @@ AShootingGameMode::AShootingGameMode()
 	{
 		DefaultPawnClass = DefaultCharacter;
 	}
+
+	auto DefaultController = ABasePlayerController::StaticClass();
+
+	if (IsValid(DefaultController)) {
+		PlayerControllerClass = DefaultController;
+	}
 }
 
-// Copyright Epic Games, Inc. All Rights Reserved.
-//
-//#include "ShootingGameMode.h"
-//#include "ShootingCharacter.h"
-//#include "UObject/ConstructorHelpers.h"
-//
-//AShootingGameMode::AShootingGameMode()
-//{
-//	// set default pawn class to our Blueprinted character
-//	static ConstructorHelpers::FClassFinder<APawn> Player(TEXT("/Game/ThirdPerson/Blueprints/BP_ThirdPersonCharacter"));
-//	if (Player.Succeeded())
-//	{
-//		DefaultPawnClass = Player.Class;
-//	}
-//}
+void AShootingGameMode::GameOver(APawn* Pawn)
+{
+	APlayerController* PlayerController = Cast<APlayerController>(Pawn->GetController());
+	if(PlayerController != nullptr) {
+		PlayerController->GameHasEnded(UGameplayStatics::GetPlayerCharacter(GetWorld(),0), false);
+	}
+}
