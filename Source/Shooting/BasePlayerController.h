@@ -16,5 +16,8 @@ class SHOOTING_API ABasePlayerController : public APlayerController
 public:
 	ABasePlayerController();
 public:
+	UPROPERTY(EditAnywhere)
+		TSubclassOf<class UUserWidget> ScreenLoseText;
+public:
 	virtual void GameHasEnded(class AActor* EndGameFocus, bool bIsWinner);
 };
