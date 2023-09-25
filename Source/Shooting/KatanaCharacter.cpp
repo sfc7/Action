@@ -46,42 +46,42 @@ AKatanaCharacter::AKatanaCharacter()
 		HitEffect = Attackeffect.Object;
 	}
 
-	static ConstructorHelpers::FObjectFinder<USoundWave> AttackBasicSoundAsset(TEXT("/Script/Engine.SoundWave'/Game/Shooting/BluePrint/Sound/Character/Katana/SV_Katana_AttackBasic.SV_Katana_AttackBasic'"));
+	static ConstructorHelpers::FObjectFinder<USoundWave> AttackBasicSoundAsset(TEXT("/Script/Engine.SoundWave'/Game/Shooting/BluePrint/Sound/Character/Katana/SW_Katana_AttackBasic.SW_Katana_AttackBasic'"));
 	if (AttackBasicSoundAsset.Succeeded()) {
 		AttackBasicSound = AttackBasicSoundAsset.Object;
 	}
 
-	static ConstructorHelpers::FObjectFinder<USoundWave> AttackBasicSound2Asset(TEXT("/Script/Engine.SoundWave'/Game/Shooting/BluePrint/Sound/Character/Katana/SV_Katana_AttackBasic2.SV_Katana_AttackBasic2'"));
+	static ConstructorHelpers::FObjectFinder<USoundWave> AttackBasicSound2Asset(TEXT("/Script/Engine.SoundWave'/Game/Shooting/BluePrint/Sound/Character/Katana/SW_Katana_AttackBasic2.SW_Katana_AttackBasic2'"));
 	if (AttackBasicSound2Asset.Succeeded()) {
 		AttackBasicSound2 = AttackBasicSound2Asset.Object;
 	}
 
-	static ConstructorHelpers::FObjectFinder<USoundWave> AttackBasicSound3Asset(TEXT("/Script/Engine.SoundWave'/Game/Shooting/BluePrint/Sound/Character/Katana/SV_Katana_AttackBasic3.SV_Katana_AttackBasic3'"));
+	static ConstructorHelpers::FObjectFinder<USoundWave> AttackBasicSound3Asset(TEXT("/Script/Engine.SoundWave'/Game/Shooting/BluePrint/Sound/Character/Katana/SW_Katana_AttackBasic3.SW_Katana_AttackBasic3'"));
 	if (AttackBasicSound3Asset.Succeeded()) {
 		AttackBasicSound3 = AttackBasicSound3Asset.Object;
 	}
 
-	static ConstructorHelpers::FObjectFinder<USoundWave> HitSoundAsset(TEXT("/Script/Engine.SoundWave'/Game/Shooting/BluePrint/Sound/Character/Katana/SV_Katana_Hit.SV_Katana_Hit'"));
+	static ConstructorHelpers::FObjectFinder<USoundWave> HitSoundAsset(TEXT("/Script/Engine.SoundWave'/Game/Shooting/BluePrint/Sound/Character/Katana/SW_Katana_Hit.SW_Katana_Hit'"));
 	if (HitSoundAsset.Succeeded()) {
 		HitSound = HitSoundAsset.Object;
 	}
 
-	static ConstructorHelpers::FObjectFinder<USoundWave> AttackQSkillSoundAsset(TEXT("/Script/Engine.SoundWave'/Game/Shooting/BluePrint/Sound/Character/Katana/SV_Katana_AttackQSKill.SV_Katana_AttackQSKill'"));
+	static ConstructorHelpers::FObjectFinder<USoundWave> AttackQSkillSoundAsset(TEXT("/Script/Engine.SoundWave'/Game/Shooting/BluePrint/Sound/Character/Katana/SW_Katana_AttackQSKill.SW_Katana_AttackQSKill'"));
 	if (AttackQSkillSoundAsset.Succeeded()) {
 		AttackQSkillSound = AttackQSkillSoundAsset.Object;
 	}
 
-	static ConstructorHelpers::FObjectFinder<USoundWave> AttackRSkillSoundAsset(TEXT("/Script/Engine.SoundWave'/Game/Shooting/BluePrint/Sound/Character/Katana/SV_Katana_AttackRSKill.SV_Katana_AttackRSKill'"));
+	static ConstructorHelpers::FObjectFinder<USoundWave> AttackRSkillSoundAsset(TEXT("/Script/Engine.SoundWave'/Game/Shooting/BluePrint/Sound/Character/Katana/SW_Katana_AttackRSKill.SW_Katana_AttackRSKill'"));
 	if (AttackRSkillSoundAsset.Succeeded()) {
 		AttackRSkillSound = AttackRSkillSoundAsset.Object;
 	}
 
-	static ConstructorHelpers::FObjectFinder<USoundWave> DeathSoundAsset(TEXT("/Script/Engine.SoundWave'/Game/Shooting/BluePrint/Sound/Character/Katana/SV_Katana_Death.SV_Katana_Death'"));
+	static ConstructorHelpers::FObjectFinder<USoundWave> DeathSoundAsset(TEXT("/Script/Engine.SoundWave'/Game/Shooting/BluePrint/Sound/Character/Katana/SW_Katana_Death.SW_Katana_Death'"));
 	if (DeathSoundAsset.Succeeded()) {
 		DeathSound = DeathSoundAsset.Object;
 	}
 
-	static ConstructorHelpers::FObjectFinder<USoundWave> WeaponSoundAsset(TEXT("/Script/Engine.SoundWave'/Game/Shooting/BluePrint/Sound/Character/Katana/SV_Katana_Weapon.SV_Katana_Weapon'"));
+	static ConstructorHelpers::FObjectFinder<USoundWave> WeaponSoundAsset(TEXT("/Script/Engine.SoundWave'/Game/Shooting/BluePrint/Sound/Character/Katana/SW_Katana_Weapon.SW_Katana_Weapon'"));
 	if (WeaponSoundAsset.Succeeded()) {
 		WeaponSound = WeaponSoundAsset.Object;
 	}

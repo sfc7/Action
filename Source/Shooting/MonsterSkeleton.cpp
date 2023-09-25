@@ -29,17 +29,17 @@ AMonsterSkeleton::AMonsterSkeleton()
 		TakeHitEffect = TakeEffectAsset.Object;
 	}
 
-	static ConstructorHelpers::FObjectFinder<USoundWave> AttackBasicSoundAsset(TEXT("/Script/Engine.SoundWave'/Game/Shooting/BluePrint/Sound/Monster/Skeleton/SV_Skeleton_AttackBasic.SV_Skeleton_AttackBasic'"));
+	static ConstructorHelpers::FObjectFinder<USoundWave> AttackBasicSoundAsset(TEXT("/Script/Engine.SoundWave'/Game/Shooting/BluePrint/Sound/Monster/Skeleton/SW_Skeleton_AttackBasic.SW_Skeleton_AttackBasic'"));
 	if (AttackBasicSoundAsset.Succeeded()) {
 		AttackBasicSound = AttackBasicSoundAsset.Object;
 	}
 
-	static ConstructorHelpers::FObjectFinder<USoundWave> HitSoundAsset(TEXT("/Script/Engine.SoundWave'/Game/Shooting/BluePrint/Sound/Monster/Skeleton/SV_Skeleton_Hit.SV_Skeleton_Hit'"));
+	static ConstructorHelpers::FObjectFinder<USoundWave> HitSoundAsset(TEXT("/Script/Engine.SoundWave'/Game/Shooting/BluePrint/Sound/Monster/Skeleton/SW_Skeleton_Hit.SW_Skeleton_Hit'"));
 	if (HitSoundAsset.Succeeded()) {
 		HitSound = HitSoundAsset.Object;
 	}
 
-	static ConstructorHelpers::FObjectFinder<USoundWave> DeathSoundAsset(TEXT("/Script/Engine.SoundWave'/Game/Shooting/BluePrint/Sound/Monster/Skeleton/SV_Skeleton_Death.SV_Skeleton_Death'"));
+	static ConstructorHelpers::FObjectFinder<USoundWave> DeathSoundAsset(TEXT("/Script/Engine.SoundWave'/Game/Shooting/BluePrint/Sound/Monster/Skeleton/SW_Skeleton_Death.SW_Skeleton_Death'"));
 	if (DeathSoundAsset.Succeeded()) {
 		DeathSound = DeathSoundAsset.Object;
 	}

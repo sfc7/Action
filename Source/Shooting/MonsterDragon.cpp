@@ -91,27 +91,27 @@ AMonsterDragon::AMonsterDragon()
 		MyCapsuleComponent->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, Socket);
 	}
 
-	static ConstructorHelpers::FObjectFinder<USoundWave> AttackBasicSoundAsset(TEXT("/Script/Engine.SoundWave'/Game/Shooting/BluePrint/Sound/Monster/Dragon/SV_Dragon_Attack.SV_Dragon_Attack'"));
+	static ConstructorHelpers::FObjectFinder<USoundWave> AttackBasicSoundAsset(TEXT("/Script/Engine.SoundWave'/Game/Shooting/BluePrint/Sound/Monster/Dragon/SW_Dragon_Attack.SW_Dragon_Attack'"));
 	if (AttackBasicSoundAsset.Succeeded()) {
 		AttackBasicSound = AttackBasicSoundAsset.Object;
 	}
 
-	static ConstructorHelpers::FObjectFinder<USoundWave> HitSoundAsset(TEXT("/Script/Engine.SoundWave'/Game/Shooting/BluePrint/Sound/Monster/Dragon/SV_Dragon_Hit.SV_Dragon_Hit'"));
+	static ConstructorHelpers::FObjectFinder<USoundWave> HitSoundAsset(TEXT("/Script/Engine.SoundWave'/Game/Shooting/BluePrint/Sound/Monster/Dragon/SW_Dragon_Hit.SW_Dragon_Hit'"));
 	if (HitSoundAsset.Succeeded()) {
 		HitSound = HitSoundAsset.Object;
 	}
 
-	static ConstructorHelpers::FObjectFinder<USoundWave> DeathSoundAsset(TEXT("/Script/Engine.SoundWave'/Game/Shooting/BluePrint/Sound/Monster/Dragon/SV_Dragon_Death.SV_Dragon_Death'"));
+	static ConstructorHelpers::FObjectFinder<USoundWave> DeathSoundAsset(TEXT("/Script/Engine.SoundWave'/Game/Shooting/BluePrint/Sound/Monster/Dragon/SW_Dragon_Death.SW_Dragon_Death'"));
 	if (DeathSoundAsset.Succeeded()) {
 		DeathSound = DeathSoundAsset.Object;
 	}
 
-	static ConstructorHelpers::FObjectFinder<USoundWave> FireBallSoundAsset(TEXT("/Script/Engine.SoundWave'/Game/Shooting/BluePrint/Sound/Monster/Dragon/SV_Dragon_FireBall.SV_Dragon_FireBall'"));
+	static ConstructorHelpers::FObjectFinder<USoundWave> FireBallSoundAsset(TEXT("/Script/Engine.SoundWave'/Game/Shooting/BluePrint/Sound/Monster/Dragon/SW_Dragon_FireBall.SW_Dragon_FireBall'"));
 	if (FireBallSoundAsset.Succeeded()) {
 		FireBallSound = FireBallSoundAsset.Object;
 	}
 
-	static ConstructorHelpers::FObjectFinder<USoundWave> FireBreathSoundAsset(TEXT("/Script/Engine.SoundWave'/Game/Shooting/BluePrint/Sound/Monster/Dragon/SV_Dragon_FireBreath.SV_Dragon_FireBreath'"));
+	static ConstructorHelpers::FObjectFinder<USoundWave> FireBreathSoundAsset(TEXT("/Script/Engine.SoundWave'/Game/Shooting/BluePrint/Sound/Monster/Dragon/SW_Dragon_FireBreath.SW_Dragon_FireBreath'"));
 	if (FireBreathSoundAsset.Succeeded()) {
 		FireBreathSound = FireBreathSoundAsset.Object;
 	}

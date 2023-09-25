@@ -53,52 +53,52 @@ AMagicCharacter::AMagicCharacter()
 		MeteorAura = Aura.Object;
 	}
 
-	static ConstructorHelpers::FObjectFinder<USoundWave> AttackBasicSoundAsset(TEXT("/Script/Engine.SoundWave'/Game/Shooting/BluePrint/Sound/Character/Magic/SV_Magic_AttackBasic.SV_Magic_AttackBasic'"));
+	static ConstructorHelpers::FObjectFinder<USoundWave> AttackBasicSoundAsset(TEXT("/Script/Engine.SoundWave'/Game/Shooting/BluePrint/Sound/Character/Magic/SW_Magic_AttackBasic.SW_Magic_AttackBasic'"));
 	if (AttackBasicSoundAsset.Succeeded()) {
 		AttackBasicSound = AttackBasicSoundAsset.Object;
 	}
 
-	static ConstructorHelpers::FObjectFinder<USoundWave> AttackBasicSound2Asset(TEXT("/Script/Engine.SoundWave'/Game/Shooting/BluePrint/Sound/Character/Magic/SV_Magic_AttackBasic2.SV_Magic_AttackBasic2'"));
+	static ConstructorHelpers::FObjectFinder<USoundWave> AttackBasicSound2Asset(TEXT("/Script/Engine.SoundWave'/Game/Shooting/BluePrint/Sound/Character/Magic/SW_Magic_AttackBasic2.SW_Magic_AttackBasic2'"));
 	if (AttackBasicSound2Asset.Succeeded()) {
 		AttackBasicSound2 = AttackBasicSound2Asset.Object;
 	}
 
-	static ConstructorHelpers::FObjectFinder<USoundWave> AttackBasicSound3Asset(TEXT("/Script/Engine.SoundWave'/Game/Shooting/BluePrint/Sound/Character/Magic/SV_Magic_AttackBasic3.SV_Magic_AttackBasic3'"));
+	static ConstructorHelpers::FObjectFinder<USoundWave> AttackBasicSound3Asset(TEXT("/Script/Engine.SoundWave'/Game/Shooting/BluePrint/Sound/Character/Magic/SW_Magic_AttackBasic3.SW_Magic_AttackBasic3'"));
 	if (AttackBasicSound3Asset.Succeeded()) {
 		AttackBasicSound3 = AttackBasicSound3Asset.Object;
 	}
 
-	static ConstructorHelpers::FObjectFinder<USoundWave> AttackBasicSound4Asset(TEXT("/Script/Engine.SoundWave'/Game/Shooting/BluePrint/Sound/Character/Magic/SV_Magic_AttackBasic4.SV_Magic_AttackBasic4'"));
+	static ConstructorHelpers::FObjectFinder<USoundWave> AttackBasicSound4Asset(TEXT("/Script/Engine.SoundWave'/Game/Shooting/BluePrint/Sound/Character/Magic/SW_Magic_AttackBasic4.SW_Magic_AttackBasic4'"));
 	if (AttackBasicSound4Asset.Succeeded()) {
 		AttackBasicSound4 = AttackBasicSound4Asset.Object;
 	}
 
-	static ConstructorHelpers::FObjectFinder<USoundWave> HitSoundAsset(TEXT("/Script/Engine.SoundWave'/Game/Shooting/BluePrint/Sound/Character/Magic/SV_Magic_Hit.SV_Magic_Hit'"));
+	static ConstructorHelpers::FObjectFinder<USoundWave> HitSoundAsset(TEXT("/Script/Engine.SoundWave'/Game/Shooting/BluePrint/Sound/Character/Magic/SW_Magic_Hit.SW_Magic_Hit'"));
 	if (HitSoundAsset.Succeeded()) {
 		HitSound = HitSoundAsset.Object;
 	}
 
-	static ConstructorHelpers::FObjectFinder<USoundWave> AttackQSkillSoundAsset(TEXT("/Script/Engine.SoundWave'/Game/Shooting/BluePrint/Sound/Character/Magic/SV_Magic_AttacSkillQ.SV_Magic_AttacSkillQ'"));
+	static ConstructorHelpers::FObjectFinder<USoundWave> AttackQSkillSoundAsset(TEXT("/Script/Engine.SoundWave'/Game/Shooting/BluePrint/Sound/Character/Magic/SW_Magic_AttacSkillQ.SW_Magic_AttacSkillQ'"));
 	if (AttackQSkillSoundAsset.Succeeded()) {
 		AttackQSkillSound = AttackQSkillSoundAsset.Object;
 	}
 
-	static ConstructorHelpers::FObjectFinder<USoundWave> AttackRSkillSoundAsset(TEXT("/Script/Engine.SoundWave'/Game/Shooting/BluePrint/Sound/Character/Magic/SV_Magic_AttackSkillR.SV_Magic_AttackSkillR'"));
+	static ConstructorHelpers::FObjectFinder<USoundWave> AttackRSkillSoundAsset(TEXT("/Script/Engine.SoundWave'/Game/Shooting/BluePrint/Sound/Character/Magic/SW_Magic_AttackSkillR.SW_Magic_AttackSkillR'"));
 	if (AttackRSkillSoundAsset.Succeeded()) {
 		AttackRSkillSound = AttackRSkillSoundAsset.Object;
 	}
 
-	static ConstructorHelpers::FObjectFinder<USoundWave> DeathSoundAsset(TEXT("/Script/Engine.SoundWave'/Game/Shooting/BluePrint/Sound/Character/Magic/SV_Magic_Death.SV_Magic_Death'"));
+	static ConstructorHelpers::FObjectFinder<USoundWave> DeathSoundAsset(TEXT("/Script/Engine.SoundWave'/Game/Shooting/BluePrint/Sound/Character/Magic/SW_Magic_Death.SW_Magic_Death'"));
 	if (DeathSoundAsset.Succeeded()) {
 		DeathSound = DeathSoundAsset.Object;
 	}
 
-	static ConstructorHelpers::FObjectFinder<USoundWave> WeaponSoundAsset(TEXT("/Script/Engine.SoundWave'/Game/Shooting/BluePrint/Sound/Character/Magic/SV_Magic_Weapon.SV_Magic_Weapon'"));
+	static ConstructorHelpers::FObjectFinder<USoundWave> WeaponSoundAsset(TEXT("/Script/Engine.SoundWave'/Game/Shooting/BluePrint/Sound/Character/Magic/SW_Magic_Weapon.SW_Magic_Weapon'"));
 	if (WeaponSoundAsset.Succeeded()) {
 		WeaponSound = WeaponSoundAsset.Object;
 	}
 
-	static ConstructorHelpers::FObjectFinder<USoundWave> SpellSoundAsset(TEXT("/Script/Engine.SoundWave'/Game/Shooting/BluePrint/Sound/Character/Magic/SV_Magic_Spell.SV_Magic_Spell'"));
+	static ConstructorHelpers::FObjectFinder<USoundWave> SpellSoundAsset(TEXT("/Script/Engine.SoundWave'/Game/Shooting/BluePrint/Sound/Character/Magic/SW_Magic_Spell.SW_Magic_Spell'"));
 	if (SpellSoundAsset.Succeeded()) {
 		SpellSound = SpellSoundAsset.Object;
 	}

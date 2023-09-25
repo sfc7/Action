@@ -5,6 +5,7 @@
 #include "Components/SkeletalMeshComponent.h"
 #include "Kismet/GamePlayStatics.h"
 #include "Particles/ParticleSystem.h"
+#include "Sound/SoundWave.h"
 #include "DrawDebugHelpers.h"
 #include "Engine/DamageEvents.h"
 
@@ -33,6 +34,17 @@ AWeaponGun::AWeaponGun()
 	if (Impact.Succeeded()) {
 		ImpactEffect = Impact.Object;
 	}
+
+	static  ConstructorHelpers::FObjectFinder<USoundWave> GunSoundAsset(TEXT("/Script/Engine.SoundWave'/Game/Shooting/BluePrint/Sound/Character/Gun/SV_AssaultRifle_Shot01.SV_AssaultRifle_Shot01'"));
+	if (GunSoundAsset.Succeeded()) {
+		GunSound = GunSoundAsset.Object;
+	}
+
+	static  ConstructorHelpers::FObjectFinder<USoundWave> ImpactSoundAsset(TEXT("/Script/Engine.SoundWave'/Game/Shooting/BluePrint/Sound/Character/Gun/Weapon_AssaultRifle_ImpactConcrete01.Weapon_AssaultRifle_ImpactConcrete01'"));
+	if (ImpactSoundAsset.Succeeded()) {
+		ImpactSound = ImpactSoundAsset.Object;
+	}
+
 	Range = 3000.0f;
 }
 
@@ -51,10 +63,15 @@ void AWeaponGun::Tick(float DeltaTime)
 	
 }
 
+void AWeaponGun::GunSoundPlay()
+{
+	
+}
+
 void AWeaponGun::Shoot()
 {
 	UGameplayStatics::SpawnEmitterAttached(FlashEffect, Skeletal, TEXT("MuzzleFlashSocket"));
-
+	UGameplayStatics::SpawnSoundAttached(GunSound, Skeletal, TEXT("GunSound"));
 
 	APawn* Shooter = Cast<APawn>(GetOwner());
 	if (IsValid(Shooter)) {
@@ -83,7 +100,7 @@ void AWeaponGun::Shoot()
 			if (bHit) {
 				FVector Dir = -ControllerRotation.Vector();
 				UGameplayStatics::SpawnEmitterAtLocation(GetWorld(),ImpactEffect, HitResult.Location, Dir.Rotation());
-				
+				UGameplayStatics::SpawnSoundAtLocation(GetWorld(), ImpactSound, HitResult.Location);
 				if (HitResult.GetActor() != nullptr) {
 					float Damage = 5.0f;
 					FPointDamageEvent DamageEvent(Damage, HitResult, Dir, nullptr);

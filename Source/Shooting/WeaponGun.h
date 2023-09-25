@@ -31,8 +31,13 @@ private:
 		class UParticleSystem* FlashEffect;
 	UPROPERTY(EditAnywhere)
 		class UParticleSystem* ImpactEffect;
+	UPROPERTY(EditAnywhere)
+		class USoundWave* GunSound;
+	UPROPERTY(EditAnywhere)
+		class USoundWave* ImpactSound;
 public:
 
+	void GunSoundPlay();
 	float Range;
 	void Shoot();
 
