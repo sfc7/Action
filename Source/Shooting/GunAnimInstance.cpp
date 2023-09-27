@@ -2,4 +2,22 @@
 
 
 #include "GunAnimInstance.h"
+#include "GunCharacter.h"
 
+void UGunAnimInstance::NativeBeginPlay()
+{
+	Super::NativeBeginPlay();
+	if(IsValid(Creature)) {
+		GunCreature = Cast<AGunCharacter>(Creature);
+	}
+	
+}
+
+void UGunAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
+{
+	Super::NativeUpdateAnimation(DeltaSeconds);
+
+	if (IsValid(GunCreature)) {
+		IsAiming = GunCreature->IsAiming;
+	}
+}

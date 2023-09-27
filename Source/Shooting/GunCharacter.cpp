@@ -3,6 +3,8 @@
 
 #include "GunCharacter.h"
 #include "WeaponGun.h"
+#include "GameFramework/SpringArmComponent.h"
+#include "Math/UnrealMathUtility.h"
 
 AGunCharacter::AGunCharacter()
 {
@@ -22,6 +24,7 @@ AGunCharacter::AGunCharacter()
 		GetMesh()->SetAnimClass(Anim.Class);
 	}
 
+	AimTargetLength = 500.0f;
 }
 
 void AGunCharacter::BeginPlay()
@@ -46,6 +49,10 @@ void AGunCharacter::PostInitializeComponents()
 void AGunCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
+	if (SpringArm) {
+		SpringArm->TargetArmLength = FMath::FInterpTo(SpringArm->TargetArmLength, AimTargetLength, DeltaTime, 15.0f);
+	}
 }
 
 void AGunCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -53,6 +60,8 @@ void AGunCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
 	PlayerInputComponent->BindAction(TEXT("Attack"), EInputEvent::IE_Pressed, this, &AGunCharacter::Attack);
+	PlayerInputComponent->BindAction(TEXT("Aiming"), EInputEvent::IE_Pressed, this, &AGunCharacter::AimingStart);
+	PlayerInputComponent->BindAction(TEXT("Aiming"), EInputEvent::IE_Released, this, &AGunCharacter::AimingEnd);
 }
 
 void AGunCharacter::Attack()
@@ -60,6 +69,18 @@ void AGunCharacter::Attack()
 	if (ShouldAttack) {
 		WeaponGun->Shoot();
 	}
+}
+
+void AGunCharacter::AimingStart()
+{
+	IsAiming = true;
+	AimTargetLength = 150.f;
+}
+
+void AGunCharacter::AimingEnd()
+{
+	IsAiming = false;
+	AimTargetLength = 500.f;
 }
 
 float AGunCharacter::TakeDamage(float Damage, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)

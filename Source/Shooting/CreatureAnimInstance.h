@@ -21,18 +21,19 @@ class SHOOTING_API UCreatureAnimInstance : public UAnimInstance
 {
 	GENERATED_BODY()
 public:
-	UPROPERTY(Category = Animation, EditAnywhere, BlueprintReadOnly)
+	UPROPERTY(Category = Movement, VisibleAnywhere, BlueprintReadWrite)
 		bool ShouldMove;
-	UPROPERTY(Category = Animation, EditAnywhere, BlueprintReadOnly)
+	UPROPERTY(Category = Movement, VisibleAnywhere, BlueprintReadWrite)
 		bool IsFalling;
-	UPROPERTY(Category = Animation, EditAnywhere, BlueprintReadOnly)
+	UPROPERTY(Category = Movement, VisibleAnywhere, BlueprintReadWrite)
 		float GroundSpeed;
-	UPROPERTY(Category = Animation, EditAnywhere, BlueprintReadOnly)
+	UPROPERTY(Category = Movement, VisibleAnywhere, BlueprintReadWrite)
 		FVector Velocity;	
+
 public:
-	UPROPERTY(Category = Animation, EditAnywhere, BlueprintReadOnly)
+	UPROPERTY(Category = Animation, EditAnywhere, BlueprintReadWrite)
 		UAnimMontage* HitReactMontage;
-	UPROPERTY(Category = Animation, EditAnywhere, BlueprintReadOnly)
+	UPROPERTY(Category = Animation, EditAnywhere, BlueprintReadWrite)
 		UAnimMontage* DeathMontage;
 public:
 	UPROPERTY(VisibleAnywhere)

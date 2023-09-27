@@ -19,15 +19,21 @@ class SHOOTING_API UCharacterAnimInstance : public UCreatureAnimInstance
 public:
 	virtual void NativeBeginPlay() override;
 	virtual void NativeUpdateAnimation(float DeltaSeconds) override;
-
 public:
-	UPROPERTY(Category = Animation, EditAnywhere, BlueprintReadOnly)
+	UPROPERTY(Category = Movement, VisibleAnywhere, BlueprintReadWrite)
+		FRotator ControllerRotation;
+	UPROPERTY(Category = Movement, VisibleAnywhere, BlueprintReadWrite)
+		FRotator ActorRotation;
+	UPROPERTY(Category = Movement, VisibleAnywhere, BlueprintReadWrite)
+		FRotator DeltaRotation;
+public:
+	UPROPERTY(Category = Animation, EditAnywhere, BlueprintReadWrite)
 		UAnimMontage* AttackMontage;
-	UPROPERTY(Category = Animation, EditAnywhere, BlueprintReadOnly)
+	UPROPERTY(Category = Animation, EditAnywhere, BlueprintReadWrite)
 		UAnimMontage* Attack_Q_SkillMontage;
-	UPROPERTY(Category = Animation, EditAnywhere, BlueprintReadOnly)
+	UPROPERTY(Category = Animation, EditAnywhere, BlueprintReadWrite)
 		UAnimMontage* Attack_R_SkillMontage;
-	UPROPERTY(Category = Animation, EditAnywhere, BlueprintReadOnly)
+	UPROPERTY(Category = Animation, EditAnywhere, BlueprintReadWrite)
 		UAnimMontage* ForwardRollMontage;
 public:
 	FAttackComboCheck AttackComboCheck;

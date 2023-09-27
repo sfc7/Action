@@ -32,9 +32,9 @@ private:
 	UPROPERTY(EditAnywhere)
 		class UParticleSystem* ImpactEffect;
 	UPROPERTY(EditAnywhere)
-		class USoundWave* GunSound;
+		class USoundCue* GunSound;
 	UPROPERTY(EditAnywhere)
-		class USoundWave* ImpactSound;
+		class USoundCue* ImpactSound;
 public:
 
 	void GunSoundPlay();

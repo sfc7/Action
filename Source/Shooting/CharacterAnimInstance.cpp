@@ -2,6 +2,9 @@
 
 
 #include "CharacterAnimInstance.h"
+#include "GameFramework/Character.h"
+#include "GameFramework/CharacterMovementComponent.h"
+#include "Kismet/KismetMathLibrary.h"
 
 void UCharacterAnimInstance::NativeBeginPlay()
 {
@@ -11,6 +14,12 @@ void UCharacterAnimInstance::NativeBeginPlay()
 void UCharacterAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 {
 	Super::NativeUpdateAnimation(DeltaSeconds);
+	if (Creature) {
+		ControllerRotation = Creature->GetControlRotation();
+		ActorRotation = Creature->GetActorRotation();
+		DeltaRotation = UKismetMathLibrary::NormalizedDeltaRotator(ControllerRotation, ActorRotation);
+	}
+
 }
 
 void UCharacterAnimInstance::AnimNotify_NextAttack()

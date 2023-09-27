@@ -6,6 +6,7 @@
 #include "Kismet/GamePlayStatics.h"
 #include "Particles/ParticleSystem.h"
 #include "Sound/SoundWave.h"
+#include <Sound/SoundCue.h>
 #include "DrawDebugHelpers.h"
 #include "Engine/DamageEvents.h"
 
@@ -35,12 +36,12 @@ AWeaponGun::AWeaponGun()
 		ImpactEffect = Impact.Object;
 	}
 
-	static  ConstructorHelpers::FObjectFinder<USoundWave> GunSoundAsset(TEXT("/Script/Engine.SoundWave'/Game/Shooting/BluePrint/Sound/Character/Gun/SV_AssaultRifle_Shot01.SV_AssaultRifle_Shot01'"));
+	static  ConstructorHelpers::FObjectFinder<USoundCue> GunSoundAsset(TEXT("/Script/Engine.SoundCue'/Game/Shooting/BluePrint/Sound/Character/Gun/SC_AssaultRifle_Shot.SC_AssaultRifle_Shot'"));
 	if (GunSoundAsset.Succeeded()) {
 		GunSound = GunSoundAsset.Object;
 	}
 
-	static  ConstructorHelpers::FObjectFinder<USoundWave> ImpactSoundAsset(TEXT("/Script/Engine.SoundWave'/Game/Shooting/BluePrint/Sound/Character/Gun/Weapon_AssaultRifle_ImpactConcrete01.Weapon_AssaultRifle_ImpactConcrete01'"));
+	static  ConstructorHelpers::FObjectFinder<USoundCue> ImpactSoundAsset(TEXT("/Script/Engine.SoundCue'/Game/Shooting/BluePrint/Sound/Character/Gun/SC_AssaultRifle_Impact.SC_AssaultRifle_Impact'"));
 	if (ImpactSoundAsset.Succeeded()) {
 		ImpactSound = ImpactSoundAsset.Object;
 	}

@@ -39,7 +39,7 @@ ABaseCharacter::ABaseCharacter()
 
 	SpringArm->TargetArmLength = 500.f;
 	SpringArm->SetRelativeRotation(FRotator(-35.f, 0.f, 0.f));
-	SpringArm->SocketOffset = (FVector(0.f, 120.f, 75.f));
+	SpringArm->SocketOffset = (FVector(0.f, 80.f, 75.f));
 	SpringArm->bUsePawnControlRotation = true;
 
 

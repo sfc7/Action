@@ -14,6 +14,11 @@ UCLASS()
 class SHOOTING_API AGunCharacter : public ABaseCharacter
 {
 	GENERATED_BODY()
+public:
+	UPROPERTY(VisibleAnywhere)
+	bool IsAiming;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+		float AimTargetLength;
 protected:
 	UPROPERTY(VisibleAnywhere)
 		class UCharacterAnimInstance* AnimInstance;
@@ -29,6 +34,8 @@ public:
 	virtual void SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) override;
 	
 	void Attack();
+	void AimingStart();
+	void AimingEnd();
 
 	float TakeDamage(float Damage, struct FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
 };
