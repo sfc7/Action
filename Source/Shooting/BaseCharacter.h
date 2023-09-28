@@ -49,6 +49,7 @@ protected:
 public:
 	//Should
 	bool ShouldMove = true;
+	bool ShouldRun = true;
 	bool ShouldAttack = true;
 	bool ShouldJump = true;
 	bool ShouldDodge = true;

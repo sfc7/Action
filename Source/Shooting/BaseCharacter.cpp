@@ -317,7 +317,10 @@ void ABaseCharacter::WeaponSoundPlay()
 
 void ABaseCharacter::SprintStart()
 {
-	GetCharacterMovement()->MaxWalkSpeed = SprintSpeed;
+	if (ShouldRun) {
+		GetCharacterMovement()->MaxWalkSpeed = SprintSpeed;
+	}
+
 }
 
 void ABaseCharacter::SprintEnd()
@@ -326,6 +329,3 @@ void ABaseCharacter::SprintEnd()
 }
 
 
-
-
- 

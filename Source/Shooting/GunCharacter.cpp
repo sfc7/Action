@@ -4,6 +4,7 @@
 #include "GunCharacter.h"
 #include "WeaponGun.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "GameFramework/CharacterMovementComponent.h"
 #include "Math/UnrealMathUtility.h"
 
 AGunCharacter::AGunCharacter()
@@ -74,12 +75,18 @@ void AGunCharacter::Attack()
 void AGunCharacter::AimingStart()
 {
 	IsAiming = true;
+	ShouldRun = false;
+	GetCharacterMovement()->bOrientRotationToMovement = false;
+	GetCharacterMovement()->bUseControllerDesiredRotation = true;
 	AimTargetLength = 150.f;
 }
 
 void AGunCharacter::AimingEnd()
 {
 	IsAiming = false;
+	ShouldRun = true;
+	GetCharacterMovement()->bOrientRotationToMovement = true;
+	GetCharacterMovement()->bUseControllerDesiredRotation = false;
 	AimTargetLength = 500.f;
 }
 
