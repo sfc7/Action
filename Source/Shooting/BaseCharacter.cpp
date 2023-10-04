@@ -319,6 +319,7 @@ void ABaseCharacter::SprintStart()
 {
 	if (ShouldRun) {
 		GetCharacterMovement()->MaxWalkSpeed = SprintSpeed;
+		ShoundAiming = false;
 	}
 
 }
@@ -326,6 +327,7 @@ void ABaseCharacter::SprintStart()
 void ABaseCharacter::SprintEnd()
 {
 	GetCharacterMovement()->MaxWalkSpeed = WalkSpeed;
+	ShoundAiming = true;
 }
 
 

@@ -6,6 +6,7 @@
 #include "BaseCharacter.h"
 #include "KatanaCharacter.generated.h"
 
+class UKatanaAnimInstance;
 /**
  *
  */
@@ -15,7 +16,7 @@ class SHOOTING_API AKatanaCharacter : public ABaseCharacter
 	GENERATED_BODY()
 protected:
 	UPROPERTY(VisibleAnywhere)
-		class UCharacterAnimInstance* AnimInstance;
+		UKatanaAnimInstance* AnimInstance;
 	UPROPERTY(VisibleAnywhere)
 		class UParticleSystem* HitEffect;
 	UPROPERTY(VisibleAnywhere)

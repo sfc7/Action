@@ -7,6 +7,7 @@
 #include "GunCharacter.generated.h"
 
 class AWeaponGun;
+class UGunAnimInstance;
 /**
  * 
  */
@@ -15,13 +16,11 @@ class SHOOTING_API AGunCharacter : public ABaseCharacter
 {
 	GENERATED_BODY()
 public:
-	UPROPERTY(VisibleAnywhere)
-	bool IsAiming;
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 		float AimTargetLength;
 protected:
 	UPROPERTY(VisibleAnywhere)
-		class UCharacterAnimInstance* AnimInstance;
+		UGunAnimInstance* AnimInstance;
 	UPROPERTY()
 		AWeaponGun* WeaponGun;
 public:
@@ -33,6 +32,9 @@ public:
 	virtual void Tick(float DeltaTime) override;
 	virtual void SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) override;
 	
+	FTimerHandle AimWaitHandle;
+	bool IsAiming;
+
 	void Attack();
 	void AimingStart();
 	void AimingEnd();

@@ -185,16 +185,15 @@ void AKatanaCharacter::Attack()
 void AKatanaCharacter::Attack_Skill_Q()
 {
 	if (ShouldAttack && Should_Q_Skill)
-	{
+	{ 
 		AttackQSkillSoundPlay();
 		AnimInstance->PlayAttack_Q_SkillMontage();
 		Should_Q_Skill = false;
 
-		FTimerHandle waitHandle;
+		FTimerHandle waitHandle;	
 		GetWorld()->GetTimerManager().SetTimer(waitHandle, FTimerDelegate::CreateLambda([&]()
 		{
 				Should_Q_Skill = true;
-				
 		}), 5.0f, false);
 	}
 

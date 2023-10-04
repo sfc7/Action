@@ -2,10 +2,11 @@
 
 
 #include "GunCharacter.h"
-#include "WeaponGun.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Math/UnrealMathUtility.h"
+#include "GunAnimInstance.h"
+#include "WeaponGun.h"
 
 AGunCharacter::AGunCharacter()
 {
@@ -32,6 +33,7 @@ void AGunCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	AnimInstance = Cast<UGunAnimInstance>(GetMesh()->GetAnimInstance());
 	WeaponGun = GetWorld()->SpawnActor<AWeaponGun>(Weapon);
 	GetMesh()->HideBoneByName(TEXT("weapon_r"), EPhysBodyOp::PBO_None);
 	if (IsValid(WeaponGun)) {
@@ -51,6 +53,7 @@ void AGunCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+
 	if (SpringArm) {
 		SpringArm->TargetArmLength = FMath::FInterpTo(SpringArm->TargetArmLength, AimTargetLength, DeltaTime, 15.0f);
 	}
@@ -60,25 +63,44 @@ void AGunCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
+
 	PlayerInputComponent->BindAction(TEXT("Attack"), EInputEvent::IE_Pressed, this, &AGunCharacter::Attack);
 	PlayerInputComponent->BindAction(TEXT("Aiming"), EInputEvent::IE_Pressed, this, &AGunCharacter::AimingStart);
 	PlayerInputComponent->BindAction(TEXT("Aiming"), EInputEvent::IE_Released, this, &AGunCharacter::AimingEnd);
 }
 
+
+
 void AGunCharacter::Attack()
 {
 	if (ShouldAttack) {
+		IsAiming = true;
 		WeaponGun->Shoot();
+		
+		if (GetWorld()->GetTimerManager().IsTimerActive(AimWaitHandle)) {
+			GetWorld()->GetTimerManager().ClearTimer(AimWaitHandle);
+		}
+
+
+		GetWorld()->GetTimerManager().SetTimer(AimWaitHandle, FTimerDelegate::CreateLambda([&]() 
+		{
+			IsAiming = false;
+		}), 10.0f, false);
 	}
 }
 
+
+
 void AGunCharacter::AimingStart()
 {
-	IsAiming = true;
-	ShouldRun = false;
-	GetCharacterMovement()->bOrientRotationToMovement = false;
-	GetCharacterMovement()->bUseControllerDesiredRotation = true;
-	AimTargetLength = 150.f;
+	if (ShoundAiming) {
+		IsAiming = true;
+		ShouldRun = false;
+		GetCharacterMovement()->bOrientRotationToMovement = false;
+		GetCharacterMovement()->bUseControllerDesiredRotation = true;
+		AimTargetLength = 150.f;
+	}
+
 }
 
 void AGunCharacter::AimingEnd()
