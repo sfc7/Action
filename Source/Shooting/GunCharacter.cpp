@@ -105,7 +105,6 @@ void AGunCharacter::AimingStart()
 
 void AGunCharacter::AimingEnd()
 {
-	IsAiming = false;
 	ShouldRun = true;
 	GetCharacterMovement()->bOrientRotationToMovement = true;
 	GetCharacterMovement()->bUseControllerDesiredRotation = false;
