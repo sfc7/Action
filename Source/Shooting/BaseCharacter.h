@@ -50,7 +50,6 @@ public:
 	//Should
 	bool ShouldMove = true;
 	bool ShouldRun = true;
-	bool ShoundAiming = true;
 	bool ShouldAttack = true;
 	bool ShouldJump = true;
 	bool ShouldDodge = true;
@@ -60,6 +59,7 @@ public:
 	bool IsDamaging;
 	bool IsDodging;
 	bool IsJumping;
+	bool IsRunning;
 
 	//Combo
 	bool attacking;

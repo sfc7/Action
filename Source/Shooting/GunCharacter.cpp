@@ -73,7 +73,7 @@ void AGunCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 
 void AGunCharacter::Attack()
 {
-	if (ShouldAttack) {
+	if (ShouldAttack && !IsRunning) {
 		IsAiming = true;
 		WeaponGun->Shoot();
 		
@@ -93,12 +93,12 @@ void AGunCharacter::Attack()
 
 void AGunCharacter::AimingStart()
 {
-	if (ShoundAiming) {
+	if (!IsRunning) {
 		IsAiming = true;
 		ShouldRun = false;
 		GetCharacterMovement()->bOrientRotationToMovement = false;
 		GetCharacterMovement()->bUseControllerDesiredRotation = true;
-		AimTargetLength = 150.f;
+		AimTargetLength = 100.f;
 	}
 
 }
