@@ -6,7 +6,7 @@
 #include "Components/WidgetComponent.h"
 #include "MonsterWidget.h"
 #include "MonsterComponent.h"
-#include "Components/CapsuleComponent.h" // component 전방선언으로 인해 추가해둠
+#include "Components/CapsuleComponent.h" 
 #include "GameFramework/DefaultPawn.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "Kismet/GamePlayStatics.h"
@@ -34,7 +34,7 @@ ABaseMonster::ABaseMonster()
 	GetMesh()->SetCollisionProfileName(TEXT("CharacterMesh"));
 	GetCapsuleComponent()->SetCollisionProfileName(TEXT("Monster"));
 
-
+	GetMesh()->bRenderCustomDepth = true;
 }
 
 void ABaseMonster::BeginPlay()

@@ -37,7 +37,8 @@ public:
 		class USoundWave* DeathSound;
 	UPROPERTY(VisibleAnywhere)
 		class USoundWave* WeaponSound;
-
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+		APlayerController* BaseController;
 
 public:
 	ABaseCharacter();
@@ -56,6 +57,7 @@ public:
 	bool Should_Q_Skill = true;
 	bool Should_R_Skill = true;
 	bool IsAttacking;
+	bool IsAttacking_R_Skill;
 	bool IsDamaging;
 	bool IsDodging;
 	bool IsJumping;
@@ -86,6 +88,8 @@ public:
 	//Dodge
 	float MoveDistance = 500.0f;
 
+	//ESkill_Range
+	float LeftButtonDirection = 0.0f;
 public:
 
 	void ToggleDuringAttack(bool enable);

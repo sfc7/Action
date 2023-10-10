@@ -2,16 +2,12 @@
 
 
 #include "RespawnLocation_Stage1_Event2.h"
-#include "Components/ArrowComponent.h"
 
 // Sets default values
 ARespawnLocation_Stage1_Event2::ARespawnLocation_Stage1_Event2()
 {
  	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-
-	Arrow = CreateDefaultSubobject<UArrowComponent>(TEXT("Arrow"));
-	SetRootComponent(Arrow);
 }
 
 // Called when the game starts or when spawned

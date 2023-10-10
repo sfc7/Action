@@ -13,6 +13,7 @@
 #include "MagicCharacter.h"
 #include "KatanaCharacter.h"
 #include "PlayerComponent.h"
+#include "BasePlayerController.h"
 
 // Sets default values
 ABaseCharacter::ABaseCharacter()
@@ -52,6 +53,7 @@ ABaseCharacter::ABaseCharacter()
 		SpawnEffect = SpawnEffectAsset.Object;
 	}
 
+	
 
 }
 
@@ -60,14 +62,13 @@ void ABaseCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
+	BaseController = Cast<APlayerController>(GetController());
 }
 
 // Called every frame
 void ABaseCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
-
 }
 
 void ABaseCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)

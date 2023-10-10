@@ -3,6 +3,19 @@
 
 #include "GunAnimInstance.h"
 #include "GunCharacter.h"
+#include "Math/UnrealMathUtility.h"
+
+void UGunAnimInstance::AnimNotify_Pause()
+{	
+	if (Montage_IsPlaying(Attack_R_SkillMontage)) {
+		Montage_Pause(Attack_R_SkillMontage);
+	}
+}
+
+void UGunAnimInstance::AnimNotify_AbilityREnd()
+{
+	AbilityREnd.Broadcast();
+}
 
 void UGunAnimInstance::NativeBeginPlay()
 {
@@ -19,5 +32,19 @@ void UGunAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 
 	if (IsValid(GunCreature)) {
 		IsAiming = GunCreature->IsAiming;
+		
+		if (GunCreature->IsAttacking_R_Skill) {
+			PrevRotation = CurRotation;
+			CurRotation = GunCreature->GetActorRotation();
+			RSkillDeltaRotation = CurRotation - PrevRotation;
+			RSkillDeltaRotation.Normalize();
+			RotationYaw -= RSkillDeltaRotation.Yaw;
+			RotationYaw = FMath::Clamp(RotationYaw, -90.0f, 90.0f);
+	
+		}
+		else {
+			RotationYaw = 0.0f;
+		}
+
 	}
 }

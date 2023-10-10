@@ -129,6 +129,8 @@ void UCreatureAnimInstance::AnimNotify_RskillHit()
 	AttackRSkill.Broadcast();
 }
 
+
+
 void UCreatureAnimInstance::AnimNotify_Fireball()
 {
 	AttackFireball.Broadcast();

@@ -3,19 +3,17 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/Pawn.h"
+#include "RespawnLocation.h"
 #include "RespawnLocation_Stage1_Event2.generated.h"
 
 UCLASS()
-class SHOOTING_API ARespawnLocation_Stage1_Event2 : public APawn
+class SHOOTING_API ARespawnLocation_Stage1_Event2 : public ARespawnLocation
 {
 	GENERATED_BODY()
 
 public:
 	// Sets default values for this pawn's properties
 	ARespawnLocation_Stage1_Event2();
-	UPROPERTY()
-		class UArrowComponent* Arrow;
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

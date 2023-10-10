@@ -23,6 +23,10 @@ protected:
 		UGunAnimInstance* AnimInstance;
 	UPROPERTY()
 		AWeaponGun* WeaponGun;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+		UStaticMeshComponent* RSkillCircleMeshComponent;
+	UPROPERTY()
+		UStaticMesh* RSkillCircle;
 public:
 	AGunCharacter();
 protected:
@@ -32,12 +36,19 @@ public:
 	virtual void Tick(float DeltaTime) override;
 	virtual void SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) override;
 	
+	
+
 	FTimerHandle AimWaitHandle;
 	bool IsAiming;
+	bool IsZooming;
 
 	void Attack();
+	void Attack_Skill_R();
+	void Attack_Skill_REnd();
+	void RSkill_RangeDirection(float value);
 	void AimingStart();
 	void AimingEnd();
+
 
 	float TakeDamage(float Damage, struct FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
 };
