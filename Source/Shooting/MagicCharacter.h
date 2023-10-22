@@ -17,9 +17,9 @@ protected:
 	UPROPERTY(VisibleAnywhere)
 		class UCharacterAnimInstance* AnimInstance;
 	UPROPERTY(VisibleAnywhere)
-		UParticleSystem* MeteorPortal;
+		class UParticleSystem* MeteorPortal;
 	UPROPERTY(VisibleAnywhere)
-		UParticleSystem* MeteorAura;
+		class UParticleSystem* MeteorAura;
 	UPROPERTY(VisibleAnywhere)
 		class USoundWave* SpellSound;
 	UPROPERTY(VisibleAnywhere)

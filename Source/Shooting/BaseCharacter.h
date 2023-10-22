@@ -38,7 +38,7 @@ public:
 	UPROPERTY(VisibleAnywhere)
 		class USoundWave* WeaponSound;
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
-		APlayerController* BaseController;
+		class APlayerController* BaseController;
 
 public:
 	ABaseCharacter();

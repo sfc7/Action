@@ -34,6 +34,7 @@ void UGunAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 		IsAiming = GunCreature->IsAiming;
 		
 		if (GunCreature->IsAttacking_R_Skill) {
+			IsAttackingRSkill = true;
 			PrevRotation = CurRotation;
 			CurRotation = GunCreature->GetActorRotation();
 			RSkillDeltaRotation = CurRotation - PrevRotation;
@@ -43,6 +44,7 @@ void UGunAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 	
 		}
 		else {
+			IsAttackingRSkill = false;
 			RotationYaw = 0.0f;
 		}
 

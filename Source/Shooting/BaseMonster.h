@@ -27,8 +27,8 @@ public:
 		class USoundWave* AttackBasicSound;
 	UPROPERTY(VisibleAnywhere)
 		class USoundWave* HitSound;
-		UPROPERTY(VisibleAnywhere)
-			class USoundWave* DeathSound;
+	UPROPERTY(VisibleAnywhere)
+		class USoundWave* DeathSound;
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

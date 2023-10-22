@@ -8,6 +8,7 @@
 
 class AWeaponGun;
 class UGunAnimInstance;
+class AMissle;
 /**
  * 
  */
@@ -18,15 +19,33 @@ class SHOOTING_API AGunCharacter : public ABaseCharacter
 public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 		float AimTargetLength;
-protected:
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+		float MissleDistance;
+	UPROPERTY()
+		FVector SocketEndVector;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+		FVector OutLastTraceDestinationResult;
+	UPROPERTY()
+		FVector MissleVelocity;
 	UPROPERTY(VisibleAnywhere)
 		UGunAnimInstance* AnimInstance;
 	UPROPERTY()
 		AWeaponGun* WeaponGun;
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
-		UStaticMeshComponent* RSkillCircleMeshComponent;
-	UPROPERTY()
-		UStaticMesh* RSkillCircle;
+		class UStaticMeshComponent* RSkillCircleMeshComponent;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+		class UStaticMesh* RSkillCircle;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+		class UDecalComponent* DecalComponent;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+		class UMaterial* CircleMaterial;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+		class UMaterial* SphereMaterial;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+		class UParticleSystem* SwapEffect;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+		class UParticleSystem* LaserEffect;
+
 public:
 	AGunCharacter();
 protected:
@@ -36,19 +55,23 @@ public:
 	virtual void Tick(float DeltaTime) override;
 	virtual void SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) override;
 	
-	
-
 	FTimerHandle AimWaitHandle;
+	TArray<FTimerHandle> LaunchTimerHandles;
+	TArray<FTimerHandle> MissleTimerHandles;
 	bool IsAiming;
 	bool IsZooming;
+	FHitResult HitResult;
+	FVector TargetLocation;
+	FVector MissleLaunchVector;
 
 	void Attack();
+	void Attack_Skill_Q();
 	void Attack_Skill_R();
 	void Attack_Skill_REnd();
 	void RSkill_RangeDirection(float value);
 	void AimingStart();
 	void AimingEnd();
-
+	void SetRSkill_Circle();
 
 	float TakeDamage(float Damage, struct FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
 };

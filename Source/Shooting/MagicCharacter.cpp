@@ -23,13 +23,11 @@ AMagicCharacter::AMagicCharacter()
 	PrimaryActorTick.bCanEverTick = true;
 
 	static ConstructorHelpers::FObjectFinder<USkeletalMesh> Skeletal(TEXT("/Script/Engine.SkeletalMesh'/Game/ParagonShinbi/Characters/Heroes/Shinbi/Meshes/Shinbi.Shinbi'"));
-
 	if (Skeletal.Succeeded()) {
 		GetMesh()->SetSkeletalMesh(Skeletal.Object);
 	}
 
 	static ConstructorHelpers::FClassFinder<UCharacterUIWidget> CharacterWidget(TEXT("/Script/UserWidget'/Game/Shooting/BluePrint/UI/WBP_CharacterBar.WBP_CharacterBar_C'"));
-
 	if (CharacterWidget.Succeeded()) {
 		CUI = CreateWidget<UCharacterUIWidget>(GetWorld(), CharacterWidget.Class);
 		if (IsValid(CUI)) {
@@ -220,9 +218,9 @@ void AMagicCharacter::Attack_Skill_R()
 	{
 		AttackRSkillSoundPlay();
 		SpellSoundPlay();
-		UParticleSystemComponent* ParticleComponent = UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), MeteorAura, GetActorLocation() + FVector(0.0f, 0.f, -100.0f), GetActorRotation());
-		if (ParticleComponent) {
-			ParticleComponent->SetWorldScale3D(FVector(0.2f, 0.2f, 0.2f));
+		UParticleSystemComponent* MeteoPortalComponent = UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), MeteorAura, GetActorLocation() + FVector(0.0f, 0.f, -100.0f), GetActorRotation());
+		if (MeteoPortalComponent) {
+			MeteoPortalComponent->SetWorldScale3D(FVector(0.2f, 0.2f, 0.2f));
 		}
 		AnimInstance->PlayAttack_R_SkillMontage();
 		Should_R_Skill = false;

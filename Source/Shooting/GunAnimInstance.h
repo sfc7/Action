@@ -23,6 +23,8 @@ public:
 		float RotationYaw;
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 		FRotator RSkillDeltaRotation;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+		bool IsAttackingRSkill;
 	UPROPERTY(VisibleAnywhere)
 		FRotator PrevRotation;
 	UPROPERTY(VisibleAnywhere)

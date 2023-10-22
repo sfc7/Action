@@ -25,10 +25,10 @@ public:
 		float Gravity;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = ProjectileSettings, meta = (DisplayName = "Speed"));
 		float Speed;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = ProjectileSettings, meta = (DisplayName = "ImpactEffect", ExposeOnSpawn = "true"));
-		UParticleSystem* ImpactEffect;
-		UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = ProjectileSettings, meta = (DisplayName = "TemplateEffect", ExposeOnSpawn = "true"));
-		UParticleSystem* TemplateEffect;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite);
+		class UParticleSystem* ImpactEffect;
+		UPROPERTY(EditAnywhere, BlueprintReadWrite);
+		class UParticleSystem* TemplateEffect;
 public:	
 	AMagicBase();
 
