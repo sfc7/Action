@@ -17,26 +17,33 @@ class SHOOTING_API AMonsterAIController : public AAIController
 	GENERATED_BODY()
 public:
 	AMonsterAIController();
-protected:
+public:
 	UPROPERTY()
 		UBlackboardData* BlackboardData;
 	UPROPERTY()
 		UBehaviorTree* BehaviorTree;
 	UPROPERTY()
 		UBlackboardComponent* BlackboardComp;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		AActor* Target;
+
 public:
 	static const FName HomePosKey;
 	static const FName TargetPosKey;
 	static const FName TargetActorKey;
+	static const FName IsDamagingKey;
 	FVector HomePosition;
-
 	class UAISenseConfig_Sight* SightConfig;
 
-	UFUNCTION()
-		void HandleSightSense(AActor* actor, FAIStimulus const Stimulus);
 protected:
 	virtual void BeginPlay() override;
 public:
+	UFUNCTION()
+		void HandleSightSense(AActor* actor, FAIStimulus const Stimulus);
+
+	UFUNCTION()
+	void SetIsDamaging(bool _IsDamaging);
+
 	virtual void Tick(float DeltaTime) override;
 	virtual void OnPossess(APawn* InPawn) override;
 	virtual void OnUnPossess() override;

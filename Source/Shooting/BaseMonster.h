@@ -6,6 +6,8 @@
 #include "GameFramework/Character.h"
 #include "BaseMonster.generated.h"
 
+class AMonsterAIController;
+
 DECLARE_MULTICAST_DELEGATE(FAttackMontageEnd)
 /**
  * 
@@ -29,6 +31,9 @@ public:
 		class USoundWave* HitSound;
 	UPROPERTY(VisibleAnywhere)
 		class USoundWave* DeathSound;
+	UPROPERTY(VisibleAnywhere)
+		class AMonsterAIController* AIController;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

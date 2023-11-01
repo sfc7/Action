@@ -166,6 +166,7 @@ void AMagicCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComp
 	PlayerInputComponent->BindAction(TEXT("ForwardRoll"), EInputEvent::IE_Pressed, this, &AMagicCharacter::Dodge);
 
 	PlayerInputComponent->BindAction(TEXT("CharacterChangeKatana"), EInputEvent::IE_Released, this, &AMagicCharacter::CharacterChangeKatana);
+	PlayerInputComponent->BindAction(TEXT("CharacterChangeGun"), EInputEvent::IE_Released, this, &AMagicCharacter::CharacterChangeGun);
 
 
 }
@@ -188,8 +189,6 @@ void AMagicCharacter::Attack()
 			}
 		}
 	}
-
-
 }
 
 void AMagicCharacter::Attack_Skill_Q()

@@ -2,7 +2,7 @@
 
 
 #include "MonsterSkeletonAnimInstance.h"
-
+#include "Monster_Skeleton_AIController.h"
 
 void UMonsterSkeletonAnimInstance::NativeBeginPlay()
 {
@@ -14,6 +14,16 @@ void UMonsterSkeletonAnimInstance::NativeBeginPlay()
 void UMonsterSkeletonAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 {
 	Super::NativeUpdateAnimation(DeltaSeconds);
+
+	APawn* Owner = Cast<APawn>(GetOwningActor());
+	if (IsValid(Owner)) {
+		auto AIController = Cast<AMonsterAIController>(Owner->GetController());
+		if (AIController) {
+			if (IsValid(AIController->GetFocusActor())) {
+				IsFocusingTarget = true;
+			}
+		}
+	}
 }
 
 void UMonsterSkeletonAnimInstance::PlayAttackMontage()

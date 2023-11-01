@@ -12,8 +12,6 @@ void UPlayerComponent::InitializeComponent()
 void UPlayerComponent::BeginPlay()
 {
 	Super::BeginPlay();
-
-
 }
 
 void UPlayerComponent::OnDamaged(float Damage)
@@ -30,9 +28,11 @@ void UPlayerComponent::OnDamaged(float Damage)
 			GameInstance->MagicSetHp(temp);
 			SetHp(temp);
 		}
+		else if (GetOwner()->GetClass()->GetName() == "GunCharacter") {
+			GameInstance->GunSetHp(temp);
+			SetHp(temp);
+		}
 	}
-
-
 }
 
 void UPlayerComponent::SetInitialize()
@@ -46,24 +46,24 @@ void UPlayerComponent::SetInitialize()
 		}
 		else if (GetOwner()->GetClass()->GetName() == "MagicCharacter") {
 			MaxHp = GameInstance->MagicGetMaxHp();
-			Hp = GameInstance->MagicGetHp();;
+			Hp = GameInstance->MagicGetHp();
 		}
+		else if (GetOwner()->GetClass()->GetName() == "GunCharacter") {
+			MaxHp = GameInstance->GunGetMaxHp();
+			Hp = GameInstance->GunGetHp();
+		}
+
 		FTimerHandle waitHandle;
 		GetWorld()->GetTimerManager().SetTimer(waitHandle, FTimerDelegate::CreateLambda([&]()
 		{
-				SetHp(Hp);
+			SetHp(Hp);
 
 		}), 0.01f, false);
 	}
-
-
 }
-
-
 
 void UPlayerComponent::SetHp(int32 _Hp)
 {
-	GameInstance = Cast<UMyGameInstance>(GetWorld()->GetGameInstance());
 	if (GameInstance)
 	{
 		if (GetOwner()->GetClass()->GetName() == "KatanaCharacter") {

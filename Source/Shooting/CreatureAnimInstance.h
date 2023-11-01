@@ -29,6 +29,8 @@ public:
 		float GroundSpeed;
 	UPROPERTY(Category = Movement, VisibleAnywhere, BlueprintReadWrite)
 		FVector Velocity;	
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+		float Direction;
 
 public:
 	UPROPERTY(Category = Animation, EditAnywhere, BlueprintReadWrite)

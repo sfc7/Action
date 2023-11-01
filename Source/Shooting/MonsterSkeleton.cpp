@@ -9,6 +9,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "Particles/ParticleSystem.h"
 #include "Sound/SoundWave.h"
+#include "GameFramework/CharacterMovementComponent.h"
 
 AMonsterSkeleton::AMonsterSkeleton()
 {
@@ -43,8 +44,9 @@ AMonsterSkeleton::AMonsterSkeleton()
 	if (DeathSoundAsset.Succeeded()) {
 		DeathSound = DeathSoundAsset.Object;
 	}
-
-
+	
+	GetCharacterMovement()->MaxWalkSpeed = 100.0f;
+	
 	AIControllerClass = AMonster_Skeleton_AIController::StaticClass();
 	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
 }
@@ -57,7 +59,7 @@ void AMonsterSkeleton::PostInitializeComponents()
 	if (IsValid(AnimInstance)) {
 		AnimInstance->OnHit.AddUObject(this, &AMonsterSkeleton::ToggleDuringHit);
 		AnimInstance->DuringAttack.AddUObject(this, &AMonsterSkeleton::ToggleDuringAttack);
-		AnimInstance->AttackBasic.AddUObject(this, &AMonsterSkeleton::Attack_Basic, 50.0f);
+		AnimInstance->AttackBasic.AddUObject(this, &AMonsterSkeleton::Attack_Basic, 10.0f);
 	}
 }
 
@@ -69,6 +71,8 @@ void AMonsterSkeleton::BeginPlay()
 void AMonsterSkeleton::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
+	
 }
 
 

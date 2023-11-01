@@ -43,6 +43,8 @@ void UMyGameInstance::ResetGameState()
 	KatanaHp = KatanaMaxHp;
 	MagicMaxHp = GetCharacterData()->MagicMaxHp;
 	MagicHp = MagicMaxHp;
+	GunMaxHp = GetCharacterData()->GunMaxHp;
+	GunHp = GunMaxHp;
 	MonsterDeathCount = 0;
 }
 
@@ -54,6 +56,11 @@ void UMyGameInstance::KatanaSetHp(int32 _Hp)
 void UMyGameInstance::MagicSetHp(int32 _Hp)
 {
 	MagicHp = _Hp;
+}
+
+void UMyGameInstance::GunSetHp(int32 _Hp)
+{
+	GunHp = _Hp;
 }
 
 void UMyGameInstance::SetMonsterDeathCount()

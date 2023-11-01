@@ -32,6 +32,10 @@ private:
 	UPROPERTY(EditAnywhere)
 		class UParticleSystem* ImpactEffect;
 	UPROPERTY(EditAnywhere)
+		class UParticleSystem* LaserEffect;
+	UPROPERTY(EditAnywhere)
+		class UParticleSystem* LaserImpactEffect;
+	UPROPERTY(EditAnywhere)
 		class USoundCue* GunSound;
 	UPROPERTY(EditAnywhere)
 		class USoundCue* ImpactSound;
@@ -39,6 +43,8 @@ public:
 
 	void GunSoundPlay();
 	float Range;
-	void Shoot();
+	void Shoot(FTransform StartTransForm);
+	void ZoomShoot();
+	void LaserShoot(FTransform StartTransForm);
 
 };

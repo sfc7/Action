@@ -12,6 +12,7 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "MagicCharacter.h"
 #include "KatanaCharacter.h"
+#include "GunCharacter.h"
 #include "PlayerComponent.h"
 #include "BasePlayerController.h"
 
@@ -69,6 +70,8 @@ void ABaseCharacter::BeginPlay()
 void ABaseCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
+	
 }
 
 void ABaseCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -201,43 +204,23 @@ void ABaseCharacter::JumpStart()
 
 void ABaseCharacter::CharacterChangeMagic()
 {
-	auto CharacterLocation = GetActorLocation();
-	auto CharacterRotation = GetActorRotation();
-
-	CUI->RemoveFromParent();
-
-	TArray<AActor*> actors;
-	GetAttachedActors(actors);
-	for (auto actor : actors) {
-		actor->Destroy();
-	}
-
-	GetMesh()->SetCollisionProfileName(TEXT("NoCollision"));
-	GetCapsuleComponent()->SetCollisionProfileName(TEXT("NoCollision"));
-
-	FActorSpawnParameters SpawnParams;
-	SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
-	auto magiccharacter = GetWorld()->SpawnActor<AMagicCharacter>(
-		AMagicCharacter::StaticClass(),
-		CharacterLocation,
-		CharacterRotation,
-		SpawnParams
-	);
-
-	UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), SpawnEffect, CharacterLocation, CharacterRotation);
-	
-	if (magiccharacter) {
-		GetController()->Possess(magiccharacter);
-	}
-	
-	
-	Destroy();
+	CharacterChange(AMagicCharacter::StaticClass());
 }
 
 void ABaseCharacter::CharacterChangeKatana()
 {
-	auto CharacterLocation = GetActorLocation();
-	auto CharacterRotation = GetActorRotation();
+	CharacterChange(AKatanaCharacter::StaticClass());
+}
+
+void ABaseCharacter::CharacterChangeGun()
+{
+	CharacterChange(AGunCharacter::StaticClass());
+}
+
+void ABaseCharacter::CharacterChange(TSubclassOf<ABaseCharacter> ChangeCharacterType)
+{
+	FVector CharacterLocation = GetActorLocation();
+	FRotator CharacterRotation = GetActorRotation();
 
 	CUI->RemoveFromParent();
 
@@ -252,8 +235,8 @@ void ABaseCharacter::CharacterChangeKatana()
 
 	FActorSpawnParameters SpawnParams;
 	SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
-	auto katanacharacter = GetWorld()->SpawnActor<AKatanaCharacter>(
-		AKatanaCharacter::StaticClass(),
+	auto ChangeCharacter = GetWorld()->SpawnActor<ABaseCharacter>(
+		ChangeCharacterType,
 		CharacterLocation,
 		CharacterRotation,
 		SpawnParams
@@ -261,12 +244,17 @@ void ABaseCharacter::CharacterChangeKatana()
 
 	UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), SpawnEffect, CharacterLocation, CharacterRotation);
 
-	if (katanacharacter) {
-		GetController()->Possess(katanacharacter);
+	APlayerController* CurrentController = Cast<APlayerController>(GetController());
+
+	if (ChangeCharacter) {
+		CurrentController->Possess(ChangeCharacter);
+		ChangeCharacter->BaseController = CurrentController;
 	}
+
 
 	Destroy();
 }
+
 
 void ABaseCharacter::Death()
 {

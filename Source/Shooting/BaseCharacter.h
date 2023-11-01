@@ -57,6 +57,7 @@ public:
 	bool Should_Q_Skill = true;
 	bool Should_R_Skill = true;
 	bool IsAttacking;
+	bool IsAttacking_Q_Skill;
 	bool IsAttacking_R_Skill;
 	bool IsDamaging;
 	bool IsDodging;
@@ -103,6 +104,8 @@ public:
 
 	void CharacterChangeMagic();
 	void CharacterChangeKatana();
+	void CharacterChangeGun();
+	void CharacterChange(TSubclassOf<ABaseCharacter> ChangeCharacter);
 	virtual void Death();
 	
 	void AttackBasicSoundPlay();

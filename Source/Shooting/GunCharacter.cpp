@@ -13,6 +13,8 @@
 #include "Math/UnrealMathUtility.h"
 #include "GunAnimInstance.h"
 #include "Kismet/GameplayStatics.h"
+#include "CharacterUIWidget.h"
+#include "PlayerComponent.h"
 #include "WeaponGun.h"
 #include "Missle.h"
 
@@ -23,6 +25,16 @@ AGunCharacter::AGunCharacter()
 	static ConstructorHelpers::FObjectFinder<USkeletalMesh> Skeletal(TEXT("/Script/Engine.SkeletalMesh'/Game/ParagonWraith/Characters/Heroes/Wraith/Meshes/Wraith.Wraith'"));
 	if (Skeletal.Succeeded()) {
 		GetMesh()->SetSkeletalMesh(Skeletal.Object);
+	}
+
+	static ConstructorHelpers::FClassFinder<UCharacterUIWidget> CharacterWidget(TEXT("/Script/UserWidget'/Game/Shooting/BluePrint/UI/WBP_CharacterBar.WBP_CharacterBar_C'"));
+
+	if (CharacterWidget.Succeeded()) {
+		CUI = CreateWidget<UCharacterUIWidget>(GetWorld(), CharacterWidget.Class);
+		if (IsValid(CUI)) {
+			CUI->AddToViewport();
+			CUI->SetGunCharacterInfo();
+		}
 	}
 
 	static ConstructorHelpers::FClassFinder<AWeaponGun> Gun(TEXT("/Script/Engine.Blueprint'/Game/Shooting/BluePrint/BP_Rifle.BP_Rifle_C'"));
@@ -55,12 +67,6 @@ AGunCharacter::AGunCharacter()
 		SwapEffect = SwapEffectAsset.Object;
 	}
 
-	ConstructorHelpers::FObjectFinder<UParticleSystem> LaserEffectAsset(TEXT("/Script/Engine.ParticleSystem'/Game/Shooting/BluePrint/Effect/P_Beam_Laser_Ice.P_Beam_Laser_Ice'"));
-	if (LaserEffectAsset.Succeeded()) {
-		LaserEffect = LaserEffectAsset.Object;
-	}
-
-
 	SetRSkill_Circle();
 
 	AimTargetLength = 500.0f;
@@ -71,7 +77,6 @@ void AGunCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
-
 	if (Weapon) {
 		WeaponGun = GetWorld()->SpawnActor<AWeaponGun>(Weapon);
 		GetMesh()->HideBoneByName(TEXT("weapon_r"), EPhysBodyOp::PBO_None);
@@ -80,6 +85,11 @@ void AGunCharacter::BeginPlay()
 			WeaponGun->SetActorRelativeLocation(FVector(-1.156438f, -9.918899f, -1.919678f));
 			WeaponGun->SetOwner(this);
 		}
+	}
+
+	if (CUI)
+	{
+		CUI->BindHp(PlayerComponent);
 	}
 }
 
@@ -98,10 +108,10 @@ void AGunCharacter::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 
 	if (BaseController) {
-		
 		SocketEndVector = FVector(GetActorForwardVector().X, GetActorForwardVector().Y,GetMesh()->GetSocketRotation("backpack_Socket").Vector().Z);
 		SocketEndVector += SocketEndVector * LeftButtonDirection;
 		
+
 		TArray<FVector> OutPathResult;
 		TArray<AActor*> IgnoreActors;
 		TArray<TEnumAsByte<EObjectTypeQuery>> PredictObjectType;
@@ -144,11 +154,16 @@ void AGunCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 
 	PlayerInputComponent->BindAxis(TEXT("LeftMouseAxis"), this, &AGunCharacter::RSkill_RangeDirection);
 
+	PlayerInputComponent->BindAction(TEXT("Jump"), EInputEvent::IE_Pressed, this, &AGunCharacter::JumpStart);
 	PlayerInputComponent->BindAction(TEXT("Attack"), EInputEvent::IE_Pressed, this, &AGunCharacter::Attack);
+	PlayerInputComponent->BindAction(TEXT("Attack"), EInputEvent::IE_Released, this, &AGunCharacter::StopFire);
 	PlayerInputComponent->BindAction(TEXT("Q_Skill"), EInputEvent::IE_Pressed, this, &AGunCharacter::Attack_Skill_Q);
 	PlayerInputComponent->BindAction(TEXT("R_Skill"), EInputEvent::IE_Pressed, this, &AGunCharacter::Attack_Skill_R);
 	PlayerInputComponent->BindAction(TEXT("Aiming"), EInputEvent::IE_Pressed, this, &AGunCharacter::AimingStart);
 	PlayerInputComponent->BindAction(TEXT("Aiming"), EInputEvent::IE_Released, this, &AGunCharacter::AimingEnd);
+
+	PlayerInputComponent->BindAction(TEXT("CharacterChangeKatana"), EInputEvent::IE_Released, this, &AGunCharacter::CharacterChangeKatana);
+	PlayerInputComponent->BindAction(TEXT("CharacterChangeMagic"), EInputEvent::IE_Released, this, &AGunCharacter::CharacterChangeMagic);
 }
 
 
@@ -157,7 +172,22 @@ void AGunCharacter::Attack()
 {
 	if (ShouldAttack && !IsRunning) {
 		IsAiming = true;
-		WeaponGun->Shoot();
+		if (IsZooming) {
+			WeaponGun->ZoomShoot();
+			GetWorld()->GetTimerManager().SetTimer(FireHandle, FTimerDelegate::CreateLambda([&]() {
+				WeaponGun->ZoomShoot();
+			}), 0.2f, true);
+			
+			FTimerHandle waitHandle;
+			IsAimWaving = true;
+			GetWorld()->GetTimerManager().SetTimer(waitHandle, FTimerDelegate::CreateLambda([&]()
+				{
+					IsAimWaving = false;
+				}), 1.5f, false);
+		}	
+		else {
+			WeaponGun->Shoot(GetMesh()->GetSocketTransform("gun_barrelSocket"));
+		}
 		
 		if (GetWorld()->GetTimerManager().IsTimerActive(AimWaitHandle)) {
 			GetWorld()->GetTimerManager().ClearTimer(AimWaitHandle);
@@ -172,29 +202,45 @@ void AGunCharacter::Attack()
 
 void AGunCharacter::Attack_Skill_Q()
 {
-	WeaponGun->SetActorHiddenInGame(true);
-	GetMesh()->HideBoneByName(TEXT("weapon_r"), EPhysBodyOp::PBO_None);
-	GetMesh()->UnHideBoneByName(TEXT("weapon_r"));
-	UParticleSystemComponent* SwapEffectComponent = UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), SwapEffect, GetMesh()->GetSocketTransform("weapon_r"));
-	if (SwapEffectComponent) {
-		SwapEffectComponent->SetRelativeScale3D(FVector(3.0f, 3.0f, 3.0f));
-		SwapEffectComponent->SetWorldLocation(SwapEffectComponent->GetComponentLocation() + GetActorRightVector() * -130.0f + GetActorForwardVector() *30.0f + GetActorUpVector() * -5.0f);
-	}
+	if (Should_Q_Skill && !IsAttacking_Q_Skill) {
+		WeaponGun->SetActorHiddenInGame(true);
+		GetMesh()->HideBoneByName(TEXT("weapon_r"), EPhysBodyOp::PBO_None);
+		GetMesh()->UnHideBoneByName(TEXT("weapon_r"));
+		UParticleSystemComponent* SwapEffectComponent = UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), SwapEffect, GetMesh()->GetSocketTransform("weapon_r"));
+		if (SwapEffectComponent) {
+			SwapEffectComponent->SetRelativeScale3D(FVector(3.0f, 3.0f, 3.0f));
+			SwapEffectComponent->SetWorldLocation(SwapEffectComponent->GetComponentLocation() + GetActorRightVector() * -130.0f + GetActorForwardVector() * 30.0f + GetActorUpVector() * -5.0f);
+		}
 
-	UParticleSystemComponent* LaserEffectComponent = UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), LaserEffect, GetMesh()->GetSocketTransform("gun_barrelSocket"));
-	if (LaserEffectComponent) {
-		LaserEffectComponent->CustomTimeDilation = 3.0f;
+		IsAttacking_Q_Skill = true;
+		ShouldAttack = false;
 	}
-	
-	FHitResult LaserHitResult;
-	bool bHit = GetWorld()->LineTraceSingleByChannel(
-		OUT LaserHitResult,
-		GetMesh()->GetSocketLocation("gun_barrelSocket"),
-		GetMesh()->GetSocketLocation("gun_barrelSocket") + GetMesh()->GetSocketRotation("gun_barrelSocket").Vector() * 1000.0f,
-		ECC_Visibility);
+	else if(IsAttacking_Q_Skill){
+		WeaponGun->LaserShoot(GetMesh()->GetSocketTransform("gun_barrelSocket"));
 
-	DrawDebugLine(GetWorld(), GetMesh()->GetSocketLocation("gun_barrelSocket"),
-		GetMesh()->GetSocketLocation("gun_barrelSocket") + GetMesh()->GetSocketRotation("gun_barrelSocket").Vector() * 1000.0f, FColor::Red, true, 2.0f);
+		FTimerHandle waitHandle;
+		GetWorld()->GetTimerManager().SetTimer(waitHandle, FTimerDelegate::CreateLambda([&]()
+			{
+				GetMesh()->HideBoneByName(TEXT("weapon_r"), EPhysBodyOp::PBO_None);
+				WeaponGun->SetActorHiddenInGame(false);
+				Should_Q_Skill = false;
+				IsAttacking_Q_Skill = false;
+				ShouldAttack = true;
+
+				UParticleSystemComponent* SwapEffectComponent = UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), SwapEffect, GetMesh()->GetSocketTransform("weapon_r"));
+				if (SwapEffectComponent) {
+					SwapEffectComponent->SetRelativeScale3D(FVector(3.0f, 3.0f, 3.0f));
+					SwapEffectComponent->SetWorldLocation(SwapEffectComponent->GetComponentLocation() + GetActorRightVector() * -130.0f + GetActorForwardVector() * 30.0f + GetActorUpVector() * -5.0f);
+				}
+
+			}), 0.2f, false);
+
+		FTimerHandle QwaitHandle;
+		GetWorld()->GetTimerManager().SetTimer(QwaitHandle, FTimerDelegate::CreateLambda([&]()
+			{
+				Should_Q_Skill = true;
+			}), 5.0f, false);
+	}
 	
 }
 
@@ -202,7 +248,6 @@ void AGunCharacter::Attack_Skill_R()
 {
 	if (Should_R_Skill && !IsZooming && !IsAttacking_R_Skill) {
 		IsAttacking_R_Skill = true;
-		Should_R_Skill = false;
 		ShouldAttack = false;
 		ShouldMove = false;
 		GetCharacterMovement()->bOrientRotationToMovement = false;
@@ -212,6 +257,7 @@ void AGunCharacter::Attack_Skill_R()
 		DecalComponent->SetVisibility(true);
 	}
 	else if (IsAttacking_R_Skill) {
+		Should_R_Skill = false;
 		MissleLaunchVector = SocketEndVector + FVector(-1.5f, 0.0f, 0.0f);
 		TargetLocation = OutLastTraceDestinationResult;
 		UAnimMontage* CurrentMontage = AnimInstance->GetCurrentActiveMontage();
@@ -225,7 +271,7 @@ void AGunCharacter::Attack_Skill_REnd()
 	GetWorld()->GetTimerManager().SetTimer(waitHandle, FTimerDelegate::CreateLambda([&]()
 		{
 			Should_R_Skill = true;
-		}), 4.0f, false);
+		}), 20.0f, false);
 
 	for (int i = 0; i < 5; i++) {
 		FVector CurrntMissleLaunchVector = MissleLaunchVector + FVector(0.5f * i,0.0f,0.0f);
@@ -251,8 +297,6 @@ void AGunCharacter::Attack_Skill_REnd()
 			LeftButtonDirection = 0.0f;
 			MissleTimerHandles.Empty();
 		}), 0.5f, false);
-
-			
 	
 	RSkillCircleMeshComponent->SetVisibility(false);
 	DecalComponent->SetVisibility(false);
@@ -279,7 +323,7 @@ void AGunCharacter::AimingStart()
 		ShouldRun = false;
 		GetCharacterMovement()->bOrientRotationToMovement = false;
 		GetCharacterMovement()->bUseControllerDesiredRotation = true;
-		AimTargetLength = 200.f;
+		AimTargetLength = 100.f;
 	}
 
 }
@@ -317,11 +361,22 @@ void AGunCharacter::SetRSkill_Circle()
 	DecalComponent->SetVisibility(false);
 }
 
+
+void AGunCharacter::StopFire()
+{
+	GetWorld()->GetTimerManager().ClearTimer(FireHandle);
+}
+
 float AGunCharacter::TakeDamage(float Damage, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
 {
 	float returnDamage = Super::TakeDamage(Damage, DamageEvent, EventInstigator, DamageCauser);
 
-	
-
+	if (PlayerComponent->GetHp() > 0) {
+		PlayerComponent->OnDamaged(returnDamage);
+		if (IsValid(AnimInstance) && PlayerComponent->GetHp() - (int32)returnDamage > 0) {
+			HitSoundPlay();
+			AnimInstance->PlayHitReactMontage();
+		}
+	}
 	return returnDamage;
 }

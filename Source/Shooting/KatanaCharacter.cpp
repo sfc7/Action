@@ -105,7 +105,6 @@ void AKatanaCharacter::BeginPlay()
 		}
 	}
 
-
 	if (CUI)
 	{
 		CUI->BindHp(PlayerComponent);
@@ -161,6 +160,7 @@ void AKatanaCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 	PlayerInputComponent->BindAction(TEXT("ForwardRoll"), EInputEvent::IE_Pressed, this, &AKatanaCharacter::Dodge);
 
 	PlayerInputComponent->BindAction(TEXT("CharacterChangeMagic"), EInputEvent::IE_Released, this, &AKatanaCharacter::CharacterChangeMagic);
+	PlayerInputComponent->BindAction(TEXT("CharacterChangeGun"), EInputEvent::IE_Released, this, &AKatanaCharacter::CharacterChangeGun);
 }
 
 void AKatanaCharacter::Attack()
@@ -192,9 +192,9 @@ void AKatanaCharacter::Attack_Skill_Q()
 
 		FTimerHandle waitHandle;	
 		GetWorld()->GetTimerManager().SetTimer(waitHandle, FTimerDelegate::CreateLambda([&]()
-		{
+			{
 				Should_Q_Skill = true;
-		}), 5.0f, false);
+			}), 5.0f, false);
 	}
 
 }

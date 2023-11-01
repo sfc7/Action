@@ -18,14 +18,16 @@ struct FCharacterData : public FTableRowBase {
 
 	UPROPERTY(EditAnywhere, BluePrintReadWrite)
 		int32 KatanaMaxHp;
-
 	UPROPERTY(EditAnywhere, BluePrintReadWrite)
 		int32 KatanaHp;
 	UPROPERTY(EditAnywhere, BluePrintReadWrite)
 		int32 MagicMaxHp;
-
 	UPROPERTY(EditAnywhere, BluePrintReadWrite)
 		int32 MagicHp;
+	UPROPERTY(EditAnywhere, BluePrintReadWrite)
+		int32 GunMaxHp;
+	UPROPERTY(EditAnywhere, BluePrintReadWrite)
+		int32 GunHp;
 };
 
 USTRUCT()
@@ -56,6 +58,8 @@ protected:
 		int32 KatanaHp;
 		int32 MagicMaxHp;
 		int32 MagicHp;
+		int32 GunMaxHp;
+		int32 GunHp;
 
 		int32 MonsterDeathCount;
 public:
@@ -67,13 +71,16 @@ public:
 	void ResetGameState();
 	void KatanaSetHp(int32 _Hp);
 	void MagicSetHp(int32 _Hp);
+	void GunSetHp(int32 _Hp);
 
 	FCharacterData* GetCharacterData();
 	FMonsterData* GetMonsterData();
 	int32 KatanaGetHp() { return KatanaHp; }
 	int32 MagicGetHp() { return MagicHp; }
+	int32 GunGetHp() { return GunHp; }
 	int32 KatanaGetMaxHp() { return KatanaMaxHp; }
 	int32 MagicGetMaxHp() { return MagicMaxHp; }
+	int32 GunGetMaxHp() { return GunMaxHp; }
 
 
 

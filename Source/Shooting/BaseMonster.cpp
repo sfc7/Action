@@ -5,12 +5,14 @@
 #include "CreatureAnimInstance.h"
 #include "Components/WidgetComponent.h"
 #include "MonsterWidget.h"
+#include "MonsterAIController.h"
 #include "MonsterComponent.h"
 #include "Components/CapsuleComponent.h" 
 #include "GameFramework/DefaultPawn.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "Kismet/GamePlayStatics.h"
 #include "Sound/SoundWave.h"
+#include "GameFramework/CharacterMovementComponent.h"
 
 ABaseMonster::ABaseMonster()
 {
@@ -35,11 +37,15 @@ ABaseMonster::ABaseMonster()
 	GetCapsuleComponent()->SetCollisionProfileName(TEXT("Monster"));
 
 	GetMesh()->bRenderCustomDepth = true;
+
+
 }
 
 void ABaseMonster::BeginPlay()
 {
 	Super::BeginPlay();
+
+	AIController = Cast<AMonsterAIController>(GetController());
 
 	auto HpWidget = Cast<UMonsterWidget>(HpBar->GetUserWidgetObject());
 	if (HpWidget) {
@@ -50,6 +56,7 @@ void ABaseMonster::BeginPlay()
 void ABaseMonster::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
 }
 
 void ABaseMonster::PostInitializeComponents()
@@ -68,6 +75,7 @@ float ABaseMonster::TakeDamage(float Damage, FDamageEvent const& DamageEvent, AC
 		MonsterComponent->OnDamaged(returnDamage);
 		if (IsValid(AnimInstance) && MonsterComponent->GetHp() - (int32)returnDamage > 0) {
 			HitSoundPlay();
+			
 			AnimInstance->PlayHitReactMontage();
 		}
 	}
@@ -93,11 +101,18 @@ void ABaseMonster::ToggleDuringHit(bool enable)
 		ShouldAttack = true;
 		IsDamaging = false;
 		IsAttacking = false;
+		GetCharacterMovement()->StopMovementImmediately();
+		if (AIController) {
+			AIController->SetIsDamaging(false);
+		}
 	}
 	else {
 		ShouldMove = false;
 		ShouldAttack = false;
 		IsDamaging = true;
+		if (AIController) {
+			AIController->SetIsDamaging(true);
+		}
 	}
 }
 
@@ -118,8 +133,6 @@ void ABaseMonster::Death()
 		{
 			Destroy();
 		}), 5.0f, false);
-
-
 }
 
 void ABaseMonster::SetAttackRotation(AActor* Target)

@@ -34,7 +34,7 @@ void UCreatureAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 		auto Acceleration = CharacterMovement->GetCurrentAcceleration();
 		ShouldMove = (GroundSpeed > 3.0f);
 		IsFalling = CharacterMovement->IsFalling();
-
+		Direction = CalculateDirection(Velocity, GetOwningActor()->GetActorRotation());
 	}
 }
 

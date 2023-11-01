@@ -16,6 +16,9 @@ class SHOOTING_API AMonster_Skeleton_AIController : public AMonsterAIController
 public:
 	AMonster_Skeleton_AIController();
 public:
+
+
+
 	virtual void OnPossess(APawn* InPawn) override;
 	virtual void OnUnPossess() override;
 

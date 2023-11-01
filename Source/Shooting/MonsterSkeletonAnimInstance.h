@@ -20,6 +20,8 @@ public:
 		UAnimMontage* AttackMontage2;
 	UPROPERTY()
 		TArray<UAnimMontage*> AttackMontageArray;
+	UPROPERTY(BlueprintReadWrite)
+		bool IsFocusingTarget;
 
 public:
 	virtual void NativeBeginPlay() override;

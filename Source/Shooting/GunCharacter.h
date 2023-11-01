@@ -56,13 +56,16 @@ public:
 	virtual void SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) override;
 	
 	FTimerHandle AimWaitHandle;
+	FTimerHandle FireHandle;
 	TArray<FTimerHandle> LaunchTimerHandles;
 	TArray<FTimerHandle> MissleTimerHandles;
 	bool IsAiming;
 	bool IsZooming;
+	bool IsAimWaving;
 	FHitResult HitResult;
 	FVector TargetLocation;
 	FVector MissleLaunchVector;
+
 
 	void Attack();
 	void Attack_Skill_Q();
@@ -72,6 +75,7 @@ public:
 	void AimingStart();
 	void AimingEnd();
 	void SetRSkill_Circle();
+	void StopFire();
 
 	float TakeDamage(float Damage, struct FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
 };

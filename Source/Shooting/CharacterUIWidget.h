@@ -6,6 +6,7 @@
 #include "Blueprint/UserWidget.h"
 #include "CharacterUIWidget.generated.h"
 
+class UProgressBar;
 /**
  * 
  */
@@ -26,13 +27,20 @@ public:
 	UPROPERTY(EditAnywhere, Category = Character)
 	UTexture2D* MagicIcon;
 	UPROPERTY(EditAnywhere, Category = Character)
+	UTexture2D* GunIcon;
+	UPROPERTY(EditAnywhere, Category = Character)
 		UTexture2D* KatanaQ;
 	UPROPERTY(EditAnywhere, Category = Character)
 		UTexture2D* MagicQ;
 	UPROPERTY(EditAnywhere, Category = Character)
+		UTexture2D* GunQ;
+	UPROPERTY(EditAnywhere, Category = Character)
 		UTexture2D* KatanaR;
 	UPROPERTY(EditAnywhere, Category = Character)
 		UTexture2D* MagicR;
+
+	UPROPERTY(EditAnywhere, Category = Character)
+		UTexture2D* GunR;
 public:
 	void BindHp(class UPlayerComponent* _Comp);
 	void UpdateHp();
@@ -40,6 +48,8 @@ public:
 	void Update_Q_Skill_CoolDown(class UPlayerComponent* _Comp);
 	void SetKatanaCharacterInfo();
 	void SetMagicCharacterInfo();
+	void SetGunCharacterInfo();
+	void UpdateSkillColldown(float DeltaTime, bool ShouldSkill, float& SkillTime, float MaxTime, UProgressBar* CooldownWidget);
 
 public:
 	virtual void NativeConstruct() override;

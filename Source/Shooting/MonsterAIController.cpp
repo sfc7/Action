@@ -13,7 +13,7 @@
 const FName AMonsterAIController::HomePosKey(TEXT("HomePos"));
 const FName AMonsterAIController::TargetPosKey(TEXT("TargetPos"));
 const FName AMonsterAIController::TargetActorKey(TEXT("TargetActor"));
-
+const FName AMonsterAIController::IsDamagingKey(TEXT("IsDamaging"));
 
 AMonsterAIController::AMonsterAIController()
 {
@@ -39,19 +39,24 @@ AMonsterAIController::AMonsterAIController()
 void AMonsterAIController::HandleSightSense(AActor* actor, FAIStimulus const Stimulus)
 {
 	if (Stimulus.Type == UAISense::GetSenseID(UAISense_Sight::StaticClass())) {
-		if (auto const player = Cast<ABaseCharacter>(actor)) {
+		if (Cast<ABaseCharacter>(actor)) {
 			if (Stimulus.WasSuccessfullySensed()) {
-				Blackboard->SetValueAsObject(AMonsterAIController::TargetActorKey, player);
+				Target = actor;
+				Blackboard->SetValueAsObject(AMonsterAIController::TargetActorKey, Target);
 			}
 		}
 	}
-}
+}	
 
 void AMonsterAIController::BeginPlay()
 {
 	Super::BeginPlay();
+}
 
-
+void AMonsterAIController::SetIsDamaging(bool _IsDamaging)
+{
+	Blackboard->SetValueAsBool(AMonsterAIController::IsDamagingKey, _IsDamaging);
+	UE_LOG(LogTemp,Log,TEXT("123"));
 }
 
 void AMonsterAIController::Tick(float DeltaTime)
