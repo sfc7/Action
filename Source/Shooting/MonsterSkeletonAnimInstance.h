@@ -23,7 +23,7 @@ public:
 	UPROPERTY(BlueprintReadWrite)
 		bool IsFocusingTarget;
 
-public:
+protected:
 	virtual void NativeBeginPlay() override;
 	virtual void NativeUpdateAnimation(float DeltaSeconds) override;
 

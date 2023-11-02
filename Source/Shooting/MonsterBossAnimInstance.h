@@ -13,5 +13,15 @@ UCLASS()
 class SHOOTING_API UMonsterBossAnimInstance : public UCreatureAnimInstance
 {
 	GENERATED_BODY()
-	
+public:
+	UMonsterBossAnimInstance();
+public:
+	UPROPERTY(Category = Animation, EditAnywhere, BlueprintReadOnly)
+		UAnimMontage* AttackMontage1;
+protected:
+	virtual void NativeBeginPlay() override;
+	virtual void NativeUpdateAnimation(float DeltaSeconds) override;
+
+public:
+	virtual void PlayAttackMontage() override;
 };

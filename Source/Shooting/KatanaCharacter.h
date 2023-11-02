@@ -25,6 +25,7 @@ protected:
 		class USoundWave* AttackBasicSound3;
 
 
+
 public:
 	AKatanaCharacter();
 protected:

@@ -28,6 +28,11 @@ AMonsterBoss::AMonsterBoss()
 		GetMesh()->SetAnimClass(Anim.Class);
 	}
 	
+	static ConstructorHelpers::FObjectFinder<UParticleSystem> TakeEffectAsset(TEXT("/Script/Engine.ParticleSystem'/Game/FXVarietyPack/Particles/P_ky_hit2.P_ky_hit2'"));
+	if (TakeEffectAsset.Succeeded()) {
+		TakeHitEffect = TakeEffectAsset.Object;
+	}
+
 	ConstructorHelpers::FObjectFinder<UParticleSystem> TeleportBodyEffectAsset(TEXT("/Script/Engine.ParticleSystem'/Game/Shooting/BluePrint/Effect/P_Gideon_Burden_DoT.P_Gideon_Burden_DoT'"));
 	if (TeleportBodyEffectAsset.Succeeded()) {
 		TeleportBodyEffect = TeleportBodyEffectAsset.Object;
@@ -36,6 +41,12 @@ AMonsterBoss::AMonsterBoss()
 	ConstructorHelpers::FObjectFinder<UParticleSystem> TeleportTrailEffectAsset(TEXT("/Script/Engine.ParticleSystem'/Game/ParagonGideon/FX/Particles/Gideon/Abilities/Meteor/FX/P_Gideon_Meteor_Trail.P_Gideon_Meteor_Trail'"));
 	if (TeleportTrailEffectAsset.Succeeded()) {
 		TeleportTrailEffect = TeleportTrailEffectAsset.Object;
+	}
+
+	static ConstructorHelpers::FClassFinder<AActor> Dagger(TEXT("/Script/Engine.Blueprint'/Game/Shooting/BluePrint/BP_Dagger.BP_Dagger_C'"));
+	if (Dagger.Succeeded())
+	{
+		Weapon = Dagger.Class;
 	}
 
 	GetCharacterMovement()->MaxWalkSpeed = 400.0f;
@@ -47,11 +58,29 @@ AMonsterBoss::AMonsterBoss()
 void AMonsterBoss::PostInitializeComponents()
 {
 	Super::PostInitializeComponents();
+
+	AnimInstance = Cast<UMonsterBossAnimInstance>(GetMesh()->GetAnimInstance());
+	if (IsValid(AnimInstance)) {
+		AnimInstance->OnHit.AddUObject(this, &AMonsterBoss::ToggleDuringHit);
+		AnimInstance->DuringAttack.AddUObject(this, &AMonsterBoss::ToggleDuringAttack);
+		AnimInstance->AttackBasic.AddUObject(this, &AMonsterBoss::Attack_Basic, 10.0f);
+	}
 }
 
 void AMonsterBoss::BeginPlay()
 {
 	Super::BeginPlay();
+
+	if (IsValid(Weapon))
+	{
+		FName socket = "Spine_Socket";
+		FActorSpawnParameters SpawnParams;
+
+		auto SpawnWeapon = GetWorld()->SpawnActor<AActor>(Weapon, SpawnParams);
+		if (IsValid(SpawnWeapon)) {
+			SpawnWeapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetIncludingScale, socket);
+		}
+	}
 }
 
 void AMonsterBoss::Tick(float DeltaTime)
@@ -62,6 +91,54 @@ void AMonsterBoss::Tick(float DeltaTime)
 
 
 void AMonsterBoss::Attack(AActor* Target)
+{
+	if (!IsAttacking && ShouldAttack) {
+		AnimInstance->PlayAttackMontage();
+	}
+}
+
+void AMonsterBoss::Attack_Basic(float damage)
+{
+	AttackBasicSoundPlay();
+	FHitResult HitResult;
+	float AttackRange = 100.f;
+	float AttackRadius = 50.f;
+
+	FVector Center = GetActorLocation();
+
+	FVector Forward = Center + GetActorForwardVector() * AttackRange;
+	FCollisionQueryParams Params(NAME_None, false, this);
+
+	bool Result = GetWorld()->SweepSingleByChannel(
+		OUT HitResult,
+		Center,
+		Forward,
+		FQuat::Identity,
+		ECollisionChannel::ECC_GameTraceChannel7,
+		FCollisionShape::MakeSphere(AttackRadius),
+		Params);
+
+	float HalfHeight = AttackRange * 0.5f + AttackRadius;
+	FQuat Rotation = FRotationMatrix::MakeFromZ(GetActorForwardVector()).ToQuat();
+	FColor DrawColor;
+
+	if (Result && HitResult.GetActor()->GetClass()->GetSuperClass()->GetName() == TEXT("BaseCharacter"))
+	{
+		DrawColor = FColor::Green;
+
+		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), TakeHitEffect, HitResult.ImpactPoint);
+
+		AActor* HitActor = HitResult.GetActor();
+		UGameplayStatics::ApplyDamage(HitActor, damage, GetController(), HitActor, NULL);
+	}
+	else {
+		DrawColor = FColor::Red;
+	}
+
+	DrawDebugCapsule(GetWorld(), Center, HalfHeight, AttackRadius, Rotation, DrawColor, false, 3.f);
+}
+
+void AMonsterBoss::Spawn_Fireball()
 {
 }
 

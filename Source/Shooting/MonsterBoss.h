@@ -25,6 +25,10 @@ public:
 		class UParticleSystemComponent* TeleportBodyComponent;
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 		class UParticleSystemComponent* TeleportTrailComponent;
+	UPROPERTY(EditAnywhere)
+		TSubclassOf<class AActor> Weapon;
+	UPROPERTY(VisibleAnywhere)
+		class UParticleSystem* TakeHitEffect;
 
 
 public:
@@ -35,6 +39,8 @@ protected:
 	virtual void Tick(float DeltaTime) override;
 public:
 	void Attack(AActor* Target);
+	void Attack_Basic(float damage);
+	void Spawn_Fireball();
 
 	void Teleport(FVector _Location);
 	void TeleportEnd();
