@@ -10,6 +10,7 @@
 #include "Perception/AIPerceptionStimuliSourceComponent.h"
 #include "BaseCharacter.h"
 
+
 const FName AMonsterAIController::HomePosKey(TEXT("HomePos"));
 const FName AMonsterAIController::TargetPosKey(TEXT("TargetPos"));
 const FName AMonsterAIController::TargetActorKey(TEXT("TargetActor"));
@@ -53,10 +54,16 @@ void AMonsterAIController::BeginPlay()
 	Super::BeginPlay();
 }
 
+void AMonsterAIController::OnMoveCompleted(FAIRequestID RequestID, const FPathFollowingResult& Result)
+{
+	Super::OnMoveCompleted(RequestID, Result);
+
+}
+
 void AMonsterAIController::SetIsDamaging(bool _IsDamaging)
 {
 	Blackboard->SetValueAsBool(AMonsterAIController::IsDamagingKey, _IsDamaging);
-	UE_LOG(LogTemp,Log,TEXT("123"));
+	
 }
 
 void AMonsterAIController::Tick(float DeltaTime)

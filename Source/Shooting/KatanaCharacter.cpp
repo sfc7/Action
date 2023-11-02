@@ -236,7 +236,6 @@ void AKatanaCharacter::Attack_Basic(float damage)
 	float AttackRange = 100.f;
 	float AttackRadius = 50.f;
 
-	UE_LOG(LogTemp, Log, TEXT("%f"), damage);
 	FVector Center = GetActorLocation();
 
 	FVector Forward = Center + GetActorForwardVector() * AttackRange;

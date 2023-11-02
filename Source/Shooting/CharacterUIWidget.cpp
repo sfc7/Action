@@ -66,8 +66,6 @@ void UCharacterUIWidget::UpdateSkillColldown(float DeltaTime, bool ShouldSkill, 
 	else
 	{
 		SkillTime += DeltaTime;
-		UE_LOG(LogTemp, Log, TEXT("del : %f"), SkillTime);
-		UE_LOG(LogTemp, Log, TEXT("ski : %f"), DeltaTime);
 
 		if (SkillTime >= MaxTime)
 		{

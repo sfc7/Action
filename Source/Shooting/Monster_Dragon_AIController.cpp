@@ -34,6 +34,7 @@ void AMonster_Dragon_AIController::BeginPlay()
 void AMonster_Dragon_AIController::OnPossess(APawn* InPawn)
 {
 	Super::OnPossess(InPawn);
+
 	if (UseBlackboard(BlackboardData, BlackboardComp)) {
 		Blackboard->SetValueAsVector(HomePosKey, InPawn->GetActorLocation());
 		if (RunBehaviorTree(BehaviorTree))

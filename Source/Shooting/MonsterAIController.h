@@ -34,9 +34,11 @@ public:
 	static const FName IsDamagingKey;
 	FVector HomePosition;
 	class UAISenseConfig_Sight* SightConfig;
-
+	FAIRequestID TeleportRequestID;
 protected:
 	virtual void BeginPlay() override;
+
+	virtual void OnMoveCompleted(FAIRequestID RequestID, const FPathFollowingResult& Result) override;
 public:
 	UFUNCTION()
 		void HandleSightSense(AActor* actor, FAIStimulus const Stimulus);
@@ -47,6 +49,7 @@ public:
 	virtual void Tick(float DeltaTime) override;
 	virtual void OnPossess(APawn* InPawn) override;
 	virtual void OnUnPossess() override;
-
+	
+	
 
 };

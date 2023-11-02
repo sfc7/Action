@@ -71,8 +71,6 @@ void AMonsterSkeleton::BeginPlay()
 void AMonsterSkeleton::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
-	
 }
 
 
