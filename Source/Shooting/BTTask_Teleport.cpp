@@ -24,9 +24,6 @@ EBTNodeResult::Type UBTTask_Teleport::ExecuteTask(UBehaviorTreeComponent& OwnerC
 
 			return EBTNodeResult::Succeeded;
 		}
-
 	}
-
-
 	return EBTNodeResult::Failed;
 }

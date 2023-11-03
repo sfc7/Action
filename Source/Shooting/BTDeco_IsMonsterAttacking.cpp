@@ -11,5 +11,6 @@ bool UBTDeco_IsMonsterAttacking::CalculateRawConditionValue(UBehaviorTreeCompone
 	auto ControllingPawn = Cast<ABaseMonster>(OwnerComp.GetAIOwner()->GetPawn());
 	if (nullptr == ControllingPawn) return false;
 
+	UE_LOG(LogTemp, Log, TEXT("%d"), ControllingPawn->IsAttacking);
 	return ControllingPawn->IsAttacking;
 }

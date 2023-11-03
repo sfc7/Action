@@ -10,8 +10,11 @@
 #include "Particles/ParticleSystemComponent.h"
 #include "Particles/ParticleSystem.h"
 #include "Sound/SoundWave.h"
+#include "Components/ArrowComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/Character.h"
+#include "BossFireBall.h"
+#include "MultipleBossFireBall.h"
 
 
 AMonsterBoss::AMonsterBoss()
@@ -53,6 +56,8 @@ AMonsterBoss::AMonsterBoss()
 
 	AIControllerClass = AMonster_Boss_AIController::StaticClass();
 	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
+
+	SetArrowComponent();
 }
 
 void AMonsterBoss::PostInitializeComponents()
@@ -64,6 +69,8 @@ void AMonsterBoss::PostInitializeComponents()
 		AnimInstance->OnHit.AddUObject(this, &AMonsterBoss::ToggleDuringHit);
 		AnimInstance->DuringAttack.AddUObject(this, &AMonsterBoss::ToggleDuringAttack);
 		AnimInstance->AttackBasic.AddUObject(this, &AMonsterBoss::Attack_Basic, 10.0f);
+		AnimInstance->AttackFireball.AddUObject(this, &AMonsterBoss::Spawn_Fireball);
+		AnimInstance->AttackMultipleFireball.AddUObject(this, &AMonsterBoss::Spawn_MultipleFireball);
 	}
 }
 
@@ -138,8 +145,52 @@ void AMonsterBoss::Attack_Basic(float damage)
 	DrawDebugCapsule(GetWorld(), Center, HalfHeight, AttackRadius, Rotation, DrawColor, false, 3.f);
 }
 
+void AMonsterBoss::RangeAttack(AActor* Target)
+{
+	if (!IsAttacking && ShouldAttack) {
+		TargetLocation = Target->GetActorLocation();
+		SetAttackRotation(Target);
+		AnimInstance->PlayRangeAttackMontage();
+	}
+}
+
 void AMonsterBoss::Spawn_Fireball()
 {
+	FName SocketName = "Head";
+	ABossFireBall* BossFireball = GetWorld()->SpawnActor<ABossFireBall>(ABossFireBall::StaticClass(), GetMesh()->GetSocketLocation(SocketName), GetActorRotation(), FActorSpawnParameters());
+	if (BossFireball) {
+		BossFireball->SetTargetLocation(TargetLocation);
+	}
+}
+
+void AMonsterBoss::Spawn_MultipleFireball()
+{
+	FName SocketName = "hand_r_MagicSocket";
+	AMultipleBossFireBall* MultipleBossFireball = GetWorld()->SpawnActor<AMultipleBossFireBall>(AMultipleBossFireBall::StaticClass(), GetMesh()->GetSocketLocation(SocketName), GetActorRotation(), FActorSpawnParameters());
+	if (MultipleBossFireball) {
+		MultipleBossFireball->SetTargetLocation(TargetLocation);
+	}
+}
+
+void AMonsterBoss::SetArrowComponent()
+{
+	TArray<FVector> ArrowLocations {
+		FVector(-85.0f, 0.0f, 120.0f),
+		FVector(-25.0f, 50.0f, 105.0f),
+		FVector(0.0f, 85.0f, 85.0f),
+		FVector(0.0f, 50.0f, 50.0f),
+		FVector(0.0f, -50.0f, 85.0f),
+		FVector(0.0f, -80.0f, 105.0f),
+		FVector(0.0f, -80.0f, 40.0f)
+	};
+
+	for (int32 i = 0; i < 7; i++) {
+		FName ArrowName = FName(*FString::Printf(TEXT("Arrow%d"), i));
+		auto Arrows = CreateDefaultSubobject<UArrowComponent>(ArrowName);
+		Arrows->SetRelativeLocation(ArrowLocations[i]);
+		Arrows->SetupAttachment(GetCapsuleComponent());
+		ArrowComponents.Add(Arrows);
+	}
 }
 
 void AMonsterBoss::Teleport(FVector _Location)

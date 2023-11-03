@@ -52,6 +52,7 @@ public:
 	FAttackHitType AttackQSkill;
 	FAttackHitType AttackRSkill;
 	FAttackHitType AttackFireball;
+	FAttackHitType AttackMultipleFireball;
 	FAttackHitType AttackFirebreath;
 	FAttackHitType AttackBite;
 	FAttackHitType AttackLClaw;
@@ -91,6 +92,8 @@ public:
 		void AnimNotify_RskillHit();
 	UFUNCTION()
 		void AnimNotify_Fireball();
+	UFUNCTION()
+		void AnimNotify_MultipleFireball();
 	UFUNCTION()
 		void AnimNotify_Firebreath();
 	UFUNCTION()

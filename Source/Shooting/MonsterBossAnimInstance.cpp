@@ -19,8 +19,16 @@ void UMonsterBossAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 
 void UMonsterBossAnimInstance::PlayAttackMontage()
 {
-
-	if (!Montage_IsPlaying(AttackMontage1)) {
-		Montage_Play(AttackMontage1);
+	if (!Montage_IsPlaying(AttackStabMontage)) {
+		Montage_Play(AttackStabMontage);
 	}
 }
+
+void UMonsterBossAnimInstance::PlayRangeAttackMontage()
+{
+	if (!Montage_IsPlaying(AttackFireBallMontage)) {
+		Montage_Play(AttackFireBallMontage);
+	}
+}
+
+

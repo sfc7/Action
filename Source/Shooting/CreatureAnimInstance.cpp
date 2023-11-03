@@ -136,6 +136,11 @@ void UCreatureAnimInstance::AnimNotify_Fireball()
 	AttackFireball.Broadcast();
 }
 
+void UCreatureAnimInstance::AnimNotify_MultipleFireball()
+{
+	AttackMultipleFireball.Broadcast();
+}
+
 void UCreatureAnimInstance::AnimNotify_Firebreath()
 {
 	AttackFirebreath.Broadcast();

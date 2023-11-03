@@ -17,11 +17,14 @@ public:
 	UMonsterBossAnimInstance();
 public:
 	UPROPERTY(Category = Animation, EditAnywhere, BlueprintReadOnly)
-		UAnimMontage* AttackMontage1;
+		UAnimMontage* AttackStabMontage;
+	UPROPERTY(Category = Animation, EditAnywhere, BlueprintReadOnly)
+		UAnimMontage* AttackFireBallMontage;
 protected:
 	virtual void NativeBeginPlay() override;
 	virtual void NativeUpdateAnimation(float DeltaSeconds) override;
 
 public:
 	virtual void PlayAttackMontage() override;
+	virtual void PlayRangeAttackMontage() override;
 };

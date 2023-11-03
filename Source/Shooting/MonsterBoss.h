@@ -25,6 +25,8 @@ public:
 		class UParticleSystemComponent* TeleportBodyComponent;
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 		class UParticleSystemComponent* TeleportTrailComponent;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+		TArray<UArrowComponent*> ArrowComponents;
 	UPROPERTY(EditAnywhere)
 		TSubclassOf<class AActor> Weapon;
 	UPROPERTY(VisibleAnywhere)
@@ -32,6 +34,7 @@ public:
 
 
 public:
+	FVector TargetLocation;
 	FString Stance;
 protected:
 	virtual void PostInitializeComponents() override;
@@ -40,8 +43,11 @@ protected:
 public:
 	void Attack(AActor* Target);
 	void Attack_Basic(float damage);
+	void RangeAttack(AActor* Target);
 	void Spawn_Fireball();
+	void Spawn_MultipleFireball();
 
+	void SetArrowComponent();
 	void Teleport(FVector _Location);
 	void TeleportEnd();
 };

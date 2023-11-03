@@ -25,12 +25,22 @@ EBTNodeResult::Type UBTTask_Boss_Attack::ExecuteTask(UBehaviorTreeComponent& Own
 		return EBTNodeResult::Failed;
 	}
 
-    if (AttackType==EAttackType::Melee) {
+	switch (AttackType) {
+	case EAttackType::Melee:
 		if (!(ControllingOwner->IsDamaging) && !(ControllingOwner->IsAttacking)) {
 			ControllingOwner->Attack(Target);
 			return EBTNodeResult::Succeeded;
 		}
-    }
+		break;
+	case EAttackType::Ranged:
+		if (!(ControllingOwner->IsDamaging) && !(ControllingOwner->IsAttacking)) {
+			ControllingOwner->RangeAttack(Target);
+			return EBTNodeResult::Succeeded;
+		}
+		break;
+	}
+    
+  
 
     return EBTNodeResult::Succeeded;
 }
