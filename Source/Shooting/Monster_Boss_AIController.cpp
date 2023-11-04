@@ -50,15 +50,13 @@ void AMonster_Boss_AIController::OnMoveCompleted(FAIRequestID RequestID, const F
 {
 	Super::OnMoveCompleted(RequestID, Result);
 
+	AMonsterBoss* MonsterBoss = Cast<AMonsterBoss>(GetPawn());
+	if (!MonsterBoss) return;
 
 	if (Result.Code == EPathFollowingResult::Success)
 	{
-		AMonsterBoss* MonsterBoss = Cast<AMonsterBoss>(GetPawn());
-		if (MonsterBoss)
-		{
-			MonsterBoss->TeleportEnd();
-		}
-		TeleportRequestID = FAIRequestID::InvalidRequest;
+		MonsterBoss->TeleportEnd();
 	}
+	TeleportRequestID = FAIRequestID::InvalidRequest;
 }
 
