@@ -25,8 +25,6 @@ ABaseMonster::ABaseMonster()
 	GetCapsuleComponent()->SetCollisionProfileName(TEXT("Monster"));
 
 	GetMesh()->bRenderCustomDepth = true;
-
-
 }
 
 void ABaseMonster::BeginPlay()
@@ -34,8 +32,6 @@ void ABaseMonster::BeginPlay()
 	Super::BeginPlay();
 
 	AIController = Cast<AMonsterAIController>(GetController());
-
-
 }
 
 void ABaseMonster::Tick(float DeltaTime)

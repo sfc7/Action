@@ -270,6 +270,7 @@ void AGunCharacter::Attack_Skill_R()
 		AnimInstance->PlayAttack_R_SkillMontage();
 		RSkillCircleMeshComponent->SetVisibility(true);
 		DecalComponent->SetVisibility(true);
+		LeftButtonDirection = 0.0f;
 	}
 	else if (IsAttacking_R_Skill) {
 		MissleLaunchVector = SocketEndVector + FVector(-1.5f, 0.0f, 0.0f);

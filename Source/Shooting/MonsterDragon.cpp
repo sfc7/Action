@@ -31,47 +31,7 @@ AMonsterDragon::AMonsterDragon()
 
 	GetCharacterMovement()->MaxWalkSpeed = WalkSpeed;
 
-	UCapsuleComponent* MyCapsuleComponent = CreateDefaultSubobject<UCapsuleComponent>(TEXT("Capsule1"));
-	MyCapsuleComponent->SetRelativeScale3D(FVector(3.0f, 3.0f, 3.0f));
-	MyCapsuleComponent->SetRelativeLocationAndRotation(FVector(90.0f,30.0f,0.0f), FRotator(90.0f, 0.0f, 0.0f));
-	MyCapsuleComponent->SetCollisionProfileName(TEXT("Monster"));
-	if (IsValid(MyCapsuleComponent))
-	{
-		FName Socket = TEXT("MOUNTAIN_DRAGON_-L-Thigh");
-		MyCapsuleComponent->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, Socket);
-	}
-
-	MyCapsuleComponent = CreateDefaultSubobject<UCapsuleComponent>(TEXT("Capsule2"));
-	MyCapsuleComponent->SetRelativeScale3D(FVector(3.0f, 3.0f, 3.0f));
-	MyCapsuleComponent->SetRelativeLocationAndRotation(FVector(90.0f, 30.0f, 0.0f), FRotator(90.0f, 0.0f, 0.0f));
-	MyCapsuleComponent->SetCollisionProfileName(TEXT("Monster"));
-	if (IsValid(MyCapsuleComponent))
-	{
-		FName Socket = TEXT("MOUNTAIN_DRAGON_-R-Thigh");
-		MyCapsuleComponent->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, Socket);
-	}
-
-	MyCapsuleComponent = CreateDefaultSubobject<UCapsuleComponent>(TEXT("Capsule3"));
-	MyCapsuleComponent->SetRelativeScale3D(FVector(2.0f, 3.0f, 3.0f));
-	MyCapsuleComponent->SetRelativeLocationAndRotation(FVector(90.0f, 30.0f, 0.0f), FRotator(90.0f, -160.0f, -160.0f));
-	MyCapsuleComponent->SetCollisionProfileName(TEXT("Monster"));
-	if (IsValid(MyCapsuleComponent))
-	{
-		FName Socket = TEXT("MOUNTAIN_DRAGON_-L-Forearm");
-		MyCapsuleComponent->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, Socket);
-	}
-
-	MyCapsuleComponent = CreateDefaultSubobject<UCapsuleComponent>(TEXT("Capsule4"));
-	MyCapsuleComponent->SetRelativeScale3D(FVector(2.0f, 3.0f, 3.0f));
-	MyCapsuleComponent->SetRelativeLocationAndRotation(FVector(90.0f, 30.0f, 0.0f), FRotator(90.0f, -160.0f, -160.0f));
-	MyCapsuleComponent->SetCollisionProfileName(TEXT("Monster"));
-	if (IsValid(MyCapsuleComponent))
-	{
-		FName Socket = TEXT("MOUNTAIN_DRAGON_-R-Forearm");
-		MyCapsuleComponent->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, Socket);
-	}
-
-	MyCapsuleComponent = CreateDefaultSubobject<UCapsuleComponent>(TEXT("Capsule5"));
+	UCapsuleComponent* MyCapsuleComponent = CreateDefaultSubobject<UCapsuleComponent>(TEXT("Capsule5"));
 	MyCapsuleComponent->SetRelativeScale3D(FVector(2.0f, 3.0f, 3.0f));
 	MyCapsuleComponent->SetRelativeLocationAndRotation(FVector(0.0f, 30.0f, 0.0f), FRotator(90.0f, 0.0f, 60.0f));
 	MyCapsuleComponent->SetCollisionProfileName(TEXT("Monster"));
@@ -88,6 +48,16 @@ AMonsterDragon::AMonsterDragon()
 	if (IsValid(MyCapsuleComponent))
 	{
 		FName Socket = TEXT("MOUNTAIN_DRAGON_-Tail");
+		MyCapsuleComponent->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, Socket);
+	}
+
+	MyCapsuleComponent = CreateDefaultSubobject<UCapsuleComponent>(TEXT("CapsuleSpine"));
+	MyCapsuleComponent->SetRelativeScale3D(FVector(5.0f, 5.0f, 5.0f));
+	MyCapsuleComponent->SetRelativeLocationAndRotation(FVector(100.0f, -100.0f, 0.0f), FRotator(90.0f, 0.0f, 0.0f));
+	MyCapsuleComponent->SetCollisionProfileName(TEXT("Monster"));
+	if (IsValid(MyCapsuleComponent))
+	{
+		FName Socket = TEXT("MOUNTAIN_DRAGON_-Spine");
 		MyCapsuleComponent->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, Socket);
 	}
 
@@ -227,13 +197,19 @@ void AMonsterDragon::AttackChannel(FName _SocketName, float _Damage)
 	FQuat Rotation = FRotationMatrix::MakeFromZ(GetActorForwardVector()).ToQuat();
 	FColor DrawColor;
 
-	if (Result && HitResult.GetActor()->GetClass()->GetSuperClass()->GetSuperClass()->GetName() == TEXT("BaseCharacter"))
+	if (Result && HitResult.GetActor()->GetClass()->GetSuperClass()->GetName() == TEXT("BaseCharacter"))
 	{
 		DrawColor = FColor::Green;
 
 
-		AActor* HitActor = HitResult.GetActor();
+		ACharacter* HitActor = Cast<ACharacter>(HitResult.GetActor());
 		UGameplayStatics::ApplyDamage(HitActor, _Damage, GetController(), HitActor, NULL);
+
+		FVector LaunchDirection = (HitActor->GetActorLocation() - Forward).GetSafeNormal();
+		LaunchDirection.Z = 0.5f; 
+		float LaunchStrength = 800.0f; 
+
+		HitActor->GetCharacterMovement()->Launch(LaunchDirection * LaunchStrength);
 	}
 	else {
 		DrawColor = FColor::Red;

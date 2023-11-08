@@ -49,6 +49,7 @@ ABaseCharacter::ABaseCharacter()
 	GetCharacterMovement()->MaxWalkSpeed = 300.f;
 	GetCharacterMovement()->bOrientRotationToMovement = true;
 
+	
 
 	static ConstructorHelpers::FObjectFinder<UParticleSystem> SpawnEffectAsset(TEXT("/Script/Engine.ParticleSystem'/Game/Shooting/BluePrint/Effect/P_Portal_Entrance_Close.P_Portal_Entrance_Close'"));
 	if (SpawnEffectAsset.Succeeded()) {

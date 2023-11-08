@@ -17,30 +17,28 @@ EBTNodeResult::Type UBTTask_DragonAttack::ExecuteTask(UBehaviorTreeComponent& Ow
 {
 	Super::ExecuteTask(OwnerComp, NodeMemory);
 
-	UBlackboardComponent* BlackboardComp = OwnerComp.GetBlackboardComponent();
+	auto ControllingOwner = Cast<AMonsterDragon>(OwnerComp.GetAIOwner()->GetPawn());
+	if (nullptr == ControllingOwner) {
+		return EBTNodeResult::Failed;
+	}
+	auto Target = Cast<ABaseCharacter>(OwnerComp.GetBlackboardComponent()->GetValueAsObject(AMonsterAIController::TargetActorKey));
+	if (nullptr == Target) {
+		return EBTNodeResult::Failed;
+	}
 
-	float CurrentTime = UGameplayStatics::GetRealTimeSeconds(OwnerComp.GetWorld());
-
-	float LastServiceExecutionTime = BlackboardComp->GetValueAsFloat("LastServiceExecutionTime");
-
-
-	if (CurrentTime - LastServiceExecutionTime >= 4.0f)
-	{
-		auto ControllingOwner = Cast<AMonsterDragon>(OwnerComp.GetAIOwner()->GetPawn());
-		if (nullptr == ControllingOwner) {
-			return EBTNodeResult::Failed;
-		}
-		auto Target = Cast<ABaseCharacter>(OwnerComp.GetBlackboardComponent()->GetValueAsObject(AMonsterAIController::TargetActorKey));
-		if (nullptr == Target) {
-			return EBTNodeResult::Failed;
-		}
-
-		if (!(ControllingOwner->IsAttacking)) {
+	switch (AttackType) {
+	case EDragonAttackType::Melee:
+		if (!(ControllingOwner->IsDamaging) && !(ControllingOwner->IsAttacking)) {
 			ControllingOwner->Attack(Target);
-				
-		}	
-
-		BlackboardComp->SetValueAsFloat("LastServiceExecutionTime", CurrentTime);
+			return EBTNodeResult::Succeeded;
+		}
+		break;
+	case EDragonAttackType::Ranged:
+		if (!(ControllingOwner->IsDamaging) && !(ControllingOwner->IsAttacking)) {
+			ControllingOwner->RangeAttack(Target);
+			return EBTNodeResult::Succeeded;
+		}
+		break;
 	}
 
 	return EBTNodeResult::Failed;
