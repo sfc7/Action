@@ -3,8 +3,6 @@
 
 #include "BaseMonster.h"
 #include "CreatureAnimInstance.h"
-#include "Components/WidgetComponent.h"
-#include "MonsterWidget.h"
 #include "MonsterAIController.h"
 #include "MonsterComponent.h"
 #include "Components/CapsuleComponent.h" 
@@ -21,17 +19,7 @@ ABaseMonster::ABaseMonster()
 	GetMesh()->SetRelativeLocationAndRotation(FVector(0.f, 0.f, -88.f), FRotator(0.f, -90.f, -0.f));
 
 	MonsterComponent = CreateDefaultSubobject<UMonsterComponent>(TEXT("MonsterComponent"));
-	HpBar = CreateDefaultSubobject<UWidgetComponent>(TEXT("HpBar"));
-	HpBar->SetupAttachment(GetMesh());
-	HpBar->SetWidgetSpace(EWidgetSpace::Screen);
-	static ConstructorHelpers::FClassFinder<UMonsterWidget> MW(TEXT("/Script/UserWidget'/Game/Shooting/BluePrint/UI/WBP_MonsterHpBar.WBP_MonsterHpBar_C'"));
-
-
-	if (MW.Succeeded()) {
-		HpBar->SetWidgetClass(MW.Class);
-		HpBar->SetDrawSize(FVector2D(300.f, 30.f));
-		HpBar->SetRelativeLocation(FVector(0.f, 0.f, 180.f));
-	}
+	
 
 	GetMesh()->SetCollisionProfileName(TEXT("CharacterMesh"));
 	GetCapsuleComponent()->SetCollisionProfileName(TEXT("Monster"));
@@ -47,10 +35,7 @@ void ABaseMonster::BeginPlay()
 
 	AIController = Cast<AMonsterAIController>(GetController());
 
-	auto HpWidget = Cast<UMonsterWidget>(HpBar->GetUserWidgetObject());
-	if (HpWidget) {
-		HpWidget->BindHp(MonsterComponent);
-	}
+
 }
 
 void ABaseMonster::Tick(float DeltaTime)
@@ -75,7 +60,6 @@ float ABaseMonster::TakeDamage(float Damage, FDamageEvent const& DamageEvent, AC
 		MonsterComponent->OnDamaged(returnDamage);
 		if (IsValid(AnimInstance) && MonsterComponent->GetHp() - (int32)returnDamage > 0) {
 			HitSoundPlay();
-			
 			AnimInstance->PlayHitReactMontage();
 		}
 	}

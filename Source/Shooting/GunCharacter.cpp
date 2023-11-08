@@ -6,8 +6,10 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/ProjectileMovementComponent.h"
+#include "GameFramework/HUD.h"
 #include "Particles/ParticleSystem.h"
 #include "Particles/ParticleSystemComponent.h"
+#include "GameFramework/GameMode.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/DecalComponent.h"
 #include "Math/UnrealMathUtility.h"
@@ -17,6 +19,8 @@
 #include "PlayerComponent.h"
 #include "WeaponGun.h"
 #include "Missle.h"
+#include "GunAimingHUD.h"
+#include "MyGameInstance.h"
 
 AGunCharacter::AGunCharacter()
 {
@@ -67,6 +71,8 @@ AGunCharacter::AGunCharacter()
 		SwapEffect = SwapEffectAsset.Object;
 	}
 
+	
+
 	SetRSkill_Circle();
 
 	AimTargetLength = 500.0f;
@@ -87,9 +93,17 @@ void AGunCharacter::BeginPlay()
 		}
 	}
 
-	if (CUI)
+	AGunAimingHUD* AimingHud = Cast<AGunAimingHUD>(GetWorld()->GetFirstPlayerController()->GetHUD());
+
+
+	APlayerController* PlayerController = GetWorld()->GetFirstPlayerController();
+	if (PlayerController)
 	{
-		CUI->BindHp(PlayerComponent);
+		AGunAimingHUD* AimingHUD = GetWorld()->SpawnActor<AGunAimingHUD>(AGunAimingHUD::StaticClass());
+		if (AimingHUD)
+		{
+			PlayerController->ClientSetHUD(AimingHUD->GetClass());
+		}
 	}
 }
 
@@ -145,6 +159,13 @@ void AGunCharacter::Tick(float DeltaTime)
 		
 	if (SpringArm) {
 		SpringArm->TargetArmLength = FMath::FInterpTo(SpringArm->TargetArmLength, AimTargetLength, DeltaTime, 15.0f);
+	}
+
+	if (MyGameInstance) {
+		Should_Q_Cooldown = MyGameInstance->Gun_Q_Cooldown;
+		Should_Q_Skill = MyGameInstance->Gun_Should_Q_Skill;
+		Should_R_Cooldown = MyGameInstance->Gun_R_Cooldown;
+		Should_R_Skill = MyGameInstance->Gun_Should_R_Skill;
 	}
 }
 
@@ -223,7 +244,7 @@ void AGunCharacter::Attack_Skill_Q()
 			{
 				GetMesh()->HideBoneByName(TEXT("weapon_r"), EPhysBodyOp::PBO_None);
 				WeaponGun->SetActorHiddenInGame(false);
-				Should_Q_Skill = false;
+				MyGameInstance->Gun_Q_SkillCoolDownStart();
 				IsAttacking_Q_Skill = false;
 				ShouldAttack = true;
 
@@ -234,12 +255,6 @@ void AGunCharacter::Attack_Skill_Q()
 				}
 
 			}), 0.2f, false);
-
-		FTimerHandle QwaitHandle;
-		GetWorld()->GetTimerManager().SetTimer(QwaitHandle, FTimerDelegate::CreateLambda([&]()
-			{
-				Should_Q_Skill = true;
-			}), 5.0f, false);
 	}
 	
 }
@@ -257,7 +272,6 @@ void AGunCharacter::Attack_Skill_R()
 		DecalComponent->SetVisibility(true);
 	}
 	else if (IsAttacking_R_Skill) {
-		Should_R_Skill = false;
 		MissleLaunchVector = SocketEndVector + FVector(-1.5f, 0.0f, 0.0f);
 		TargetLocation = OutLastTraceDestinationResult;
 		UAnimMontage* CurrentMontage = AnimInstance->GetCurrentActiveMontage();
@@ -267,11 +281,7 @@ void AGunCharacter::Attack_Skill_R()
 
 void AGunCharacter::Attack_Skill_REnd()
 {
-	FTimerHandle waitHandle;
-	GetWorld()->GetTimerManager().SetTimer(waitHandle, FTimerDelegate::CreateLambda([&]()
-		{
-			Should_R_Skill = true;
-		}), 20.0f, false);
+	MyGameInstance->Gun_R_SkillCoolDownStart();
 
 	for (int i = 0; i < 5; i++) {
 		FVector CurrntMissleLaunchVector = MissleLaunchVector + FVector(0.5f * i,0.0f,0.0f);

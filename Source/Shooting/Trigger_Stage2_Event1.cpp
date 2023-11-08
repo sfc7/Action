@@ -3,6 +3,7 @@
 
 #include "Trigger_Stage2_Event1.h"
 #include "MonsterDragon.h"
+#include "MonsterBoss.h"
 #include "BaseCharacter.h"
 #include "RespawnLocation_Stage2_Event1.h"
 #include "Kismet/GameplayStatics.h"
@@ -29,8 +30,8 @@ void ATrigger_Stage2_Event1::Event(AActor* OverlapActor, AActor* OtherActor)
 				UGameplayStatics::GetAllActorsOfClass(GetWorld(), ARespawnLocation_Stage2_Event1::StaticClass(), FoundArray);
 
 				for (auto FoundActor : FoundArray) {
-					auto spawnDragon = GetWorld()->SpawnActor<AMonsterDragon>(
-						AMonsterDragon::StaticClass(),
+					auto spawnDragon = GetWorld()->SpawnActor<AMonsterBoss>(
+						AMonsterBoss::StaticClass(),
 						FoundActor->GetActorLocation(),
 						FoundActor->GetActorRotation()
 					);

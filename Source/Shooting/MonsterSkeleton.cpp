@@ -10,6 +10,8 @@
 #include "Particles/ParticleSystem.h"
 #include "Sound/SoundWave.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Components/WidgetComponent.h"
+#include "MonsterWidget.h"
 
 AMonsterSkeleton::AMonsterSkeleton()
 {
@@ -45,6 +47,18 @@ AMonsterSkeleton::AMonsterSkeleton()
 		DeathSound = DeathSoundAsset.Object;
 	}
 	
+	HpBar = CreateDefaultSubobject<UWidgetComponent>(TEXT("HpBar"));
+	HpBar->SetupAttachment(GetMesh());
+	HpBar->SetWidgetSpace(EWidgetSpace::Screen);
+	static ConstructorHelpers::FClassFinder<UMonsterWidget> MW(TEXT("/Script/UserWidget'/Game/Shooting/BluePrint/UI/WBP_MonsterHpBar.WBP_MonsterHpBar_C'"));
+
+
+	if (MW.Succeeded()) {
+		HpBar->SetWidgetClass(MW.Class);
+		HpBar->SetDrawSize(FVector2D(300.f, 30.f));
+		HpBar->SetRelativeLocation(FVector(0.f, 0.f, 180.f));
+	}
+
 	GetCharacterMovement()->MaxWalkSpeed = 100.0f;
 	
 	AIControllerClass = AMonster_Skeleton_AIController::StaticClass();
@@ -66,6 +80,11 @@ void AMonsterSkeleton::PostInitializeComponents()
 void AMonsterSkeleton::BeginPlay()
 {
 	Super::BeginPlay();
+
+	auto HpWidget = Cast<UMonsterWidget>(HpBar->GetUserWidgetObject());
+	if (HpWidget) {
+		HpWidget->BindHp(MonsterComponent);
+	}
 }
 
 void AMonsterSkeleton::Tick(float DeltaTime)

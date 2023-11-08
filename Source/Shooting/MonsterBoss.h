@@ -42,6 +42,8 @@ public:
 		TSubclassOf<class AActor> Weapon;
 	UPROPERTY(VisibleAnywhere)
 		class UParticleSystem* TakeHitEffect;
+	UPROPERTY(VisibleAnywhere)
+		class UMonsterWidget* MUI;
 
 
 public:

@@ -38,6 +38,8 @@ struct FMonsterData : public FTableRowBase {
 		int32 DragonMaxHp;
 	UPROPERTY(EditAnywhere, BluePrintReadWrite)
 		int32 SkeletonMaxHp;
+	UPROPERTY(EditAnywhere, BluePrintReadWrite)
+		int32 BossMaxHp;
 
 	UPROPERTY(EditAnywhere, BluePrintReadWrite)
 		int32 Hp;
@@ -48,11 +50,42 @@ class SHOOTING_API UMyGameInstance : public UGameInstance
 {
 	GENERATED_BODY()
 public:
+	UMyGameInstance();
+public:
 	class UDataTable* CharacterDataTable;
 	class UDataTable* MonsterDataTable;
 
 	FOnEvent1_DeathCount OnEvent1_DeathCount;
 	FOnEvent2_DeathCount OnEvent2_DeathCount;
+
+	bool Katana_Should_Q_Skill = true;
+	bool Katana_Should_R_Skill = true;
+	bool Magic_Should_Q_Skill = true;
+	bool Magic_Should_R_Skill = true;
+	bool Gun_Should_Q_Skill = true;
+	bool Gun_Should_R_Skill = true;
+
+	float Katana_Q_Cooldown = 0.0f;
+	float Katana_R_Cooldown = 0.0f;
+	float Magic_Q_Cooldown = 0.0f;
+	float Magic_R_Cooldown = 0.0f;
+	float Gun_Q_Cooldown = 0.0f;
+	float Gun_R_Cooldown = 0.0f;
+
+	FTimerHandle Katana_Q_SkillHandle;
+	FTimerHandle Katana_R_SkillHandle;
+	FTimerHandle Magic_Q_SkillHandle;
+	FTimerHandle Magic_R_SkillHandle;
+	FTimerHandle Gun_Q_SkillHandle;
+	FTimerHandle Gun_R_SkillHandle;
+
+	float Character_Katana_Cooldown = 0.0f;
+	float Character_Magic_Cooldown = 0.0f;
+	float Character_Gun_Cooldown = 0.0f;
+
+	FTimerHandle KatanaHandle;
+	FTimerHandle MagicHandle;
+	FTimerHandle GunHandle;
 protected:
 		int32 KatanaMaxHp;
 		int32 KatanaHp;
@@ -63,10 +96,8 @@ protected:
 
 		int32 MonsterDeathCount;
 public:
-	UMyGameInstance();
-public:
 	virtual void Init() override;
-public:
+
 	void SetMonsterDeathCount();
 	void ResetGameState();
 	void KatanaSetHp(int32 _Hp);
@@ -83,8 +114,17 @@ public:
 	int32 GunGetMaxHp() { return GunMaxHp; }
 
 
+	void Katana_Q_SkillCoolDownStart();
+	void Katana_R_SkillCoolDownStart();
+	void Magic_Q_SkillCoolDownStart();
+	void Magic_R_SkillCoolDownStart();
+	void Gun_Q_SkillCoolDownStart();
+	void Gun_R_SkillCoolDownStart();
+	void Character_KatanaCoolDownStart();
+	void Character_MagicCoolDownStart();
+	void Character_GunCoolDownStart();
 
-
-
+	void SkillCoolDownStart(FTimerHandle& SkillHandle, float& CharacterCooldown, float ApplyCooldown, bool& ShouldSkill);
+	void CharacterCoolDownStart(FTimerHandle& CharacterHandle, float& CharacterCooldown);
 	
 };

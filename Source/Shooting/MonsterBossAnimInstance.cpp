@@ -3,13 +3,12 @@
 
 #include "MonsterBossAnimInstance.h"
 
-UMonsterBossAnimInstance::UMonsterBossAnimInstance()
-{
-}
-
 void UMonsterBossAnimInstance::NativeBeginPlay()
 {
 	Super::NativeBeginPlay();
+
+	AttackMontageArray = { AttackStabMontage1, AttackStabMontage2 };
+	RangeAttackMontageArray = { AttackFireBallMontage,AttackMultipleFireBallMontage, GateofBabylonMontage,AttackChargeMontage };
 }
 
 void UMonsterBossAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
@@ -19,15 +18,21 @@ void UMonsterBossAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 
 void UMonsterBossAnimInstance::PlayAttackMontage()
 {
-	if (!Montage_IsPlaying(AttackStabMontage)) {
-		Montage_Play(AttackStabMontage);
+	int32 num = FMath::RandRange(0, AttackMontageNum - 1);
+	if (IsValid(AttackMontageArray[num])) {
+		if (!Montage_IsPlaying(AttackMontageArray[num])) {
+			Montage_Play(AttackMontageArray[num]);
+		}
 	}
 }
 
 void UMonsterBossAnimInstance::PlayRangeAttackMontage()
 {
-	if (!Montage_IsPlaying(AttackFireBallMontage)) {
-		Montage_Play(AttackFireBallMontage);
+	int32 num = FMath::RandRange(0, RangeAttackMontageNum - 1);
+	if (IsValid(RangeAttackMontageArray[num])) {
+		if (!Montage_IsPlaying(RangeAttackMontageArray[num])) {
+			Montage_Play(RangeAttackMontageArray[num]);
+		}
 	}
 }
 

@@ -6,6 +6,7 @@
 #include "Blueprint/UserWidget.h"
 #include "CharacterUIWidget.generated.h"
 
+class UMyGameInstance;
 class UProgressBar;
 /**
  * 
@@ -22,12 +23,14 @@ public:
 	UPROPERTY(VisibleAnywhere)
 	class ABaseCharacter* player;
 
+	UPROPERTY()
+		UMyGameInstance* MyGameInstance;
 	UPROPERTY(EditAnywhere, Category = Character)
-	UTexture2D* KatanaIcon;
+		UTexture2D* KatanaIcon;
 	UPROPERTY(EditAnywhere, Category = Character)
-	UTexture2D* MagicIcon;
+		UTexture2D* MagicIcon;
 	UPROPERTY(EditAnywhere, Category = Character)
-	UTexture2D* GunIcon;
+		UTexture2D* GunIcon;
 	UPROPERTY(EditAnywhere, Category = Character)
 		UTexture2D* KatanaQ;
 	UPROPERTY(EditAnywhere, Category = Character)
@@ -49,7 +52,8 @@ public:
 	void SetKatanaCharacterInfo();
 	void SetMagicCharacterInfo();
 	void SetGunCharacterInfo();
-	void UpdateSkillColldown(float DeltaTime, bool ShouldSkill, float& SkillTime, float MaxTime, UProgressBar* CooldownWidget);
+	void UpdateSkillColldown(float DeltaTime, bool ShouldSkill, float SkillTime, float MaxTime, UProgressBar* CooldownWidget);
+	void UpdateCharacterIconColldown(float KatanaCooldown, float MagicCooldown, float GunCooldown);
 
 public:
 	virtual void NativeConstruct() override;
@@ -72,6 +76,18 @@ private:
 		class UImage* R;
 	UPROPERTY(meta = (BindWidget))
 		class UImage* CharacterImage;
+	UPROPERTY(meta = (BindWidget))
+		class UImage* SwapKatana;
+	UPROPERTY(meta = (BindWidget))
+		class UImage* SwapMagic;
+	UPROPERTY(meta = (BindWidget))
+		class UImage* SwapGun;
+	UPROPERTY(meta = (BindWidget))
+		class UTextBlock* Katana_Cooldown;
+	UPROPERTY(meta = (BindWidget))
+		class UTextBlock* Magic_Cooldown;
+	UPROPERTY(meta = (BindWidget))
+		class UTextBlock* Gun_Cooldown;
 
 
 

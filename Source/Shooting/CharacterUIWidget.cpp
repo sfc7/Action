@@ -11,6 +11,7 @@
 #include "Components/Image.h"
 #include "Engine/Texture2D.h"
 #include "Components/ProgressBar.h"
+#include "MyGameInstance.h"
 
 void UCharacterUIWidget::BindHp(UPlayerComponent* _Comp)
 {
@@ -56,7 +57,7 @@ void UCharacterUIWidget::SetGunCharacterInfo()
 	CharacterImage->SetBrushFromTexture(GunIcon);
 }
 
-void UCharacterUIWidget::UpdateSkillColldown(float DeltaTime, bool ShouldSkill, float& SkillTime, float MaxTime, UProgressBar* CooldownWidget)
+void UCharacterUIWidget::UpdateSkillColldown(float DeltaTime, bool ShouldSkill, float SkillTime, float MaxTime, UProgressBar* CooldownWidget)
 {
 	if (ShouldSkill) {
 		CooldownWidget->SetVisibility(ESlateVisibility::Hidden);
@@ -80,8 +81,56 @@ void UCharacterUIWidget::UpdateSkillColldown(float DeltaTime, bool ShouldSkill, 
 			CooldownWidget->SetPercent(Percent);
 		}
 	}
-
 }
+
+void UCharacterUIWidget::UpdateCharacterIconColldown(float KatanaCooldown, float MagicCooldown, float GunCooldown)
+{
+	if (KatanaCooldown == 0.0f) {
+		Katana_Cooldown->SetVisibility(ESlateVisibility::Hidden);
+		FLinearColor ImageColor = SwapKatana->GetColorAndOpacity();
+		ImageColor.A = 1.0f;
+		SwapKatana->SetColorAndOpacity(ImageColor);
+	}
+	else {
+		Katana_Cooldown->SetVisibility(ESlateVisibility::Visible);
+		FString second = FString::Printf(TEXT("%.0fs"), KatanaCooldown);
+		Katana_Cooldown->SetText(FText::FromString(second));
+		FLinearColor ImageColor = SwapKatana->GetColorAndOpacity();
+		ImageColor.A = 0.5f;
+		SwapKatana->SetColorAndOpacity(ImageColor);
+	}
+
+	if (MagicCooldown == 0.0f) {
+		Magic_Cooldown->SetVisibility(ESlateVisibility::Hidden);
+		FLinearColor ImageColor = SwapMagic->GetColorAndOpacity();
+		ImageColor.A = 1.0f;
+		SwapMagic->SetColorAndOpacity(ImageColor);
+	}
+	else {
+		Magic_Cooldown->SetVisibility(ESlateVisibility::Visible);
+		FString second = FString::Printf(TEXT("%.0fs"), MagicCooldown);
+		Magic_Cooldown->SetText(FText::FromString(second));
+		FLinearColor ImageColor = SwapMagic->GetColorAndOpacity();
+		ImageColor.A = 0.5f;
+		SwapMagic->SetColorAndOpacity(ImageColor);
+	}
+
+	if (GunCooldown == 0.0f) {
+		Gun_Cooldown->SetVisibility(ESlateVisibility::Hidden);
+		FLinearColor ImageColor = SwapGun->GetColorAndOpacity();
+		ImageColor.A = 1.0f;
+		SwapGun->SetColorAndOpacity(ImageColor);
+	}
+	else {
+		Gun_Cooldown->SetVisibility(ESlateVisibility::Visible);
+		FString second = FString::Printf(TEXT("%.0fs"), GunCooldown);
+		Gun_Cooldown->SetText(FText::FromString(second));
+		FLinearColor ImageColor = SwapGun->GetColorAndOpacity();
+		ImageColor.A = 0.5f;
+		SwapGun->SetColorAndOpacity(ImageColor);
+	}
+}
+
 
 void UCharacterUIWidget::NativeConstruct()
 {
@@ -109,12 +158,14 @@ void UCharacterUIWidget::NativeTick(const FGeometry& MyGeometry, float DeltaTime
 	if (GetOwningPlayerPawn()->GetClass()->GetSuperClass()->GetName() == "BaseCharacter")
 	{
 		player = Cast<ABaseCharacter>(GetOwningPlayerPawn());
+		MyGameInstance = Cast<UMyGameInstance>(GetWorld()->GetGameInstance());
 
-		UpdateSkillColldown(DeltaTime, player->Should_Q_Skill, Qtime, 5.0f, Q_Cooldown);
+		UpdateSkillColldown(DeltaTime, player->Should_Q_Skill, player->Should_Q_Cooldown, 5.0f, Q_Cooldown);
 
-		UpdateSkillColldown(DeltaTime, player->Should_R_Skill, Rtime, 20.0f, R_Cooldown);
+		UpdateSkillColldown(DeltaTime, player->Should_R_Skill, player->Should_R_Cooldown, 20.0f, R_Cooldown);
+
+		UpdateCharacterIconColldown(MyGameInstance->Character_Katana_Cooldown, MyGameInstance->Character_Magic_Cooldown, MyGameInstance->Character_Gun_Cooldown);
 	}
-
 }
 
 

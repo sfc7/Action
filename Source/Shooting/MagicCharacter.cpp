@@ -16,7 +16,7 @@
 #include "MagicBall.h"
 #include "MagicMeteor.h"
 #include "MagicStorm.h"
-
+#include "MyGameInstance.h"
 
 AMagicCharacter::AMagicCharacter()
 {
@@ -152,6 +152,13 @@ void AMagicCharacter::PostInitializeComponents()
 void AMagicCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
+	if (MyGameInstance) {
+		Should_Q_Cooldown = MyGameInstance->Magic_Q_Cooldown;
+		Should_Q_Skill = MyGameInstance->Magic_Should_Q_Skill;
+		Should_R_Cooldown = MyGameInstance->Magic_R_Cooldown;
+		Should_R_Skill = MyGameInstance->Magic_Should_R_Skill;
+	}
 }
 
 void AMagicCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -196,16 +203,8 @@ void AMagicCharacter::Attack_Skill_Q()
 	if (ShouldAttack && Should_Q_Skill)
 	{
 		AttackQSkillSoundPlay();
-		SpellSoundPlay();
 		AnimInstance->PlayAttack_Q_SkillMontage();
-		Should_Q_Skill = false;
-
-		FTimerHandle waitHandle;
-		GetWorld()->GetTimerManager().SetTimer(waitHandle, FTimerDelegate::CreateLambda([&]()
-			{
-				Should_Q_Skill = true;
-
-			}), 5.0f, false);
+		MyGameInstance->Magic_Q_SkillCoolDownStart();
 	}
 
 }
@@ -222,13 +221,7 @@ void AMagicCharacter::Attack_Skill_R()
 			MeteoPortalComponent->SetWorldScale3D(FVector(0.2f, 0.2f, 0.2f));
 		}
 		AnimInstance->PlayAttack_R_SkillMontage();
-		Should_R_Skill = false;
-
-		FTimerHandle waitHandle;
-		GetWorld()->GetTimerManager().SetTimer(waitHandle, FTimerDelegate::CreateLambda([&]()
-			{
-				Should_R_Skill = true;
-			}), 20.0f, false);
+		MyGameInstance->Magic_R_SkillCoolDownStart();
 	}
 
 }

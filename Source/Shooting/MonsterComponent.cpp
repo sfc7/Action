@@ -24,8 +24,12 @@ void UMonsterComponent::SetInitialize()
 				MaxHp = MonsterData->SkeletonMaxHp;
 				Hp = MaxHp;
 			}
-			if (GetOwner()->GetClass()->GetName() == "MonsterDragon") {
+			else if (GetOwner()->GetClass()->GetName() == "MonsterDragon") {
 				MaxHp = MonsterData->DragonMaxHp;
+				Hp = MaxHp;
+			}
+			else if (GetOwner()->GetClass()->GetName() == "MonsterBoss") {
+				MaxHp = MonsterData->BossMaxHp;
 				Hp = MaxHp;
 			}
 		}

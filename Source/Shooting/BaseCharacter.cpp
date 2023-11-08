@@ -15,6 +15,7 @@
 #include "GunCharacter.h"
 #include "PlayerComponent.h"
 #include "BasePlayerController.h"
+#include "MyGameInstance.h"
 
 // Sets default values
 ABaseCharacter::ABaseCharacter()
@@ -53,9 +54,6 @@ ABaseCharacter::ABaseCharacter()
 	if (SpawnEffectAsset.Succeeded()) {
 		SpawnEffect = SpawnEffectAsset.Object;
 	}
-
-	
-
 }
 
 // Called when the game starts or w	hen spawned
@@ -63,6 +61,7 @@ void ABaseCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
+	MyGameInstance = Cast<UMyGameInstance>(GetWorld()->GetGameInstance());
 	BaseController = Cast<APlayerController>(GetController());
 }
 
@@ -199,22 +198,31 @@ void ABaseCharacter::JumpStart()
 	if (ShouldJump) {
 		Jump();
 	}
+}
+
+void ABaseCharacter::CharacterChangeKatana()
+{
+	if (MyGameInstance->Character_Katana_Cooldown == 0.0f) {
+		CharacterChange(AKatanaCharacter::StaticClass());
+		MyGameInstance->Character_KatanaCoolDownStart();
+	}
 
 }
 
 void ABaseCharacter::CharacterChangeMagic()
 {
-	CharacterChange(AMagicCharacter::StaticClass());
-}
-
-void ABaseCharacter::CharacterChangeKatana()
-{
-	CharacterChange(AKatanaCharacter::StaticClass());
+	if (MyGameInstance->Character_Magic_Cooldown == 0.0f) {
+		CharacterChange(AMagicCharacter::StaticClass());
+		MyGameInstance->Character_MagicCoolDownStart();
+	}
 }
 
 void ABaseCharacter::CharacterChangeGun()
 {
-	CharacterChange(AGunCharacter::StaticClass());
+	if (MyGameInstance->Character_Gun_Cooldown == 0.0f) {
+		CharacterChange(AGunCharacter::StaticClass());
+		MyGameInstance->Character_GunCoolDownStart();
+	}
 }
 
 void ABaseCharacter::CharacterChange(TSubclassOf<ABaseCharacter> ChangeCharacterType)

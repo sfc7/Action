@@ -5,6 +5,7 @@
 #include "MonsterBossAnimInstance.h"
 #include "Monster_Boss_AIController.h"
 #include "Kismet/KismetMathLibrary.h"
+#include "Components/WidgetComponent.h"
 #include "Components/StaticMeshComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Kismet/GameplayStatics.h"
@@ -17,7 +18,7 @@
 #include "BossFireBall.h"
 #include "MultipleBossFireBall.h"
 #include "Hammer.h"
-
+#include "MonsterWidget.h"
 
 AMonsterBoss::AMonsterBoss()
 {
@@ -74,10 +75,18 @@ AMonsterBoss::AMonsterBoss()
 	AIControllerClass = AMonster_Boss_AIController::StaticClass();
 	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
 
+	static ConstructorHelpers::FClassFinder<UMonsterWidget> MonsterWidget(TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/Shooting/BluePrint/UI/WBP_MonsterBossHpBar.WBP_MonsterBossHpBar_C'"));
+
+	if (MonsterWidget.Succeeded()) {
+		MUI = CreateWidget<UMonsterWidget>(GetWorld(), MonsterWidget.Class);
+		if (IsValid(MUI)) {
+			MUI->AddToViewport();
+		}
+	}
 
 	TArray<FVector> ArrowLocations {
-		FVector(-85.0f, 0.0f, 195.0f),
-		FVector(-25.0f, 65.0f, 170.0f),
+		FVector(-85.0f, -90.0f, 175.0f),
+		FVector(-25.0f, 0.0f, 170.0f),
 		FVector(0.0f, 170.0f, 85.0f),
 		FVector(20.0f, 80.0f, 30.0f),
 		FVector(0.0f, 75.0f, 115.0f),
@@ -121,6 +130,10 @@ void AMonsterBoss::BeginPlay()
 		if (IsValid(SpawnWeapon)) {
 			SpawnWeapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetIncludingScale, socket);
 		}
+	}
+
+	if (MUI) {
+		MUI->BindHp(MonsterComponent);
 	}
 
 	GetCapsuleComponent()->OnComponentBeginOverlap.AddDynamic(this, &AMonsterBoss::OnOverlapBegin);
@@ -220,7 +233,19 @@ void AMonsterBoss::Spawn_GateofBabylon()
 		FVector Location = ArrowLocationComponent->GetComponentLocation();
 		FRotator Rotation = ArrowLocationComponent->GetComponentRotation();
 
-		UParticleSystemComponent* Portal = UGameplayStatics::SpawnEmitterAttached(GatePortalEffect, ArrowLocationComponent, NAME_None, Location, Rotation, EAttachLocation::KeepRelativeOffset, true);
+		UParticleSystemComponent* Portal = UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), GatePortalEffect, Location, Rotation);
+		Portal->CustomTimeDilation = 2.0f;
+
+		FTimerHandle TimerHandle;
+		float DestroyDelay = 4.0f;
+
+		GetWorld()->GetTimerManager().SetTimer(TimerHandle, [Portal]() {
+			if (Portal)
+			{
+				Portal->DeactivateSystem();
+				Portal->DestroyComponent();
+			}
+			}, DestroyDelay, false);
 
 		for (int32 i = 0; i < 6; i++) {
 			FTimerHandle WaitHandle;

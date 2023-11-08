@@ -9,6 +9,7 @@
 #include "CharacterUIWidget.h"
 #include "ShootingGameMode.h"
 #include "PlayerComponent.h"
+#include "MyGameInstance.h"
 
 AKatanaCharacter::AKatanaCharacter()
 {
@@ -146,6 +147,13 @@ void AKatanaCharacter::PostInitializeComponents()
 void AKatanaCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
+	if (MyGameInstance) {
+		Should_Q_Cooldown = MyGameInstance->Katana_Q_Cooldown;
+		Should_Q_Skill = MyGameInstance->Katana_Should_Q_Skill;
+		Should_R_Cooldown = MyGameInstance->Katana_R_Cooldown;
+		Should_R_Skill = MyGameInstance->Katana_Should_R_Skill;
+	}
 }
 
 void AKatanaCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -188,13 +196,7 @@ void AKatanaCharacter::Attack_Skill_Q()
 	{ 
 		AttackQSkillSoundPlay();
 		AnimInstance->PlayAttack_Q_SkillMontage();
-		Should_Q_Skill = false;
-
-		FTimerHandle waitHandle;	
-		GetWorld()->GetTimerManager().SetTimer(waitHandle, FTimerDelegate::CreateLambda([&]()
-			{
-				Should_Q_Skill = true;
-			}), 5.0f, false);
+		MyGameInstance->Katana_Q_SkillCoolDownStart();
 	}
 
 }
@@ -204,13 +206,8 @@ void AKatanaCharacter::Attack_Skill_R()
 	if (ShouldAttack && Should_R_Skill)
 	{
 		AnimInstance->PlayAttack_R_SkillMontage();
-		Should_R_Skill = false;
-
-		FTimerHandle waitHandle;
-		GetWorld()->GetTimerManager().SetTimer(waitHandle, FTimerDelegate::CreateLambda([&]()
-			{
-				Should_R_Skill = true;
-			}), 20.0f, false);
+		Should_R_Skill = false; 
+		MyGameInstance->Katana_R_SkillCoolDownStart();
 	}
 }
 

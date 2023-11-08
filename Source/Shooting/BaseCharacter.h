@@ -6,13 +6,15 @@
 #include "GameFramework/Character.h"
 #include "BaseCharacter.generated.h"
 
-
+class UMyGameInstance;
 
 UCLASS()
 class SHOOTING_API ABaseCharacter : public ACharacter
 {
 	GENERATED_BODY()
 public:
+	UPROPERTY()
+		UMyGameInstance* MyGameInstance;
 	UPROPERTY(VisibleAnywhere)
 		class UPlayerComponent* PlayerComponent;
 	UPROPERTY(VisibleAnywhere)
@@ -63,7 +65,9 @@ public:
 	bool IsDodging;
 	bool IsJumping;
 	bool IsRunning;
-
+	
+	float Should_Q_Cooldown;
+	float Should_R_Cooldown;
 	//Combo
 	bool attacking;
 	bool CanNextCombo;
