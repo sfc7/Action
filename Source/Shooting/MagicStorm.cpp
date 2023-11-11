@@ -61,7 +61,7 @@ void AMagicStorm::ProjectileOverlap(UPrimitiveComponent* HitComponent, AActor* O
 
 	FTimerHandle waitHandle;
 	if (OtherActor != nullptr && OtherActor != this && OtherComponent != nullptr) {
-		if (Hit.GetActor()->GetClass()->GetSuperClass()->GetSuperClass()->GetName() == TEXT("BaseMonster")) {
+		if (Hit.GetActor()->GetClass()->GetSuperClass()->GetName() == TEXT("BaseMonster")) {
 			UGameplayStatics::ApplyDamage(Hit.GetActor(), 15.0f, GetInstigatorController(), Hit.GetActor(), NULL);
 		}
 	}

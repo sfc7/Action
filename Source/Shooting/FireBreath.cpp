@@ -58,7 +58,7 @@ void AFireBreath::ProjectileImpact(UPrimitiveComponent* HitComponent, AActor* Ot
 void AFireBreath::ProjectileOverlap(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, int32 OtherIndex, bool bFromSweep, const FHitResult& Hit)
 {
 	if (OtherActor != nullptr && OtherActor != this && OtherComponent != nullptr) {
-		if (Hit.GetActor()->GetClass()->GetSuperClass()->GetSuperClass()->GetName() == TEXT("BaseCharacter")) {
+		if (Hit.GetActor()->GetClass()->GetSuperClass()->GetName() == TEXT("BaseCharacter")) {
 			UGameplayStatics::ApplyDamage(Hit.GetActor(), 5.0f, GetInstigatorController(), Hit.GetActor(), NULL);
 		}
 	}

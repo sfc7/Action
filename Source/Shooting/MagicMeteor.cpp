@@ -58,7 +58,7 @@ void AMagicMeteor::ProjectileImpact(UPrimitiveComponent* HitComponent, AActor* O
 	if (OtherActor != nullptr && OtherActor != this && OtherComponent != nullptr) {
 		auto CurrentImpact = UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ImpactEffect, Hit.ImpactPoint);
 		CurrentImpact->SetRelativeScale3D(FVector(0.3f,0.3f, 0.3f));
-		if (Hit.GetActor()->GetClass()->GetSuperClass()->GetSuperClass()->GetName() == TEXT("BaseMonster")) {
+		if (Hit.GetActor()->GetClass()->GetSuperClass()->GetName() == TEXT("BaseMonster")) {
 			UGameplayStatics::ApplyDamage(Hit.GetActor(), 15.0f, GetInstigatorController(), Hit.GetActor(), NULL);
 		}
 	

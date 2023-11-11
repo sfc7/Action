@@ -4,6 +4,7 @@
 #include "MonsterBoss.h"
 #include "MonsterBossAnimInstance.h"
 #include "Monster_Boss_AIController.h"
+#include "MonsterComponent.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "Components/WidgetComponent.h"
 #include "Components/StaticMeshComponent.h"
@@ -67,7 +68,7 @@ AMonsterBoss::AMonsterBoss()
 	static ConstructorHelpers::FClassFinder<AActor> Dagger(TEXT("/Script/Engine.Blueprint'/Game/Shooting/BluePrint/BP_Dagger.BP_Dagger_C'"));
 	if (Dagger.Succeeded())
 	{
-		Weapon = Dagger.Class;
+		WeaponClass = Dagger.Class;
 	}
 
 	GetCharacterMovement()->MaxWalkSpeed = 400.0f;
@@ -114,6 +115,11 @@ void AMonsterBoss::PostInitializeComponents()
 		AnimInstance->AttackBasic.AddUObject(this, &AMonsterBoss::Attack_Basic, 10.0f);
 		AnimInstance->AttackFireball.AddUObject(this, &AMonsterBoss::Spawn_Fireball);
 		AnimInstance->AttackMultipleFireball.AddUObject(this, &AMonsterBoss::Spawn_MultipleFireball);
+		AnimInstance->AttackGateofBabylon.AddUObject(this, &AMonsterBoss::Spawn_GateofBabylon);
+		AnimInstance->Heal.AddUObject(this, &AMonsterBoss::Heal);
+		AnimInstance->SpawnWeapon_l.AddUObject(this, &AMonsterBoss::SpawnWeapon_l);
+		AnimInstance->SpawnWeapon_r.AddUObject(this, &AMonsterBoss::SpawnWeapon_r);
+		AnimInstance->SpawnWeapon_spine.AddUObject(this, &AMonsterBoss::SpawnWeapon_spine);
 	}
 }
 
@@ -121,14 +127,14 @@ void AMonsterBoss::BeginPlay()
 {
 	Super::BeginPlay();
 
-	if (IsValid(Weapon))
+	if (IsValid(WeaponClass))
 	{
 		FName socket = "Spine_Socket";
 		FActorSpawnParameters SpawnParams;
 
-		auto SpawnWeapon = GetWorld()->SpawnActor<AActor>(Weapon, SpawnParams);
-		if (IsValid(SpawnWeapon)) {
-			SpawnWeapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetIncludingScale, socket);
+		Weapon = GetWorld()->SpawnActor<AActor>(WeaponClass, SpawnParams);
+		if (IsValid(Weapon)) {
+			Weapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetIncludingScale, socket);
 		}
 	}
 
@@ -288,29 +294,29 @@ void AMonsterBoss::DashAttack(AActor* Target)
 	AnimInstance->PlayAttackMontage();
 }
 
-void AMonsterBoss::SetArrowComponent()
+void AMonsterBoss::Heal()
 {
-	//TArray<FVector> ArrowLocations {
-	//	FVector(-85.0f, 0.0f, 120.0f),
-	//	FVector(-25.0f, 50.0f, 105.0f),
-	//	FVector(0.0f, 85.0f, 85.0f),
-	//	FVector(0.0f, 50.0f, 50.0f),
-	//	FVector(0.0f, -50.0f, 85.0f),
-	//	FVector(0.0f, -80.0f, 105.0f),
-	//	FVector(0.0f, -80.0f, 40.0f)
-	//};
+	
+	
+	UE_LOG(LogTemp, Log, TEXT("one : %f"), HealFrame);
 
-	//for (int32 i = 0; i < 7; i++) {
-	//	FName ArrowName = FName(*FString::Printf(TEXT("Arrow%d"), i));
-	//	auto Arrows = CreateDefaultSubobject<UArrowComponent>(ArrowName);
-	//	Arrows->SetRelativeLocation(ArrowLocations[i]);
-	//	Arrows->SetupAttachment(GetCapsuleComponent());
-	//	ArrowComponents.Add(Arrows);
-	//}
+	GetWorld()->GetTimerManager().SetTimer(HealHandle, FTimerDelegate::CreateLambda([this]() {
+		CompleteHeal += HealFrame;
+		MonsterComponent->HealHp(HealFrame);
+		UE_LOG(LogTemp, Log, TEXT("complete : %f"), CompleteHeal);
+		UE_LOG(LogTemp, Log, TEXT("frame : %f"), HealFrame);
+		if (CompleteHeal >= 100.0f) {
+			GetWorld()->GetTimerManager().ClearTimer(HealHandle);
+		}
+	}), 0.1f, true);
+
+	
 }
 
 void AMonsterBoss::Teleport(FVector _Location)
 {
+	AIController->SetIsDamaging(false);
+
 	auto Movement = GetCharacterMovement();
 	Movement->SetMovementMode(EMovementMode::MOVE_Flying);
 	Movement->MaxFlySpeed = 5000.0f;
@@ -329,6 +335,8 @@ void AMonsterBoss::Teleport(FVector _Location)
 
 	AIController->TeleportRequestID = AIController->MoveToLocation(_Location);
 	AnimInstance->StopAllMontages(10);
+
+	
 }
 
 void AMonsterBoss::TeleportEnd()
@@ -361,4 +369,58 @@ void AMonsterBoss::TeleportEnd()
 		}
 	}), 1.2f, false);
 
+}
+
+void AMonsterBoss::SpawnWeapon_l()
+{
+	if (Weapon) {
+		Weapon->Destroy();
+	}
+
+	if (IsValid(WeaponClass))
+	{
+		FName socket = "hand_l_WeaponSocket";
+		FActorSpawnParameters SpawnParams;
+
+		Weapon = GetWorld()->SpawnActor<AActor>(WeaponClass, SpawnParams);
+		if (IsValid(Weapon)) {
+			Weapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetIncludingScale, socket);
+		}
+	}
+}
+
+void AMonsterBoss::SpawnWeapon_r()
+{
+	if (Weapon) {
+		Weapon->Destroy();
+	}
+
+	if (IsValid(WeaponClass))
+	{
+		FName socket = "hand_r_WeaponSocket";
+		FActorSpawnParameters SpawnParams;
+
+		Weapon = GetWorld()->SpawnActor<AActor>(WeaponClass, SpawnParams);
+		if (IsValid(Weapon)) {
+			Weapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetIncludingScale, socket);
+		}
+	}
+}
+
+void AMonsterBoss::SpawnWeapon_spine()
+{
+	if (Weapon) {
+		Weapon->Destroy();
+	}
+
+	if (IsValid(WeaponClass))
+	{
+		FName socket = "Spine_Socket";
+		FActorSpawnParameters SpawnParams;
+
+		Weapon = GetWorld()->SpawnActor<AActor>(WeaponClass, SpawnParams);
+		if (IsValid(Weapon)) {
+			Weapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetIncludingScale, socket);
+		}
+	}
 }

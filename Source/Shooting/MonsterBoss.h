@@ -39,7 +39,9 @@ public:
 		TArray<UArrowComponent*> ArrowComponents;
 
 	UPROPERTY(EditAnywhere)
-		TSubclassOf<class AActor> Weapon;
+		TSubclassOf<class AActor> WeaponClass;
+	UPROPERTY(EditAnywhere)
+		AActor* Weapon;
 	UPROPERTY(VisibleAnywhere)
 		class UParticleSystem* TakeHitEffect;
 	UPROPERTY(VisibleAnywhere)
@@ -49,6 +51,9 @@ public:
 public:
 	FVector TargetLocation;
 	FString Stance;
+	float CompleteHeal = 0.0f;
+	float HealFrame = 2.0f;
+	FTimerHandle HealHandle;
 protected:
 	virtual void PostInitializeComponents() override;
 	virtual void BeginPlay() override;
@@ -64,8 +69,11 @@ public:
 	void Spawn_MultipleFireball();
 	void Spawn_GateofBabylon();
 	void DashAttack(AActor* Target);
-
-	void SetArrowComponent();
+	void Heal();
 	void Teleport(FVector _Location);
 	void TeleportEnd();
+	void SpawnWeapon_l();
+	void SpawnWeapon_r();
+	void SpawnWeapon_spine();
+
 };

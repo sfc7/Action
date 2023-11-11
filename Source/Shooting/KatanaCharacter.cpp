@@ -280,6 +280,7 @@ float AKatanaCharacter::TakeDamage(float Damage, FDamageEvent const& DamageEvent
 		if (IsValid(AnimInstance) && PlayerComponent->GetHp() - (int32)returnDamage > 0) {
 			HitSoundPlay();
 			AnimInstance->PlayHitReactMontage();
+			
 		}
 	}
 	return  returnDamage;

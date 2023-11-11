@@ -26,6 +26,13 @@ void UMonsterBossAnimInstance::PlayAttackMontage()
 	}
 }
 
+void UMonsterBossAnimInstance::PlayHealMontage()
+{
+	if (!Montage_IsPlaying(HealMontage)) {
+		Montage_Play(HealMontage);
+	}	
+}
+
 void UMonsterBossAnimInstance::PlayRangeAttackMontage()
 {
 	int32 num = FMath::RandRange(0, RangeAttackMontageNum - 1);

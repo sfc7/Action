@@ -140,6 +140,10 @@ void UCreatureAnimInstance::AnimNotify_MultipleFireball()
 {
 	AttackMultipleFireball.Broadcast();
 }
+void UCreatureAnimInstance::AnimNotify_GateofBabylon()
+{
+	AttackGateofBabylon.Broadcast();
+}
 
 void UCreatureAnimInstance::AnimNotify_Firebreath()
 {
@@ -159,6 +163,26 @@ void UCreatureAnimInstance::AnimNotify_AttackLClaw()
 void UCreatureAnimInstance::AnimNotify_AttackRClaw()
 {
 	AttackRClaw.Broadcast();
+}
+
+void UCreatureAnimInstance::AnimNotify_SpawnWeapon_l()
+{
+	SpawnWeapon_l.Broadcast();
+}
+
+void UCreatureAnimInstance::AnimNotify_SpawnWeapon_r()
+{
+	SpawnWeapon_r.Broadcast();
+}
+
+void UCreatureAnimInstance::AnimNotify_SpawnWeapon_Spine()
+{
+	SpawnWeapon_spine.Broadcast();
+}
+
+void UCreatureAnimInstance::AnimNotify_DestroyWeapon()
+{
+	destroyWeapon.Broadcast();
 }
 
 void UCreatureAnimInstance::AnimNotify_AttackBasicSound()
@@ -184,4 +208,9 @@ void UCreatureAnimInstance::AnimNotify_AttackBasicSound4()
 void UCreatureAnimInstance::AnimNotify_AttackRSkillSound()
 {
 	AttackRSkillSound.Broadcast();
+}
+
+void UCreatureAnimInstance::AnimNotify_Heal()
+{
+	Heal.Broadcast();
 }

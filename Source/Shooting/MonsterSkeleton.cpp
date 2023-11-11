@@ -138,5 +138,5 @@ void AMonsterSkeleton::Attack_Basic(float damage)
 		DrawColor = FColor::Red;
 	}
 
-	DrawDebugCapsule(GetWorld(), Center, HalfHeight, AttackRadius, Rotation, DrawColor, false, 3.f);
+	/*DrawDebugCapsule(GetWorld(), Center, HalfHeight, AttackRadius, Rotation, DrawColor, false, 3.f);*/
 }

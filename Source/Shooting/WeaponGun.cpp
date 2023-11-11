@@ -110,7 +110,7 @@ void AWeaponGun::Shoot(FTransform StartTransForm)
 				UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ImpactEffect, HitResult.Location, Dir.Rotation());
 				UGameplayStatics::SpawnSoundAtLocation(GetWorld(), ImpactSound, HitResult.Location);
 				if (HitResult.GetActor() != nullptr) {
-					float Damage = 5.0f;
+					float Damage = 2.0f;
 					FPointDamageEvent DamageEvent(Damage, HitResult, Dir, nullptr);
 					HitResult.GetActor()->TakeDamage(Damage, DamageEvent, ShooterController, this);
 				}
@@ -153,7 +153,7 @@ void AWeaponGun::ZoomShoot()
 				UGameplayStatics::SpawnEmitterAtLocation(GetWorld(),ImpactEffect, HitResult.Location, Dir.Rotation());
 				UGameplayStatics::SpawnSoundAtLocation(GetWorld(), ImpactSound, HitResult.Location);
 				if (HitResult.GetActor() != nullptr) {
-					float Damage = 5.0f;
+					float Damage = 2.0f;
 					FPointDamageEvent DamageEvent(Damage, HitResult, Dir, nullptr);
 					HitResult.GetActor()->TakeDamage(Damage, DamageEvent, ShooterController, this);
 				}
@@ -201,7 +201,7 @@ void AWeaponGun::LaserShoot(FTransform StartTransForm)
 				FVector Dir = -ControllerRotation.Vector();
 				UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), LaserImpactEffect, HitResult.Location, Dir.Rotation());
 				if (HitResult.GetActor() != nullptr) {
-					float Damage = 30.0f;
+					float Damage = 20.0f;
 					FPointDamageEvent DamageEvent(Damage, HitResult, Dir, nullptr);
 					HitResult.GetActor()->TakeDamage(Damage, DamageEvent, ShooterController, this);
 				}

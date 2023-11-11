@@ -12,6 +12,7 @@ DECLARE_MULTICAST_DELEGATE_OneParam(FOnHit, bool)
 DECLARE_MULTICAST_DELEGATE_OneParam(FDuringAttack, bool)
 DECLARE_MULTICAST_DELEGATE_OneParam(FDuringDodge, bool)
 DECLARE_MULTICAST_DELEGATE(FAttackHitType);
+DECLARE_MULTICAST_DELEGATE(FSpecialType);
 DECLARE_MULTICAST_DELEGATE(FSoundType);
 /**
  *
@@ -53,10 +54,16 @@ public:
 	FAttackHitType AttackRSkill;
 	FAttackHitType AttackFireball;
 	FAttackHitType AttackMultipleFireball;
+	FAttackHitType AttackGateofBabylon;
 	FAttackHitType AttackFirebreath;
 	FAttackHitType AttackBite;
 	FAttackHitType AttackLClaw;
 	FAttackHitType AttackRClaw;
+	FSpecialType Heal;
+	FSpecialType SpawnWeapon_l;
+	FSpecialType SpawnWeapon_r;
+	FSpecialType SpawnWeapon_spine;
+	FSpecialType destroyWeapon;
 	FSoundType AttackBasicSound;
 	FSoundType AttackBasicSound2;
 	FSoundType AttackBasicSound3;
@@ -95,13 +102,25 @@ public:
 	UFUNCTION()
 		void AnimNotify_MultipleFireball();
 	UFUNCTION()
+		void AnimNotify_GateofBabylon();
+	UFUNCTION()
+		void AnimNotify_Heal();
+	UFUNCTION()
 		void AnimNotify_Firebreath();
 	UFUNCTION()
 		void AnimNotify_AttackBite();
 	UFUNCTION()
 		void AnimNotify_AttackLClaw();
 	UFUNCTION()
-		void AnimNotify_AttackRClaw();
+		void AnimNotify_AttackRClaw();	
+	UFUNCTION()
+		void AnimNotify_SpawnWeapon_l();
+	UFUNCTION()
+		void AnimNotify_SpawnWeapon_r();
+	UFUNCTION()
+		void AnimNotify_SpawnWeapon_Spine();
+	UFUNCTION()
+		void AnimNotify_DestroyWeapon();
 	UFUNCTION()
 		void AnimNotify_AttackBasicSound();
 	UFUNCTION()

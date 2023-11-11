@@ -46,6 +46,9 @@ void UMonsterComponent::SetHp(int32 _Hp)
 			GameInstance->SetMonsterDeathCount();
 		}
 	}
+	else if (Hp >= MaxHp) {
+		Hp = MaxHp;
+	}
 
 	OnHpChanged.Broadcast();
 }
@@ -53,6 +56,14 @@ void UMonsterComponent::SetHp(int32 _Hp)
 void UMonsterComponent::OnDamaged(float Damage)
 {
 	int32 temp = Hp - Damage;
+	SetHp(temp);
+}
+
+void UMonsterComponent::HealHp(float Heal)
+{
+	
+	int32 temp = Hp + Heal;
+
 	SetHp(temp);
 }
 

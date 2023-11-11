@@ -7,6 +7,7 @@
 #include "BehaviorTree/BlackboardComponent.h"
 #include "BaseCharacter.h"
 #include "MonsterBoss.h"
+#include "MonsterComponent.h"
 
 AMonster_Boss_AIController::AMonster_Boss_AIController()
 {
@@ -44,6 +45,20 @@ void AMonster_Boss_AIController::OnUnPossess()
 void AMonster_Boss_AIController::BeginPlay()
 {
 	Super::BeginPlay();
+}
+
+void AMonster_Boss_AIController::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+
+	AMonsterBoss* AIOwner = Cast<AMonsterBoss>(GetPawn());
+	if (AIOwner) {
+		UMonsterComponent* OwnerComponent = AIOwner->MonsterComponent;
+		if (OwnerComponent)
+		{
+			Blackboard->SetValueAsFloat(AMonster_Boss_AIController::CurrentHpKey, OwnerComponent->GetHpRatio());
+		}
+	}
 }
 
 void AMonster_Boss_AIController::OnMoveCompleted(FAIRequestID RequestID, const FPathFollowingResult& Result)

@@ -10,11 +10,11 @@
 #include "Perception/AIPerceptionStimuliSourceComponent.h"
 #include "BaseCharacter.h"
 
-
 const FName AMonsterAIController::HomePosKey(TEXT("HomePos"));
 const FName AMonsterAIController::TargetPosKey(TEXT("TargetPos"));
 const FName AMonsterAIController::TargetActorKey(TEXT("TargetActor"));
 const FName AMonsterAIController::IsDamagingKey(TEXT("IsDamaging"));
+const FName AMonsterAIController::CurrentHpKey(TEXT("CurrentHp"));
 
 AMonsterAIController::AMonsterAIController()
 {
@@ -69,6 +69,8 @@ void AMonsterAIController::SetIsDamaging(bool _IsDamaging)
 void AMonsterAIController::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
+	
 }
 
 void AMonsterAIController::OnPossess(APawn* InPawn)

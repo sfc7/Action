@@ -386,7 +386,10 @@ float AGunCharacter::TakeDamage(float Damage, FDamageEvent const& DamageEvent, A
 		PlayerComponent->OnDamaged(returnDamage);
 		if (IsValid(AnimInstance) && PlayerComponent->GetHp() - (int32)returnDamage > 0) {
 			HitSoundPlay();
-			AnimInstance->PlayHitReactMontage();
+			if (!IsAttacking_R_Skill) {
+				AnimInstance->PlayHitReactMontage();
+			}
+			
 		}
 	}
 	return returnDamage;

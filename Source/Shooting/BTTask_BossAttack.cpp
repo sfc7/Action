@@ -34,7 +34,7 @@ EBTNodeResult::Type UBTTask_Boss_Attack::ExecuteTask(UBehaviorTreeComponent& Own
 		break;
 	case EAttackType::Ranged:
 		if (!(ControllingOwner->IsDamaging) && !(ControllingOwner->IsAttacking)) {
-			ControllingOwner->Spawn_GateofBabylon();
+			ControllingOwner->RangeAttack(Target);
 			return EBTNodeResult::Succeeded;
 		}
 		break;

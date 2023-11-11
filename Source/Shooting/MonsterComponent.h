@@ -21,4 +21,5 @@ public:
 	void SetInitialize() override;
 	void SetHp(int32 _Hp) override;
 	void OnDamaged(float Damage);
+	void HealHp(float Heal);
 };

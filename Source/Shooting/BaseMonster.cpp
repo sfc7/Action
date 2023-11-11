@@ -56,7 +56,10 @@ float ABaseMonster::TakeDamage(float Damage, FDamageEvent const& DamageEvent, AC
 		MonsterComponent->OnDamaged(returnDamage);
 		if (IsValid(AnimInstance) && MonsterComponent->GetHp() - (int32)returnDamage > 0) {
 			HitSoundPlay();
-			AnimInstance->PlayHitReactMontage();
+			if (returnDamage >= 3.0f) {
+				AnimInstance->PlayHitReactMontage();
+			}
+			
 		}
 	}
 	return returnDamage;

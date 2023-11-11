@@ -27,6 +27,8 @@ public:
 	UPROPERTY(Category = Animation, EditAnywhere, BlueprintReadOnly)
 		UAnimMontage* AttackChargeMontage;
 	UPROPERTY(Category = Animation, EditAnywhere, BlueprintReadOnly)
+		UAnimMontage* HealMontage;
+	UPROPERTY(Category = Animation, EditAnywhere, BlueprintReadOnly)
 		TArray<UAnimMontage*> AttackMontageArray;
 	UPROPERTY(Category = Animation, EditAnywhere, BlueprintReadOnly)
 		TArray<UAnimMontage*> RangeAttackMontageArray;
@@ -39,5 +41,6 @@ public:
 	int32 RangeAttackMontageNum = 4;
 
 	virtual void PlayAttackMontage() override;
+	void PlayHealMontage();
 	virtual void PlayRangeAttackMontage() override;
 };

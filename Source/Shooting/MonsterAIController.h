@@ -32,6 +32,7 @@ public:
 	static const FName TargetPosKey;
 	static const FName TargetActorKey;
 	static const FName IsDamagingKey;
+	static const FName CurrentHpKey;
 	FVector HomePosition;
 	class UAISenseConfig_Sight* SightConfig;
 	FAIRequestID TeleportRequestID;

@@ -53,8 +53,8 @@ void AHammer::ProjectileImpact(UPrimitiveComponent* HitComponent, AActor* OtherA
 {
 	if (OtherActor != nullptr && OtherActor != this && OtherComponent != nullptr) {
 		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ImpactEffect, Hit.ImpactPoint);
-		if (Hit.GetActor()->GetClass()->GetSuperClass()->GetSuperClass()->GetName() == TEXT("BaseCharacter")) {
-			UGameplayStatics::ApplyDamage(Hit.GetActor(), 20.0f, GetInstigatorController(), Hit.GetActor(), NULL);
+		if (Hit.GetActor()->GetClass()->GetSuperClass()->GetName() == TEXT("BaseCharacter")) {
+			UGameplayStatics::ApplyDamage(Hit.GetActor(), 2.0f, GetInstigatorController(), Hit.GetActor(), NULL);
 		}
 		Destroy();
 	}
