@@ -267,10 +267,14 @@ void AMagicCharacter::Attack_Basic(float damage)
 			EndLocation,
 			ECC_GameTraceChannel5,
 			CollisionParams
-		);
+		);	
 
 		if (bHit && HitResult.GetActor()->GetClass()->GetSuperClass()->GetName() == TEXT("BaseMonster")) {
 			Target = HitResult.GetActor();
+			/*DrawDebugLine(GetWorld(), StartLocation, EndLocation, FColor::Green, false, 3.0f);*/
+		}
+		else {
+			/*DrawDebugLine(GetWorld(), StartLocation, EndLocation, FColor::Red, false, 3.0f);*/
 		}
 		CurrentAngle++;
 	}

@@ -125,6 +125,6 @@ public:
 	void Character_GunCoolDownStart();
 
 	void SkillCoolDownStart(FTimerHandle& SkillHandle, float& CharacterCooldown, float ApplyCooldown, bool& ShouldSkill);
-	void CharacterCoolDownStart(FTimerHandle& CharacterHandle, float& CharacterCooldown);
+	void CharacterCoolDownStart(FTimerHandle& CharacterHandle, float& CharacterCooldoWwn);
 	
 };

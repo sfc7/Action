@@ -153,7 +153,6 @@ void UCharacterUIWidget::NativeTick(const FGeometry& MyGeometry, float DeltaTime
 {
 	Super::NativeTick(MyGeometry, DeltaTime);
 
-	UpdateTimer += DeltaTime;
 
 	if (GetOwningPlayerPawn()->GetClass()->GetSuperClass()->GetName() == "BaseCharacter")
 	{

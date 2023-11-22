@@ -203,7 +203,7 @@ void AMonsterBoss::Attack_Basic(float damage)
 		DrawColor = FColor::Red;
 	}
 
-	DrawDebugCapsule(GetWorld(), Center, HalfHeight, AttackRadius, Rotation, DrawColor, false, 3.f);
+	/*DrawDebugCapsule(GetWorld(), Center, HalfHeight, AttackRadius, Rotation, DrawColor, false, 3.f);*/
 }
 
 void AMonsterBoss::RangeAttack(AActor* Target)
@@ -251,7 +251,7 @@ void AMonsterBoss::Spawn_GateofBabylon()
 				Portal->DeactivateSystem();
 				Portal->DestroyComponent();
 			}
-			}, DestroyDelay, false);
+		}, DestroyDelay, false);
 
 		for (int32 i = 0; i < 6; i++) {
 			FTimerHandle WaitHandle;
@@ -259,10 +259,9 @@ void AMonsterBoss::Spawn_GateofBabylon()
 			FVector HammerLocation = Location;
 			FRotator HammerRotation = Rotation;
 
-			GetWorld()->GetTimerManager().SetTimer(WaitHandle, FTimerDelegate::CreateLambda([this, Location, Rotation]()
-				{
+			GetWorld()->GetTimerManager().SetTimer(WaitHandle, FTimerDelegate::CreateLambda([this, Location, Rotation]() {
 					AHammer* Hammer = GetWorld()->SpawnActor<AHammer>(AHammer::StaticClass(), Location, Rotation, FActorSpawnParameters());
-				}), RandomDelay, false);
+			}), RandomDelay, false);
 		}
 	}
 }
@@ -296,15 +295,9 @@ void AMonsterBoss::DashAttack(AActor* Target)
 
 void AMonsterBoss::Heal()
 {
-	
-	
-	UE_LOG(LogTemp, Log, TEXT("one : %f"), HealFrame);
-
 	GetWorld()->GetTimerManager().SetTimer(HealHandle, FTimerDelegate::CreateLambda([this]() {
 		CompleteHeal += HealFrame;
 		MonsterComponent->HealHp(HealFrame);
-		UE_LOG(LogTemp, Log, TEXT("complete : %f"), CompleteHeal);
-		UE_LOG(LogTemp, Log, TEXT("frame : %f"), HealFrame);
 		if (CompleteHeal >= 100.0f) {
 			GetWorld()->GetTimerManager().ClearTimer(HealHandle);
 		}

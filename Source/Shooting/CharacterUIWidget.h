@@ -16,10 +16,6 @@ class SHOOTING_API UCharacterUIWidget : public UUserWidget
 {
 	GENERATED_BODY()
 public:
-	float UpdateTimer = 0.0f;
-	float UpdateInterval = 0.1f;
-	float Qtime = 0.0f;
-	float Rtime = 0.0f;
 	UPROPERTY(VisibleAnywhere)
 	class ABaseCharacter* player;
 

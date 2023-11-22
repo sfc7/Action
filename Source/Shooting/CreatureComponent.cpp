@@ -28,7 +28,7 @@ void UCreatureComponent::BeginPlay()
 
 void UCreatureComponent::SetInitialize()
 {
-
+	
 }
 
 void UCreatureComponent::SetHp(int32 _Hp)

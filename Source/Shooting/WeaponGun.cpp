@@ -64,15 +64,12 @@ AWeaponGun::AWeaponGun()
 void AWeaponGun::BeginPlay()
 {
 	Super::BeginPlay();
-	
 }
 
 // Called every frame
 void AWeaponGun::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	
-	
 }
 
 void AWeaponGun::GunSoundPlay()
@@ -104,7 +101,7 @@ void AWeaponGun::Shoot(FTransform StartTransForm)
 				Params
 			);
 
-			DrawDebugLine(GetWorld(), StartTransForm.GetLocation(), End, FColor::Red, true, 2.0f);
+			/*DrawDebugLine(GetWorld(), StartTransForm.GetLocation(), End, FColor::Red, true, 2.0f);*/
 			if (bHit) {
 				FVector Dir = -StartTransForm.GetRotation().Vector();
 				UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ImpactEffect, HitResult.Location, Dir.Rotation());
@@ -147,7 +144,7 @@ void AWeaponGun::ZoomShoot()
 				Params
 			);
 
-			DrawDebugLine(GetWorld(), ControllerLocation, End, FColor::Red, true, 2.0f);
+			/*DrawDebugLine(GetWorld(), ControllerLocation, End, FColor::Red, true, 2.0f);*/
 			if (bHit) {
 				FVector Dir = -ControllerRotation.Vector();
 				UGameplayStatics::SpawnEmitterAtLocation(GetWorld(),ImpactEffect, HitResult.Location, Dir.Rotation());
@@ -193,9 +190,15 @@ void AWeaponGun::LaserShoot(FTransform StartTransForm)
 			UParticleSystemComponent* LaserEffectComponent = UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), LaserEffect, StartTransForm.GetLocation(), (End - StartTransForm.GetLocation()).Rotation());
 			if (LaserEffectComponent) {
 				LaserEffectComponent->CustomTimeDilation = 3.0f;
+				LaserEffectComponent->SetRelativeScale3D(FVector(4.0f, 1.0f, 4.0f));
+				FTimerHandle waitHandle;
+				GetWorld()->GetTimerManager().SetTimer(waitHandle, FTimerDelegate::CreateLambda([LaserEffectComponent]()
+					{
+						LaserEffectComponent->DestroyComponent();
+					}), 0.2f, false);
 			}
 
-			DrawDebugLine(GetWorld(), StartTransForm.GetLocation(), End, FColor::Red, true, 2.0f);
+		/*	DrawDebugLine(GetWorld(), StartTransForm.GetLocation(), End, FColor::Red, true, 2.0f);*/
 
 			if (bHit) {
 				FVector Dir = -ControllerRotation.Vector();

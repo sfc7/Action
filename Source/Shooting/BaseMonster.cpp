@@ -104,6 +104,7 @@ void ABaseMonster::Death()
 	GetCapsuleComponent()->SetCollisionProfileName("NoCollision");
 	GetMesh()->SetCollisionProfileName("NoCollision");
 
+	
 	if (IsValid(AnimInstance)) {
 		DeathSoundPlay();
 		AnimInstance->StopAllMontages(0.0f);

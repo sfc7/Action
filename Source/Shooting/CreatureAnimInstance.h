@@ -31,7 +31,7 @@ public:
 	UPROPERTY(Category = Movement, VisibleAnywhere, BlueprintReadWrite)
 		FVector Velocity;	
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
-		float Direction;
+		float Direction;	
 
 public:
 	UPROPERTY(Category = Animation, EditAnywhere, BlueprintReadWrite)

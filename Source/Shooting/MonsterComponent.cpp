@@ -47,7 +47,7 @@ void UMonsterComponent::SetHp(int32 _Hp)
 		}
 	}
 	else if (Hp >= MaxHp) {
-		Hp = MaxHp;
+		Hp = MaxHp;	
 	}
 
 	OnHpChanged.Broadcast();

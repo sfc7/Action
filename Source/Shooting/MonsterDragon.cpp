@@ -31,7 +31,47 @@ AMonsterDragon::AMonsterDragon()
 
 	GetCharacterMovement()->MaxWalkSpeed = WalkSpeed;
 
-	UCapsuleComponent* MyCapsuleComponent = CreateDefaultSubobject<UCapsuleComponent>(TEXT("Capsule5"));
+	UCapsuleComponent* MyCapsuleComponent = CreateDefaultSubobject<UCapsuleComponent>(TEXT("Capsule1"));
+	MyCapsuleComponent->SetRelativeScale3D(FVector(3.0f, 3.0f, 3.0f));
+	MyCapsuleComponent->SetRelativeLocationAndRotation(FVector(90.0f, 30.0f, 0.0f), FRotator(90.0f, 0.0f, 0.0f));
+	MyCapsuleComponent->SetCollisionProfileName(TEXT("Monster"));
+	if (IsValid(MyCapsuleComponent))
+	{
+		FName Socket = TEXT("MOUNTAIN_DRAGON_-L-Thigh");
+		MyCapsuleComponent->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, Socket);
+	}
+
+	MyCapsuleComponent = CreateDefaultSubobject<UCapsuleComponent>(TEXT("Capsule2"));
+	MyCapsuleComponent->SetRelativeScale3D(FVector(3.0f, 3.0f, 3.0f));
+	MyCapsuleComponent->SetRelativeLocationAndRotation(FVector(90.0f, 30.0f, 0.0f), FRotator(90.0f, 0.0f, 0.0f));
+	MyCapsuleComponent->SetCollisionProfileName(TEXT("Monster"));
+	if (IsValid(MyCapsuleComponent))
+	{
+		FName Socket = TEXT("MOUNTAIN_DRAGON_-R-Thigh");
+		MyCapsuleComponent->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, Socket);
+	}
+
+	MyCapsuleComponent = CreateDefaultSubobject<UCapsuleComponent>(TEXT("Capsule3"));
+	MyCapsuleComponent->SetRelativeScale3D(FVector(2.0f, 3.0f, 3.0f));
+	MyCapsuleComponent->SetRelativeLocationAndRotation(FVector(90.0f, 30.0f, 0.0f), FRotator(90.0f, -160.0f, -160.0f));
+	MyCapsuleComponent->SetCollisionProfileName(TEXT("Monster"));
+	if (IsValid(MyCapsuleComponent))
+	{
+		FName Socket = TEXT("MOUNTAIN_DRAGON_-L-Forearm");
+		MyCapsuleComponent->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, Socket);
+	}
+
+	MyCapsuleComponent = CreateDefaultSubobject<UCapsuleComponent>(TEXT("Capsule4"));
+	MyCapsuleComponent->SetRelativeScale3D(FVector(2.0f, 3.0f, 3.0f));
+	MyCapsuleComponent->SetRelativeLocationAndRotation(FVector(90.0f, 30.0f, 0.0f), FRotator(90.0f, -160.0f, -160.0f));
+	MyCapsuleComponent->SetCollisionProfileName(TEXT("Monster"));
+	if (IsValid(MyCapsuleComponent))
+	{
+		FName Socket = TEXT("MOUNTAIN_DRAGON_-R-Forearm");
+		MyCapsuleComponent->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, Socket);
+	}
+
+	MyCapsuleComponent = CreateDefaultSubobject<UCapsuleComponent>(TEXT("Capsule5"));
 	MyCapsuleComponent->SetRelativeScale3D(FVector(2.0f, 3.0f, 3.0f));
 	MyCapsuleComponent->SetRelativeLocationAndRotation(FVector(0.0f, 30.0f, 0.0f), FRotator(90.0f, 0.0f, 60.0f));
 	MyCapsuleComponent->SetCollisionProfileName(TEXT("Monster"));
@@ -186,7 +226,7 @@ void AMonsterDragon::AttackChannel(FName _SocketName, float _Damage)
 
 	bool Result = GetWorld()->SweepSingleByChannel(
 		OUT HitResult,
-		Center,
+		Center,		
 		Forward,
 		FQuat::Identity,
 		ECollisionChannel::ECC_GameTraceChannel7,
@@ -214,8 +254,8 @@ void AMonsterDragon::AttackChannel(FName _SocketName, float _Damage)
 	else {
 		DrawColor = FColor::Red;
 	}
-
-	DrawDebugCapsule(GetWorld(), Center, HalfHeight, AttackRadius, Rotation, DrawColor, false, 3.f);
+	 
+	/*DrawDebugCapsule(GetWorld(), Center, HalfHeight, AttackRadius, Rotation, DrawColor, false, 3.f);*/
 }
 
 void AMonsterDragon::FireBreathSoundPlay()

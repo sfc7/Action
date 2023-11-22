@@ -306,8 +306,6 @@ void AKatanaCharacter::Death()
 		actor->Destroy();
 	}
 
-	GetCapsuleComponent()->SetCollisionProfileName("NoCollision");
-	GetMesh()->SetCollisionProfileName("NoCollision");
 
 	if (IsValid(AnimInstance)) {
 		AnimInstance->StopAllMontages(0.0f);

@@ -34,7 +34,13 @@ EBTNodeResult::Type UBTTask_Boss_Attack::ExecuteTask(UBehaviorTreeComponent& Own
 		break;
 	case EAttackType::Ranged:
 		if (!(ControllingOwner->IsDamaging) && !(ControllingOwner->IsAttacking)) {
-			ControllingOwner->RangeAttack(Target);
+			int32 choice = FMath::RandRange(0, 3);
+			if (!choice) {
+				ControllingOwner->DashAttack(Target);
+			}
+			else {
+				ControllingOwner->RangeAttack(Target);
+			}
 			return EBTNodeResult::Succeeded;
 		}
 		break;

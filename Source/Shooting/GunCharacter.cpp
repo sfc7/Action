@@ -187,8 +187,6 @@ void AGunCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 	PlayerInputComponent->BindAction(TEXT("CharacterChangeMagic"), EInputEvent::IE_Released, this, &AGunCharacter::CharacterChangeMagic);
 }
 
-
-
 void AGunCharacter::Attack()
 {
 	if (ShouldAttack && !IsRunning) {
@@ -324,8 +322,6 @@ void AGunCharacter::RSkill_RangeDirection(float value)
 	LeftButtonDirection = FMath::FInterpTo(LeftButtonDirection, LeftButtonDirection + (value / 10), GetWorld()->GetDeltaSeconds(), 10.0f);
 }
 
-
-
 void AGunCharacter::AimingStart()
 {
 	if (!IsRunning) {
@@ -366,7 +362,7 @@ void AGunCharacter::SetRSkill_Circle()
 	DecalComponent->SetMaterial(0, CircleMaterial);
 	DecalComponent->SetupAttachment(RSkillCircleMeshComponent);
 	DecalComponent->DecalSize = FVector(10.0f, 10.0f, 10.0f);
-	DecalComponent->SetWorldScale3D(FVector(2.0f, 5.0f, 5.0f));
+	DecalComponent->SetWorldScale3D(FVector(3.0f, 5.0f, 5.0f));
 	DecalComponent->SetRelativeRotation(FRotator(-90.0f, 0.0f, 0.0f));
 	DecalComponent->SetRelativeLocation(FVector(0.0f, 0.0f, -10.0f));
 	DecalComponent->SetVisibility(false);
