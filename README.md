@@ -31,7 +31,7 @@ F1, F2, F3 (캐릭터 전환)
 ![Diagram](https://github.com/sfc7/Action/assets/124154607/e97dcd46-717a-4c77-9a48-6f0e8cc26091)
 
 ## 캐릭터
-### 공통 - 기본
+### 공통
 - 캐릭터는 입력한 방향으로 회전하고 카메라는 영향을 받지 않는 형식의 조작 지원
 ```
 ABaseCharacter::ABaseCharacter()
@@ -80,3 +80,11 @@ void ABaseCharacter::CharacterChange(TSubclassOf<ABaseCharacter> ChangeCharacter
 	Destroy();
 }
 ```
+
+- 특정 Socket에 Weapon을 장착함
+ 
+## 캐릭터 - 카타나
+- SweepSingleByChannel을 이용한 근접 공격 사용
+- Animation Sequence를 섞어서 만든 Animation Montage들을 스킬들로 사용함
+- 
+- 
