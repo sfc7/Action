@@ -28,7 +28,21 @@ F1, F2, F3 (캐릭터 전환)
 
 # 기술 설명서
 ## 구조 다이어그램
-![Diagram](https://github.com/sfc7/Action/assets/124154607/103d6d93-88b1-4be5-bf0b-d760f452e0e4)
+![Diagram](https://github.com/sfc7/Action/assets/124154607/e97dcd46-717a-4c77-9a48-6f0e8cc26091)
 
 ## 캐릭터
+### 공통 - 기본 조작  
+- 아래 코드를 통한 캐릭터는 입력한 방향으로 회전하고 카메라는 영향을 받지 않는 형식의 조작 채택
+```
+ABaseCharacter::ABaseCharacter()
+{
+	bUseControllerRotationPitch = false;
+	bUseControllerRotationYaw = false;
+	bUseControllerRotationRoll = false;
 
+	GetCharacterMovement()->bOrientRotationToMovement = true;
+  ...
+}
+```
+- 다음과 같은 기본적인 애니메이션 구조 사용, 걷기와 달리기는 BS 1D를 통해 Speed 값을 받음 
+![animation](https://github.com/sfc7/Action/assets/124154607/652ceb9b-e0d9-4c43-bc8f-82977fe34e92)
