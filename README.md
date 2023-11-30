@@ -85,6 +85,34 @@ void ABaseCharacter::CharacterChange(TSubclassOf<ABaseCharacter> ChangeCharacter
  
 ## 캐릭터 - 카타나
 - SweepSingleByChannel을 이용한 근접 공격 사용
-- Animation Sequence를 섞어서 만든 Animation Montage들을 스킬들로 사용함
-- 
-- 
+- Q와 R 스킬은 Animation Sequence를 섞어서 만든 Animation Montage들을 스킬들로 사용함
+- Animnotify의 AttackComboCheck 델리게이트를 람다함수로 바인딩 시키고 bool 변수값들을 이용해 콤보 입력을 받아 공격함
+```
+AnimInstance->AttackComboCheck.AddLambda([this]() -> void {
+		CanNextCombo = false; // 콤보 지속 여부
+		if (IsComboInputOn) // 콤보에 대한 선입력 
+		{
+			AttackStartComboState(); // 지속 여부 = true, 선입력 = false, CurrentCombo = Clamp로 제한
+			if (CurrentCombo != MaxCombo) {
+				AnimInstance->JumpToAttackMontageSection(CurrentCombo); // Montage 섹션이 넘어감
+			}
+		}
+	});
+```  
+## 캐릭터 - 마법
+- 모든 공격이 충돌체 판정을 가진 공격 사용
+- 기본 공격은 여러 갈래로 Linetrace를 쏘고 hit 되면 ProjectileMovement->HomingAccelerationMagnitude을 높게 준 구체를 유도공격 함
+- Q스킬은 OnComponentOverlap하는 토네이도를 생성하여 공격하는 스킬
+- R스킬은 하늘에서 OnComponentHit하는 메테오를 떨어뜨려 공격하는 스킬
+```
+for(uint8 i = 0; i<60;i++){
+EndLocation = StartLocation + UKismetMathLibrary::RotateAngleAxis(GetActorForwardVector(), CurrentAngle, FVector(0.0f, 0.0f, 1.0f)) * 1500.0f;
+		bHit = GetWorld()->LineTraceSingleByChannel(
+			OUT HitResult,
+			StartLocation,
+			EndLocation,
+			...
+		);	
+}
+
+```  
