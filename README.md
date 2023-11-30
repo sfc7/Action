@@ -84,7 +84,8 @@ void ABaseCharacter::CharacterChange(TSubclassOf<ABaseCharacter> ChangeCharacter
 - 특정 Socket에 Weapon을 장착함
  
 ## 캐릭터 - 카타나
-- SweepSingleByChannel을 이용한 근접 공격 사용
+- SweepSingleByChannel을 이용한 근접 공격 사용   
+  ![ka](https://github.com/sfc7/Action/assets/124154607/093a8c28-9650-4fbe-98bb-71e22caf7a3e)   
 - Q와 R 스킬은 Animation Sequence를 섞어서 만든 Animation Montage들을 스킬들로 사용함
 - Animnotify의 AttackComboCheck 델리게이트를 람다함수로 바인딩 시키고 bool 변수값들을 이용해 콤보 입력을 받아 공격함
 ```
@@ -101,9 +102,8 @@ AnimInstance->AttackComboCheck.AddLambda([this]() -> void {
 ```  
 ## 캐릭터 - 마법
 - 모든 공격이 충돌체 판정을 가진 공격 사용
-- 기본 공격은 여러 갈래로 Linetrace를 쏘고 hit 되면 ProjectileMovement->HomingAccelerationMagnitude을 높게 준 구체를 유도공격 함
-- Q스킬은 OnComponentOverlap하는 토네이도를 생성하여 공격하는 스킬
-- R스킬은 하늘에서 OnComponentHit하는 메테오를 떨어뜨려 공격하는 스킬
+- 기본 공격은 여러 갈래로 Linetrace를 쏘고 hit 되면 ProjectileMovement->HomingAccelerationMagnitude을 높게 준 구체를 유도공격 함   
+  ![mp](https://github.com/sfc7/Action/assets/124154607/a0c681dc-c1aa-4915-aed9-16d5b7dc2668)   
 ```
 for(uint8 i = 0; i<60;i++){
 EndLocation = StartLocation + UKismetMathLibrary::RotateAngleAxis(GetActorForwardVector(), CurrentAngle, FVector(0.0f, 0.0f, 1.0f)) * 1500.0f;
@@ -114,5 +114,10 @@ EndLocation = StartLocation + UKismetMathLibrary::RotateAngleAxis(GetActorForwar
 			...
 		);	
 }
-
+   
 ```  
+- Q스킬은 OnComponentOverlap하는 토네이도를 생성하여 공격하는 스킬   
+  ![mQ](https://github.com/sfc7/Action/assets/124154607/ae4927e4-769d-4ed2-b77a-fac6f631e9dd)   
+- R스킬은 하늘에서 OnComponentHit하는 메테오를 떨어뜨려 공격하는 스킬   
+  ![mR](https://github.com/sfc7/Action/assets/124154607/7cb70a4a-a77e-4ea4-a466-6a8feceeca65)   
+
