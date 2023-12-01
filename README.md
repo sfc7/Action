@@ -117,15 +117,21 @@ EndLocation = StartLocation + UKismetMathLibrary::RotateAngleAxis(GetActorForwar
 }
    
 ```  
-- Q스킬은 OnComponentOverlap하는 토네이도를 생성하여 공격하는 스킬   
+- Q스킬은 OnComponentOverlap하는 토네이도를 생성하여 공격하는 스킬, 지형과 충돌 시에는 사라짐   
   ![mQ](https://github.com/sfc7/Action/assets/124154607/ae4927e4-769d-4ed2-b77a-fac6f631e9dd)   
 - R스킬은 하늘에서 OnComponentHit하는 메테오를 떨어뜨려 공격하는 스킬   
   ![mR](https://github.com/sfc7/Action/assets/124154607/7cb70a4a-a77e-4ea4-a466-6a8feceeca65)   
 
 ## 캐릭터 - 라이플   
-- 액션 게임에 총을 사용하는 캐릭터를 위해 다른 캐릭터들과는 다른 조작을 사용했습니다.   
-- 총을 조준한 상황에서는 BlendSpace를 1D -> 2D로 교체하고 Aim Offset을 추가한 뒤 아래 코드를 통해 8ways 방식의 이동으로 바뀌도록 하였습니다.   
+- 액션 게임에 총을 사용하는 캐릭터를 위해 다른 캐릭터들과는 추가적인 조작을 구현할 필요가 있었습니다.
+- 다른 캐릭터들과 달리 몇가지 기능을 위해 전투와 비전투모드를 따로 분리할 필요가 있었습니다. ex)조준이 아닌 상태에서 공격등
+   ![idle](https://github.com/sfc7/Action/assets/124154607/109d805d-c844-46e5-b360-3e6a32ed0cdc)   ![idle2](https://github.com/sfc7/Action/assets/124154607/f237860b-61e8-4146-a835-85cda7b7ea4b)
+- 총을 조준한 상황에서는 BlendSpace를 1D -> 2D로 교체하고 Aim Offset을 추가한 뒤 아래 코드를 통해 8ways 방식의 이동으로 바뀌도록 하였습니다.
+  
 ```
 GetCharacterMovement()->bOrientRotationToMovement = false;
 GetCharacterMovement()->bUseControllerDesiredRotation = true;
 ```
+- AHUD를 상속받는 Crosshair를 만들어 에임을 표시하고 캐릭터의 Speed 값이 바뀌거나 총을 쏠 경우 CrossHair를 벌어지도록 하였습니다.   
+![aim1](https://github.com/sfc7/Action/assets/124154607/da2791ee-c6bf-426e-82f8-befe2ed804f3)
+
