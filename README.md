@@ -45,7 +45,7 @@ ABaseCharacter::ABaseCharacter()
 }
 ```
   
-- 다음과 같은 기본적인 애니메이션 구조 사용, 걷기와 달리기는 BS 1D를 통해 Speed 값을 받음 
+- 다음과 같은 기본적인 애니메이션 구조 사용, 걷기와 달리기는 BlendSpsace 1D를 통해 Speed 값을 받음 
 ![animation](https://github.com/sfc7/Action/assets/124154607/652ceb9b-e0d9-4c43-bc8f-82977fe34e92)
   
 - 캐릭터 교대는 아래 코드와 같이 부착된 액터들을 제거후 NoCollsion로 바꾸고 바꿀 캐릭터를 스폰한뒤 컨트롤러를 넘겨주고 Destroy()하는 방식을 채택 
@@ -99,7 +99,8 @@ AnimInstance->AttackComboCheck.AddLambda([this]() -> void {
 			}
 		}
 	});
-```  
+```
+     
 ## 캐릭터 - 마법
 - 모든 공격이 충돌체 판정을 가진 공격 사용
 - 기본 공격은 여러 갈래로 Linetrace를 쏘고 hit 되면 ProjectileMovement->HomingAccelerationMagnitude을 높게 준 구체를 유도공격 함   
@@ -121,3 +122,10 @@ EndLocation = StartLocation + UKismetMathLibrary::RotateAngleAxis(GetActorForwar
 - R스킬은 하늘에서 OnComponentHit하는 메테오를 떨어뜨려 공격하는 스킬   
   ![mR](https://github.com/sfc7/Action/assets/124154607/7cb70a4a-a77e-4ea4-a466-6a8feceeca65)   
 
+## 캐릭터 - 라이플   
+- 액션 게임에 총을 사용하는 캐릭터를 위해 다른 캐릭터들과는 다른 조작을 사용했습니다.   
+- 총을 조준한 상황에서는 BlendSpace를 1D -> 2D로 교체하고 Aim Offset을 추가한 뒤 아래 코드를 통해 8ways 방식의 이동으로 바뀌도록 하였습니다.   
+```
+GetCharacterMovement()->bOrientRotationToMovement = false;
+GetCharacterMovement()->bUseControllerDesiredRotation = true;
+```
