@@ -134,4 +134,7 @@ GetCharacterMovement()->bUseControllerDesiredRotation = true;
 ```
 - AHUD를 상속받는 Crosshair를 만들어 에임을 표시하고 캐릭터의 Speed 값이 바뀌거나 총을 쏠 경우 CrossHair를 벌어지도록 하였습니다.   
 ![aim1](https://github.com/sfc7/Action/assets/124154607/da2791ee-c6bf-426e-82f8-befe2ed804f3)
+- Q스킬은 레이저 총으로 교체하고 레이저를 한발 발사한 후 교체됩니다.
+![rifle](https://github.com/sfc7/Action/assets/124154607/ca14d1ca-5daa-4a08-8bae-b15ce7f6d96d)  ![raser](https://github.com/sfc7/Action/assets/124154607/350189e4-953a-49cf-8076-bbb20ebf3590)
+
 
