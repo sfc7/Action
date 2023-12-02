@@ -205,7 +205,9 @@ void UMyGameInstance::SkillCoolDownStart(FTimerHandle& SkillHandle, float& Chara
 - UBTDecorator를 통해 타겟과의 거리를 잰 후 근접공격을 할지 원거리 공격을 할지 결정합니다.
 
 ### 보스몬스터   
-- EQS를 통해 캐릭터의 주위를 배회합니다.
+- EQS를 통해 캐릭터의 주위를 배회합니다.   
+- 보스몬스터는 다양한 패턴을 사용합니다.
+![Stack](https://github.com/sfc7/Action/assets/124154607/8487a64a-d51b-46a6-858d-04eb5ec90f09)
 - 보스몬스터가 사용하는 컨셉 중 가장 중요한 텔레포트의 경우에는 다음과 같은 코드를 통해 구현하였습니다.   
 ```
 auto Movement = GetCharacterMovement();
@@ -215,4 +217,6 @@ auto Movement = GetCharacterMovement();
 	GetMesh()->SetVisibility(false, true);
 	GetCapsuleComponent()->SetCollisionProfileName(TEXT("NoCollision"));
 ```   
-
+- 보스몬스터가 사용하는 패턴 중 자기 힐을 하는 패턴은 EQS를 통해 플레이어의 시야 중 보이지 않는 곳을 찾아가는 방식으로 구현했습니다.   
+![heal](https://github.com/sfc7/Action/assets/124154607/f90d5a20-815a-492c-9741-3cea823dc596)
+ 
