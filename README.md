@@ -185,6 +185,34 @@ void UMyGameInstance::SkillCoolDownStart(FTimerHandle& SkillHandle, float& Chara
    
 ## UI   
 - 각 액터들이 가지고 있는 데이터 컴포넌트에서 값을 가져와 연계하여 사용합니다.
-- 각 캐릭터의 UI는 생성자에 묶여있고 캐릭터를 교대할 경우에는 UI를 삭제하고 다시 생성하는 방식입니다.
+- 각 캐릭터의 UI는 생성자에 묶여있고 캐릭터를 교대할 경우에는 UI를 삭제하고 다시 생성하는 방식을 사용합니다.
 - 행동들에 대한 쿨타임이 표시됩니다.   
 ![ui](https://github.com/sfc7/Action/assets/124154607/efa3b80e-8668-4e52-a3a5-4a7db0299946)
+
+## 트리거
+- 트리거의 경우 대부분 Box형태를 사용하였습니다. BeginOverlap에 따른 이벤트들을 바인딩 해주었습니다.   
+- 장소에 대한 값이 필요할 경우 ArrowComponent를 가진 Pawn을 설치하고 GetAllActorsOfClass로 Level에 해당 Pawn들을 가져와 그 Location에 이벤트를 발생시키는 형태를 주로 사용하였습니다.
+
+## 몬스터   
+### AI
+- 몬스터 AI는 BeHaviroTree를 통해 구현하였습니다.   
+- AI Perception을 이용하여 Stimulus.Type을 통해 Target을 블랙보드에 설정합니다.
+- 기본적으로 Sequence 내에서 타겟에 대해 SetFocus, ClearFocus하고 WalkSpeed값을 설정한 뒤 Task를 실행하는 형식을 취하고 있습니다.
+![bt](https://github.com/sfc7/Action/assets/124154607/d15044b4-747a-4fd1-afe9-54a0360722d7)
+
+### 공격
+- Animation에서 근접 공격과 원거리 공격에 대한 Montage를 각각 Array로 믂고 RandRange로 랜덤하게 패턴이 나오게 합니다.   
+- UBTDecorator를 통해 타겟과의 거리를 잰 후 근접공격을 할지 원거리 공격을 할지 결정합니다.
+
+### 보스몬스터   
+- EQS를 통해 캐릭터의 주위를 배회합니다.
+- 보스몬스터가 사용하는 컨셉 중 가장 중요한 텔레포트의 경우에는 다음과 같은 코드를 통해 구현하였습니다.   
+```
+auto Movement = GetCharacterMovement();
+	Movement->SetMovementMode(EMovementMode::MOVE_Flying);
+	Movement->MaxFlySpeed = 5000.0f;
+	Movement->MaxAcceleration = 99999.0f;
+	GetMesh()->SetVisibility(false, true);
+	GetCapsuleComponent()->SetCollisionProfileName(TEXT("NoCollision"));
+```   
+
