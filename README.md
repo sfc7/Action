@@ -124,7 +124,7 @@ EndLocation = StartLocation + UKismetMathLibrary::RotateAngleAxis(GetActorForwar
    
 ## 캐릭터 - 라이플   
 - 액션 게임에 총을 사용하는 캐릭터를 위해 다른 캐릭터들과는 추가적인 조작을 구현할 필요가 있었습니다.   
-- 다른 캐릭터들과 달리 몇가지 기능을 위해 전투와 비전투모드를 따로 분리할 필요가 있었습니다. ex)조준이 아닌 상태에서 공격등
+- 다른 캐릭터들과 달리 몇가지 기능을 위해 전투와 비전투모드를 따로 분리할 필요가 있었습니다. ex)조준이 아닌 상태에서 공격등   
    ![idle](https://github.com/sfc7/Action/assets/124154607/109d805d-c844-46e5-b360-3e6a32ed0cdc)   ![idle2](https://github.com/sfc7/Action/assets/124154607/f237860b-61e8-4146-a835-85cda7b7ea4b)
 - 총을 조준한 상황에서는 BlendSpace를 1D -> 2D로 교체하고 Aim Offset을 추가한 뒤 아래 코드를 통해 8ways 방식의 이동으로 바뀌도록 하였습니다.   
   
