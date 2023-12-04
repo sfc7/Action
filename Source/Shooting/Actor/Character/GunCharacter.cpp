@@ -283,7 +283,7 @@ void AGunCharacter::Attack_Skill_REnd()
 	MyGameInstance->Gun_R_SkillCoolDownStart();
 
 	for (int i = 0; i < 5; i++) {
-		FVector CurrntMissleLaunchVector = MissleLaunchVector + FVector(0.5f * i,0.0f,0.0f);
+		FVector CurrentMissileLaunchVector = MissleLaunchVector + GetActorRightVector() * (0.5f * i);
 		FTimerHandle LaunchTimerHandle;
 		GetWorld()->GetTimerManager().SetTimer(LaunchTimerHandle, FTimerDelegate::CreateLambda([CurrntMissleLaunchVector,this]()
 			{

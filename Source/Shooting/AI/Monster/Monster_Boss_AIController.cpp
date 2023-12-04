@@ -33,7 +33,7 @@ void AMonster_Boss_AIController::OnPossess(APawn* InPawn)
 		if (RunBehaviorTree(BehaviorTree))
 		{
 		}
-	}
+	}	
 	this->Blackboard = BlackboardComp;
 }
 
