@@ -1,12 +1,12 @@
+# 시연 영상
+https://www.youtube.com/watch?v=mSPkphVwWP4
+
 # 3인칭 액션 게임
 - 사용엔진 Unreal 5.2
   
 - 장르 : 3인칭 액션
 
 - 개요 : 원신 방식의 캐릭터를 교대하며 전투하는 3인칭 액션게임입니다. 정해진 안내에 따라 몬스터를 처치하다가 최종적으로 보스 몬스터를 처치하면 클리어합니다.
-  
-시연 영상:
-https://www.youtube.com/watch?v=mSPkphVwWP4
 
 진행과정 및 내용은 진행과정기술서(PDF) 폴더에 서술하였습니다. 
    
