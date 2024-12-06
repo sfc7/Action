@@ -9,25 +9,7 @@ https://www.youtube.com/watch?v=mSPkphVwWP4
 - 개요 : 원신 방식의 캐릭터를 교대하며 전투하는 3인칭 액션게임입니다. 정해진 안내에 따라 몬스터를 처치하다가 최종적으로 보스 몬스터를 처치하면 클리어합니다.
 
 진행과정 및 내용은 진행과정기술서(PDF) 폴더에 서술하였습니다. 
-   
-# 조작
-W,A,S,D (이동)  
-  
-마우스 좌클릭 (공격)  
-  
-마우스 우클릭 (조준 - GunCharacter)  
-  
-Q,R (스킬사용)  
-  
-E (회피)  
-
-Shift (달리기)  
-  
-SPACE (점프)  
-  
-F1, F2, F3 (캐릭터 전환)  
-   
-
+ 
 # 기술 설명서
 ## 구조 다이어그램
 ![Diagram](https://github.com/sfc7/Action/assets/124154607/e97dcd46-717a-4c77-9a48-6f0e8cc26091)
