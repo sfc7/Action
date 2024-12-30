@@ -1,8 +1,8 @@
 # 시연 영상
 https://youtu.be/mSPkphVwWP4
 
-# 3인칭 액션 게임
-- 사용엔진 Unreal 5.2
+# 캐릭터 교대형 3인칭 액션 게임
+- 사용엔진 Unreal 5.1
   
 - 장르 : 3인칭 액션
 
